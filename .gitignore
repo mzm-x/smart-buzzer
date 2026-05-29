@@ -1,0 +1,22 @@
+# ===== OS junk =====
+.DS_Store
+**/.DS_Store
+
+# ===== Runtime logs (berisi PII customer: email, WhatsApp, bisnis) =====
+*.log
+**/*.log
+**/customer_data.log
+**/page_analytics.log
+**/order_clicks.log
+
+# ===== Data berisi PII / hasil scraping =====
+outbound/data/
+survey/data/
+
+# ===== Kredensial / config sensitif =====
+# DB creds, akun Account Manager, password hash, service account
+submit/config.php
+
+# ===== Dependencies =====
+**/vendor/
+composer.lock

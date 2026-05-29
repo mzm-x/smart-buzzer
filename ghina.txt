@@ -1,0 +1,966 @@
+# LANDING PAGE SYSTEM — PROJECT KNOWLEDGE & RULES
+
+Generic blueprint untuk bangun landing page dengan log analytics, GTM dataLayer (GA4 standard), pixel tracking, UTM attribution, dan dashboard internal. Dokumen ini bisa langsung ditaruh di root project sebagai `CLAUDE.md` atau referensi tim.
+
+---
+
+## 1. CONFIDENCE-GATED EXECUTION RULE (CRITICAL)
+
+**Selalu nyatakan confidence % sebelum eksekusi perubahan kode apapun.**
+
+- Confidence ≥ 90% → eksekusi langsung tanpa approval.
+- Confidence < 90% → STOP. Jangan eksekusi. Sajikan:
+  1. Rencana eksak (apa yg berubah, di mana, urutannya)
+  2. Confidence % per item + overall
+  3. Penyebab < 90% (copy ambigu, layout uncertain, dependency unknown, dll)
+  4. Pertanyaan klarifikasi atau opsi pilihan
+  Lalu tunggu approval user sebelum tool call Edit/Write.
+
+**Kalibrasi confidence jujur:**
+- 95-100%: Trivial mechanical change (text swap, color change, hapus elemen).
+- 90-94%: Scope jelas, single-file edit, copy & layout straightforward.
+- 80-89%: Multiple sub-decisions (copy butuh interpretasi, mobile layout punya tradeoff).
+- < 80%: Spec genuinely ambiguous, banyak interpretasi valid.
+
+Jangan padding confidence biar skip approval. Jangan chain low-confidence changes biar rata-rata ≥ 90%.
+
+---
+
+## 2. SERVICE DELIVERY KNOWLEDGE (Source of Truth)
+
+Semua copy di TNC, onboarding flow, landing page, support script, dashboard message **WAJIB konsisten** dengan source of truth ini. Update di satu tempat → update juga di file ini biar sinkron.
+
+### Mobile section ordering rule (CRITICAL — applies to ALL LPs)
+**Pada mobile (≤880px), gambar/visual SELALU di ATAS teks** di section image+text split apapun.
+- Hero, case study, real reviews, dan section dua-kolom apapun harus reorder: image render duluan, text di bawah.
+- Implementasi: CSS `order: 1` ke visual element, `order: 2` ke text element di dalam media query `@media (max-width: 880px)`.
+- Alasan: user skim di mobile — visual proof dapat attention duluan, text reinforce.
+- Desktop layout boleh tetap text-left + image-right.
+
+---
+
+## 3. UNIFIED GTM EVENT FLOW
+
+### Core Principle
+**Jangan bikin duplicate event.** Pakai SATU set standard GA4 + Meta event yang fire across ALL pages. Bedakan performance page via `page_location` di GA4 — bukan dengan bikin event terpisah per page.
+
+### Complete Funnel: view_item → begin_checkout → add_payment_info → purchase
+
+```
++-----------------------------------------------------------------------+
+|                    UNIFIED GTM EVENT FUNNEL                           |
++-----------------------------------------------------------------------+
+|                                                                       |
+|  STEP 0: PAGE LOAD (All Pages)                                        |
+|  +-- GTM: PageView (auto via GTM)                                     |
+|  +-- FB Pixel: fbq('track', 'PageView')                              |
+|  +-- TikTok: ttq.page()                                               |
+|                                                                       |
+|  STEP 1: PRICING SECTION VISIBLE (30% scroll or element visible)     |
+|  +-- File: index.php                                                  |
+|  +-- Trigger: Element visibility or 30% scroll depth                 |
+|  +-- GTM dataLayer: view_item (per package, GA4 standard)            |
+|  +-- Analytics: VIEW_ITEM → page_analytics.log                        |
+|                                                                       |
+|  STEP 2: ORDER NOW CLICK (Pricing Cards)                              |
+|  +-- File: index.php                                                  |
+|  +-- Trigger: Click any ORDER NOW button in pricing section           |
+|  +-- FB Pixel: fbq('track', 'Lead')                                  |
+|  +-- TikTok: ttq.track('SubmitForm')                                  |
+|  +-- GTM dataLayer: generate_lead (for WhatsApp CTA clicks)          |
+|  +-- Analytics: ORDER_[PACKAGE]_CLICK → page_analytics.log           |
+|  +-- Action: Smooth scroll to #order-form, pre-select package        |
+|                                                                       |
+|  STEP 3: COMPLETE ORDER (Form Submit + Redirect)                     |
+|  +-- File: index.php                                                  |
+|  +-- Trigger: Click COMPLETE ORDER after filling form                 |
+|  +-- FB Pixel: fbq('track', 'InitiateCheckout')                      |
+|  +-- TikTok: ttq.track('InitiateCheckout')                           |
+|  +-- GTM dataLayer: begin_checkout (GA4 + user_data captured here)  |
+|  +-- GTM dataLayer: add_payment_info (fires on same click/redirect)  |
+|  +-- Analytics: ORDER_SUBMIT → page_analytics.log                    |
+|  +-- Customer: businessName + whatsapp + email → customer_data.log   |
+|  +-- LocalStorage: save email + phone for purchase event bridge      |
+|  +-- Action: Redirect to payment gateway URL                         |
+|                                                                       |
+|  STEP 4: THANK YOU PAGE (After Gateway Return)                       |
+|  +-- File: thankyou.php                                               |
+|  +-- Trigger: Page load (purchase confirmed)                          |
+|  +-- FB Pixel: fbq('track', 'Purchase')                              |
+|  +-- TikTok: ttq.track('CompletePayment')                            |
+|  +-- GTM dataLayer: purchase (reads user_data from LocalStorage)     |
+|  +-- Analytics: THANKYOU_PAGE_VIEW → page_analytics.log              |
+|                                                                       |
+|  STEP 4b: CLICK HERE TO CONTINUE (Thank You Page button)            |
+|  +-- Trigger: Click CLICK HERE TO CONTINUE button                    |
+|  +-- Analytics: PURCHASE_CLICK → page_analytics.log                  |
+|  +-- Action: 400ms delay then redirect to payment gateway            |
+|                                                                       |
++-----------------------------------------------------------------------+
+```
+
+**NOTE:** GTM is the single source of truth for all tracking. Direct `fbq()` and `ttq()` calls retained as fallback. GA4 standard ecommerce events. User data captured at `begin_checkout` on LP and persisted to LocalStorage for `purchase` event on thankyou.php.
+
+### Unified Event Details
+
+| Step | Trigger | GA4 dataLayer Event | FB Pixel Event | TikTok Event |
+|------|---------|-------------------|---------------|-------------|
+| Pricing visible | 30% scroll / element visible | `view_item` | - | - |
+| ORDER NOW click | Pricing button click | `generate_lead` | `Lead` | `SubmitForm` |
+| Add to Cart | Product page cart click | `add_to_cart` | - | - |
+| COMPLETE ORDER | Form submit | `begin_checkout` | `InitiateCheckout` | `InitiateCheckout` |
+| COMPLETE ORDER | Form submit (same click) | `add_payment_info` | - | - |
+| Thank you page load | Page load | `purchase` | `Purchase` | `CompletePayment` |
+| WhatsApp button | WA CTA click | `generate_lead` | - | - |
+
+---
+
+## 4. GTM DATALAYER SYSTEM
+
+### GTM Container Snippet (taruh di `<head>` SEBELUM FB/TT pixel)
+
+```html
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+<!-- End Google Tag Manager -->
+```
+
+**Required di:** `index.php` AND `thankyou.php`. Ganti `GTM-XXXXXXX` dengan container ID kamu.
+
+### Package Metadata (Used by dataLayer)
+
+Tiap LP punya `pkgMeta` sendiri. JANGAN copy package antar LP.
+
+```javascript
+var pkgMeta = {
+    'starter':     {id: 'pkg_starter_X',  name: 'Package Starter',  item_category: 'Category Name', price: 100.00, qty: 10},
+    'growth':      {id: 'pkg_growth_Y',   name: 'Package Growth',   item_category: 'Category Name', price: 200.00, qty: 20},
+    'performance': {id: 'pkg_performance_Z', name: 'Package Performance', item_category: 'Category Name', price: 300.00, qty: 30}
+};
+```
+
+### Transaction ID Format
+
+```
+TXN_{timestamp}_{random6char}
+Example: TXN_1772349856835_6jdgy0
+```
+
+```javascript
+var txnId = 'TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+```
+
+### Event 1 — view_item (Pricing Section Visible)
+
+```javascript
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({ecommerce: null});
+window.dataLayer.push({
+    event: 'view_item',
+    ecommerce: {
+        currency: 'USD',
+        value: meta.price,
+        items: [{
+            item_id: meta.id,
+            item_name: meta.name,
+            item_category: 'Category Name',
+            price: meta.price,
+            quantity: 1
+        }]
+    }
+});
+```
+
+### Event 2 — add_to_cart (Product Page Cart Click)
+
+```javascript
+window.dataLayer.push({ecommerce: null});
+window.dataLayer.push({
+    event: 'add_to_cart',
+    ecommerce: { currency: 'USD', value: meta.price, items: [{...}] }
+});
+```
+
+### Event 3 — begin_checkout (COMPLETE ORDER Click)
+
+Capture user_data DI SINI — bridge buat closing third-party gateway gap.
+
+```javascript
+window.dataLayer.push({ecommerce: null});
+
+var nameParts = biz.split(' ');
+var firstName = nameParts[0] || '';
+var lastName = nameParts.slice(1).join(' ') || '';
+
+window.dataLayer.push({
+    event: 'begin_checkout',
+    user_data: {
+        email: email,
+        phone_number: wa,
+        first_name: firstName,
+        last_name: lastName
+    },
+    ecommerce: {
+        currency: 'USD',
+        value: meta.price,
+        items: [{ item_id: meta.id, item_name: meta.name, item_category: 'Category Name', price: meta.price, quantity: 1 }]
+    }
+});
+
+// Bridge: persist user_data to LocalStorage
+localStorage.setItem('user_email', email || '');
+localStorage.setItem('user_phone', wa || '');
+localStorage.setItem('user_fname', firstName || '');
+localStorage.setItem('user_lname', lastName || '');
+localStorage.setItem('txn_id', txnId);
+localStorage.setItem('pkg', pkgValue);
+```
+
+### Event 4 — add_payment_info (Same Click as begin_checkout)
+
+```javascript
+window.dataLayer.push({ecommerce: null});
+window.dataLayer.push({
+    event: 'add_payment_info',
+    ecommerce: {
+        currency: 'USD',
+        value: meta.price,
+        payment_type: 'Credit Card',
+        items: [{...}]
+    }
+});
+```
+
+### Event 5 — purchase (thankyou.php Page Load)
+
+```javascript
+window.dataLayer.push({ecommerce: null});
+
+var sbEmail = localStorage.getItem('user_email') || '';
+var sbPhone = localStorage.getItem('user_phone') || '';
+var sbFname = localStorage.getItem('user_fname') || '';
+var sbLname = localStorage.getItem('user_lname') || '';
+var sbTxnId = localStorage.getItem('txn_id') || ('TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6));
+
+window.dataLayer.push({
+    event: 'purchase',
+    user_data: { email: sbEmail, phone_number: sbPhone, first_name: sbFname, last_name: sbLname },
+    ecommerce: {
+        transaction_id: sbTxnId,
+        value: parseFloat(pkgPrice),
+        currency: 'USD',
+        items: [{ item_id: pkg, item_name: pkgName }]
+    }
+});
+
+// Clear LocalStorage after firing
+localStorage.removeItem('user_email');
+localStorage.removeItem('user_phone');
+localStorage.removeItem('user_fname');
+localStorage.removeItem('user_lname');
+localStorage.removeItem('txn_id');
+localStorage.removeItem('pkg');
+```
+
+### Event 6 — generate_lead (WhatsApp Button Click)
+
+```javascript
+window.dataLayer.push({
+    event: 'generate_lead',
+    method: 'WhatsApp',
+    value: meta ? meta.price : 0,
+    currency: 'USD'
+});
+```
+
+### GTM Variable Setup (Enhanced Conversions)
+
+#### Step 1 — Data Layer Variables
+
+| Variable Name | Data Layer Path | Purpose |
+|--------------|----------------|---------|
+| `DLV - User Email` | `user_data.email` | Enhanced Conversions |
+| `DLV - User Phone` | `user_data.phone_number` | Enhanced Conversions |
+| `DLV - User First Name` | `user_data.first_name` | Enhanced Conversions |
+| `DLV - User Last Name` | `user_data.last_name` | Enhanced Conversions |
+| `DLV - Ecommerce Value` | `ecommerce.value` | GA4 / Meta |
+| `DLV - Transaction ID` | `ecommerce.transaction_id` | Purchase dedup |
+| `DLV - Currency` | `ecommerce.currency` | GA4 / Meta |
+| `DLV - Items` | `ecommerce.items` | GA4 ecommerce |
+
+#### Step 2 — User-Provided Data Variable (Google Ads Enhanced Conversions)
+
+Type: **User-Provided Data**, Manual Configuration:
+- Email: `{{DLV - User Email}}`
+- Phone: `{{DLV - User Phone}}`
+- Name: `{{DLV - User First Name}} {{DLV - User Last Name}}`
+
+Variable name: `UPD - Manual User Data`
+
+Di Google Ads Conversion tag: enable "Include user-provided data", select `{{UPD - Manual User Data}}`.
+
+#### Step 3 — Meta Pixel Advanced Matching
+
+Di Meta Pixel GTM tag (community template), enable **Advanced Matching**:
+- `em`: `{{DLV - User Email}}`
+- `ph`: `{{DLV - User Phone}}`
+
+GTM hashes these automatically.
+
+---
+
+## 5. FOUR-FILE SYSTEM ARCHITECTURE (Per Landing Page)
+
+```
++-------------------------------------------------------------+
+|                    LANDING PAGE SYSTEM                      |
++-------------------------------------------------------------+
+|                                                             |
+|  +--------------+      +--------------+      +----------+   |
+|  |  index.php   |--+-->| analytics.php|----->| page_    |   |
+|  |  (Landing)   |  |   |  (Backend)   |      |analytics |   |
+|  |              |  |   +--------------+      |  .log    |   |
+|  |  - Hero      |  |                         +----------+   |
+|  |  - Pricing   |  |                                        |
+|  |  - FAQ       |  |   +--------------+      +----------+   |
+|  |  - Footer    |  +-->|   log.php    |----->|customer_ |   |
+|  +--------------+      | (Dashboard)  |      |data.log  |   |
+|        |               |              |      +----------+   |
+|        |               |  - Customers |                     |
+|        |               |  - Analytics |                     |
+|        |               |  - Campaign  |                     |
+|        |               +--------------+                     |
+|        |                                                    |
+|        |  +----------------+                                |
+|        +->| thankyou.php   |                                |
+|           | (Thank You)    |                                |
+|           |                |                                |
+|           | - Purchase     |                                |
+|           |   Pixel        |                                |
+|           | - Redirect to  |                                |
+|           |   Gateway      |                                |
+|           +----------------+                                |
++-------------------------------------------------------------+
+```
+
+### 1. **index.php** — Landing Page (CUSTOMIZABLE)
+
+**Boleh diubah:**
+- Pricing amounts
+- Checkout/gateway URLs
+- Hero section content
+- FAQ questions/answers
+- Images dan branding
+- Package names
+
+**TIDAK boleh diubah:**
+- Analytics tracking code di `<head>`
+- GTM container code dan dataLayer pushes
+- UTM tracking logic (`window.location.href`)
+- Facebook Pixel code
+- TikTok Pixel code
+- `data-package` attributes di buttons
+- GA4 event sequence (view_item → begin_checkout → add_payment_info → purchase)
+- LocalStorage keys untuk user_data bridge
+
+### 2. **analytics.php** — Backend API (NEVER MODIFY)
+
+**Tugas:**
+1. Receive POST dari index.php DAN thankyou.php (event_type, page_url, data, session_id)
+2. Process: detect device, extract UTM, get IP+country, NO geo-blocking
+3. Write ke `page_analytics.log` (13 columns TSV)
+
+**Critical Features:**
+- Input sanitization
+- IP validation (prevent spoofing)
+- Timeout 3 seconds
+- UTM parsing dari `page_url` (6 params: source, medium, campaign, content, term, placement)
+
+### 3. **log.php** — Dashboard (SHARED)
+
+**Tugas:**
+1. Read `customer_data.log` → Customer Tab (form submissions only, full UTM, follow-up toggle, CSV export)
+2. Read `page_analytics.log` → Analytics Tab (page views, scroll depth, device breakdown, conversion funnel)
+3. Process hierarchical data → Campaign Breakdown Tab (Campaign → Ad, side-by-side, top 5)
+
+**customer_data.log Status Values:**
+| Status | Meaning |
+|--------|---------|
+| `FORM_SUBMIT` | User submitted form with business data |
+| `FOLLOWED_UP` | Admin marked as followed up |
+
+**Conversion Rate** = Form Submits / Page Views (BUKAN pricing clicks / page views)
+
+**Funnel** harus tampilkan 4 step: Page Views → Pricing Clicks (CTR%) → Form Submits → Conversion Rate
+
+### 4. **thankyou.php** — Thank You Page
+
+**Tugas:**
+1. Receive URL params dari index.php: `pkg`, `dest` (gateway URL), `biz` (business name URL-encoded)
+2. Display thank you card + "CLICK HERE TO CONTINUE" button (pulsing animation)
+3. On page load: fire `purchase` dataLayer + `Purchase` FB pixel + `CompletePayment` TikTok
+4. On button click: log `PURCHASE_CLICK`, 400ms delay, redirect ke gateway
+
+**URL Format:** `thankyou.php?pkg=growth&dest=https://gateway.example.com/checkout/abc&biz=My%20Business`
+
+**Boleh diubah:** thank you message, button text/styling, card design, footer.
+
+**TIDAK boleh diubah:**
+- Facebook Pixel code dan ID
+- TikTok Pixel code dan ID
+- Purchase event firing logic
+- handlePurchaseClick function
+- 400ms redirect delay (required pixels fire)
+- analytics.php integration
+- URL parameter parsing logic
+
+**Security:**
+- `pkg` sanitized dengan `htmlspecialchars()`
+- `dest` validated dengan `filter_var(FILTER_VALIDATE_URL)`
+- `biz` decoded lalu sanitized dengan `htmlspecialchars()`
+- Invalid `dest` fallback ke landing page utama
+- `handlePurchaseClick` punya one-time guard untuk prevent double-fire
+
+---
+
+## 6. ORDER FORM FIELDS
+
+| Field | ID | Type | Required | Placeholder |
+|-------|----|------|----------|-------------|
+| Business Name | `ofBizName` | text | Yes | Enter your business name |
+| WhatsApp Number | `ofWhatsapp` | tel | Yes | +1 Enter your WhatsApp number |
+| Email Address | `ofEmail` | email | No | Enter your email address (optional) |
+| Package Selection | `of-pkg` radio | radio | Yes | Pre-selected default |
+
+### Form Auto-Save Keys (localStorage)
+
+| Key | Field |
+|-----|-------|
+| `form_biz` | Business Name |
+| `form_wa` | WhatsApp Number |
+| `form_email` | Email Address |
+| `form_pkg` | Selected Package |
+
+Auto-save on input, restore on page load, cleared after successful submission.
+
+---
+
+## 7. CENTRALIZED ANALYTICS SYSTEM
+
+### Overview
+
+```
++-----------------------------------------------------------------------+
+|                    CENTRALIZED ANALYTICS                              |
++-----------------------------------------------------------------------+
+|                                                                       |
+|  /analytics/                                                          |
+|  +-- index.php         <- Centralized Dashboard (filesystem fetch)    |
+|  +-- sources/          <- Source configs folder (auto-created)        |
+|      +-- promo.json    <- {"name":"promo","path":"/home/.../promo"}   |
+|      +-- xmas.json     <- {"name":"xmas","path":"/home/.../xmas"}     |
+|                                                                       |
+|  Reads directly from filesystem (same hosting):                       |
+|  +-- /promo/customer_data.log                                         |
+|  +-- /xmas/customer_data.log                                          |
+|  +-- /blackfriday/customer_data.log                                   |
+|                                                                       |
++-----------------------------------------------------------------------+
+```
+
+### Features
+
+| Feature | Description |
+|---------|-------------|
+| Multi-Source | Aggregate data dari multiple landing pages |
+| Filesystem Fetch | Direct file read (no HTTP, no 403 issues) |
+| Source Management | Add/Remove/Toggle sources via UI |
+| Date Filtering | Default Last 30 Days |
+| Campaign Breakdown | Hierarchical: Campaign → Ad |
+| Source Filter | View specific LP atau all combined |
+| Landing Page Table | Breakdown by LP performance |
+| Full AJAX | No page refresh needed |
+| Password Protection | Secure access |
+| Backward Compatible | Supports 14-18 column formats |
+
+### Configuration
+
+```php
+// Filesystem base path
+$BASE_PATH = '/home/user/domains/example.com/public_html';
+
+// Default landing pages
+$DEFAULT_LANDING_PAGES = [
+    'promo',
+    'promo-2',
+    'promo-b1g1',
+    'seasonal',
+    'xmas',
+    'blackfriday'
+];
+```
+
+### Source Config JSON Format
+
+```json
+{
+    "name": "promo",
+    "path": "/home/user/domains/example.com/public_html/promo",
+    "url": "https://example.com/promo/",
+    "enabled": true
+}
+```
+
+### Filesystem Fetch Logic
+
+```php
+$basePath = $source['path'];
+$customerDataPath = $basePath . '/customer_data.log';
+
+if (file_exists($customerDataPath)) {
+    $content = file_get_contents($customerDataPath);
+    // Parse 14-18 column format (backward compatible)
+}
+```
+
+---
+
+## 8. LOG FILE FORMATS
+
+### customer_data.log (18 columns)
+
+```
+Timestamp | Business | Location | Email | WhatsApp | Package | Page URL | Qty | UTM_Source | UTM_Medium | UTM_Campaign | UTM_Content | Placement | State | Zip | Country | Status | UTM_Term
+```
+
+| Index | Field | Example |
+|-------|-------|---------|
+| 0 | Timestamp | 2025-12-30 14:23:45 |
+| 1 | Business | My Business Name |
+| 2 | Location | - |
+| 3 | Email | john@example.com |
+| 4 | WhatsApp | +1234567890 |
+| 5 | Package | Growth |
+| 6 | Page URL | https://example.com/promo/?utm_... |
+| 7 | Qty | 88 |
+| 8 | UTM_Source | meta |
+| 9 | UTM_Medium | paid_social |
+| 10 | UTM_Campaign | Aul_US_LP_PROMO_V1 |
+| 11 | UTM_Content | kv_localized-copy |
+| 12 | Placement | Facebook_Mobile_Reels |
+| 13 | State | CA |
+| 14 | Zip | 90210 |
+| 15 | Country | US |
+| 16 | Status | FORM_SUBMIT / FOLLOWED_UP |
+| 17 | UTM_Term | LAA_ICO_L150D |
+
+### page_analytics.log (13 columns)
+
+```
+Timestamp | Event | Page URL | Data | Device | Session | Campaign | Source | Medium | UTM_Content | Placement | IP | Country
+```
+
+### Analytics Event Types
+
+| Event | Source File | Description |
+|-------|-----------|-------------|
+| `PAGE_VIEW` | index.php | Landing page loaded |
+| `RETURN_VISITOR` | index.php | Return visit detected |
+| `SCROLL_DEPTH_25/50/75/100` | index.php | Scroll depth milestones |
+| `ORDER_[PACKAGE]_CLICK` | index.php | Pricing button click |
+| `ORDER_SUBMIT` | index.php | Order form submitted |
+| `CLICK_HEATMAP` | index.php | Interactive element clicked |
+| `TIME_ON_PAGE` | index.php | Page unload with duration |
+| `EXIT_PAGE` | index.php | Page exit with last clicked URL |
+| `EXTERNAL_LINK_CLICK` | index.php | Header/footer external link |
+| `THANKYOU_PAGE_VIEW` | thankyou.php | Thank you page loaded |
+| `PURCHASE_CLICK` | thankyou.php | Continue button clicked |
+| `THANKYOU_EXIT` | thankyou.php | Thank you page unload |
+
+---
+
+## 9. UTM TRACKING SYSTEM
+
+### UTM Parameters Captured (6 params — Standard Convention)
+
+```
+utm_source    -> Platform (e.g., meta)
+utm_medium    -> Medium (e.g., paid_social)
+utm_campaign  -> Campaign Name (e.g., Aul_US_LP_PROMO_V1)
+utm_content   -> Ad Content (e.g., kv_localized-copy)
+utm_term      -> Adset Name (e.g., LAA_ICO_L150D)
+utm_placement -> Placement (e.g., Facebook_Mobile_Reels)
+```
+
+### UTM to FB Ads Mapping
+
+| UTM Parameter | FB Ads Equivalent | Example |
+|---------------|-------------------|---------|
+| utm_source | Platform | meta |
+| utm_medium | Medium Type | paid_social |
+| utm_campaign | Campaign Name | Aul_US_LP_PROMO_V1 |
+| utm_content | Ad Content | kv_localized-copy |
+| utm_term | Adset Name | LAA_ICO_L150D |
+| utm_placement | Placement | Facebook_Mobile_Reels |
+
+### Standard FB Ads UTM Template
+
+```
+utm_source=meta&utm_medium=paid_social&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.name}}&utm_placement={{placement}}
+```
+
+### UTM Default Values (consistent across all files)
+
+| Parameter | Default | Meaning |
+|-----------|---------|---------|
+| utm_source | `direct` | No UTM source detected |
+| utm_medium | `none` | No medium detected |
+| utm_campaign | `direct` | No campaign detected |
+| utm_content | `-` | No ad content |
+| utm_term | `-` | No adset name |
+| utm_placement | `-` | No placement data |
+
+### UTM Parsing (CORRECT vs WRONG)
+
+```php
+// CORRECT - parse_url + parse_str only (parse_str auto-decodes)
+$parsed = parse_url($pageUrl);
+if (isset($parsed['query'])) {
+    parse_str($parsed['query'], $params);
+    $utmSource = isset($params['utm_source']) ? trim($params['utm_source']) : 'direct';
+}
+
+// WRONG - triple decode corrupts encoded values
+$decodedUrl = urldecode($pageUrl);              // decode #1
+parse_str($parsed['query'], $params);           // decode #2 (auto)
+$utmSource = urldecode($params['utm_source']);  // decode #3 - WRONG!
+```
+
+### CRITICAL — Always Use:
+
+```javascript
+// CORRECT
+page_url: window.location.href  // Full URL with UTM params
+
+// WRONG - UTM hilang!
+page_url: window.location.pathname  // Just "/promo/"
+```
+
+---
+
+## 10. CRITICAL IMPLEMENTATION RULES
+
+### !! ABSOLUTE RULE — NO CLICK TRACKING IN customer_data.log !!
+
+**customer_data.log records FORM SUBMISSIONS ONLY.**
+- JANGAN write row ke `customer_data.log` saat user click pricing button
+- JANGAN write row saat tidak ada business name + WhatsApp submitted
+- Pricing button clicks tracked ONLY via: FB `Lead`, TikTok `SubmitForm`, GTM `generate_lead`, dan `ORDER_*_CLICK` ke `page_analytics.log`
+- Kalau ada LP masih punya `log_pricing_click` fetch ke `log.php` — HAPUS
+
+### DO NOT:
+
+1. Pakai `window.location.pathname` untuk analytics (pakai `.href`)
+2. Parse UTM dari `HTTP_REFERER` (pakai `page_url` dari frontend)
+3. Tambah validation alert untuk WhatsApp number
+4. Pakai auto-refresh (`setTimeout` reload)
+5. Modify `log.php` saat bikin LP baru
+6. Hard-code state/zip code (harus auto-detect)
+7. Lupa Facebook Pixel di page baru
+8. Pakai different Pixel ID antar LP
+9. Modify log files manually
+10. Edit `analytics.php` (copy exact)
+11. Change `data-package` attributes di ORDER buttons
+12. Pakai checkmark emoji directly (pakai `&#10003;` HTML entity)
+13. Mix CSS class names antar LP (pakai unique suffix)
+14. Skip thankyou.php saat bikin LP baru
+15. Remove 400ms delay di thankyou.php (pixels butuh waktu fire)
+16. Triple-decode UTM params (pakai `parse_url` + `parse_str` only)
+17. Write user input ke TSV tanpa sanitize tabs/newlines
+18. Remove atau modify GTM container code
+19. Remove `dataLayer.push({ecommerce: null})` sebelum ecommerce push
+20. Change package metadata IDs antar LP
+21. Remove `typeof fbq !== 'undefined'` atau `typeof ttq !== 'undefined'` guards
+22. Add direct `fbq('init', ...)` Meta Pixel code di LP baru kalau GTM sudah handle FB Pixel — bisa cause **duplicate events**. Cukup kasih comment: `<!-- Meta Pixel: managed via GTM -->`
+23. Log pricing button clicks ke customer_data.log
+24. Bikin duplicate/redundant GTM events per page — pakai unified event set, bedakan via `page_location`
+25. Fire Purchase pixel on button click di thankyou.php — fire on PAGE LOAD instead
+26. Rely on third-party gateway untuk user_data — capture upstream di LP
+27. Push `dataLayer.push` di event yang gagal form validation (no ghost conversions)
+28. Pakai old custom event names (`select_item`, `initiate_checkout`) — pakai GA4 standard names
+
+### ALWAYS DO:
+
+1. Pakai `window.location.href` untuk analytics (capture UTM)
+2. Parse UTM dari `$data['page_url']` di analytics.php
+3. Pakai exact Facebook Pixel code yang disediakan
+4. Pakai exact TikTok Pixel code yang disediakan
+5. Auto-detect state/zip dari IP
+6. Accept any WhatsApp input (no validation)
+7. Pakai proper button spacing
+8. Test form submission logs ke file
+9. Add `data-package` attribute ke ORDER buttons
+10. Include analytics tracking code
+11. Copy `analytics.php` exact (no changes)
+12. Pakai unique CSS classes per LP (suffixes)
+13. Pakai HTML entities untuk special characters (`&#10003;` not checkmark)
+14. Match CSS variables ke page theme (check `:root` variables)
+15. Include thankyou.php di tiap LP folder
+16. Fire Lead pixel on ORDER NOW click
+17. Fire InitiateCheckout pixel on COMPLETE ORDER submit
+18. Fire Purchase pixel on thankyou.php PAGE LOAD (not button click)
+19. Pakai `typeof fbq !== 'undefined'` guard sebelum fire pixels
+20. Sanitize TSV inputs dengan `str_replace(["\t", "\n", "\r"], '', $value)`
+21. Pakai consistent UTM defaults: `direct`/`none`/`direct`/`-`/`-`
+22. Always write 18 columns ke customer_data.log
+23. Push `dataLayer view_item` saat pricing section visible
+24. Push `dataLayer begin_checkout` on COMPLETE ORDER click dengan ecommerce + user_data
+25. Push `dataLayer add_payment_info` on same COMPLETE ORDER click
+26. Save user_data ke LocalStorage at begin_checkout (bridge for purchase)
+27. Push `dataLayer purchase` on thankyou.php page load — read from LocalStorage
+28. Clear LocalStorage after purchase event fires
+29. Clear ecommerce dengan `dataLayer.push({ecommerce: null})` sebelum each ecommerce push
+30. Generate unique `transaction_id` per session (`TXN_{timestamp}_{random6}`)
+31. Include email field di order form (optional, no validation)
+32. Auto-save dan restore semua form fields including email
+33. Only log form submissions (FORM_SUBMIT) ke customer_data.log
+34. Add `item_category` ke all ecommerce items
+35. Install GTM di BOTH index.php dan thankyou.php
+36. Conversion Rate di dashboard = Form Submits / Page Views
+37. Funnel di dashboard tampilkan 4 steps
+
+---
+
+## 11. FACEBOOK PIXEL (MANDATORY)
+
+```html
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'YOUR_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+```
+
+**Required di:** index.php, thankyou.php
+
+**NOTE:** Kalau pakai GTM yang sudah fire FB events, JANGAN tambah direct `fbq('init', ...)` — duplicate events.
+
+---
+
+## 12. TIKTOK PIXEL (MANDATORY)
+
+```html
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  ttq.load('YOUR_TIKTOK_PIXEL_ID');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
+```
+
+**Required di:** index.php, thankyou.php
+
+---
+
+## 13. DEPLOYMENT CHECKLIST
+
+### Per Landing Page
+
+```
+[ ] Facebook Pixel installed (with your Pixel ID)
+[ ] TikTok Pixel installed (with your TikTok ID)
+[ ] GTM container installed (with your GTM ID) — di index.php AND thankyou.php
+[ ] Lead pixel fires on ORDER NOW click
+[ ] dataLayer view_item fires on pricing section visible / 30% scroll
+[ ] dataLayer begin_checkout fires on COMPLETE ORDER click (with user_data)
+[ ] dataLayer add_payment_info fires on COMPLETE ORDER click (same click)
+[ ] user_data saved to LocalStorage at begin_checkout
+[ ] InitiateCheckout pixel fires on COMPLETE ORDER submit
+[ ] Form submission logs to customer_data.log (FORM_SUBMIT only)
+[ ] analytics.php uploaded (13-col format, exact copy)
+[ ] log.php uploaded to same folder
+[ ] thankyou.php uploaded to same folder
+[ ] GTM installed on thankyou.php
+[ ] dataLayer purchase fires on thankyou.php PAGE LOAD (reads LocalStorage)
+[ ] Purchase pixel fires on thankyou.php page load
+[ ] LocalStorage cleared after purchase event fires
+[ ] data-package attributes on ORDER buttons
+[ ] UTM tracking uses window.location.href
+[ ] State & Zip auto-detect working
+[ ] All 6 UTM parameters captured
+[ ] Dashboard shows all 3 tabs (Customers, Analytics, Campaign Breakdown)
+[ ] Email field present in order form (optional)
+[ ] Form auto-save working (biz, wa, email, pkg)
+[ ] Mobile responsive tested
+[ ] Unique CSS class suffix used (avoid conflicts)
+[ ] HTML entities used for checkmarks (&#10003;)
+[ ] COMPLETE ORDER redirects to thankyou.php?pkg=...&dest=...&biz=...
+[ ] Gateway dest links correct per package
+[ ] generate_lead fires on WhatsApp CTA clicks
+[ ] item_category included in all ecommerce items
+```
+
+### Centralized Analytics
+
+```
+[ ] index.php uploaded (filesystem version)
+[ ] sources/ folder will auto-create with defaults
+[ ] BASE_PATH configured correctly
+[ ] Password set correctly
+[ ] Default 30 Days loads on open
+[ ] Test button shows clicks or "Not found"
+[ ] Campaign breakdown displaying
+[ ] Landing Page table displaying
+[ ] Full AJAX working
+```
+
+---
+
+## 14. FILE STRUCTURE TEMPLATE
+
+```
+/landing-page-folder/
++-- index.php           <- Landing page (customize content)
++-- thankyou.php        <- Thank you page (Purchase pixel)
++-- analytics.php       <- Analytics backend (13-col, copy exact)
++-- log.php             <- Dashboard
++-- customer_data.log   <- Auto-created on first form submission (18 cols)
++-- page_analytics.log  <- Auto-created on first analytics event (13 cols)
++-- order_clicks.log    <- Legacy simple click tracking (7 cols, optional)
+```
+
+---
+
+## 15. NEW SEASONAL CAMPAIGN WORKFLOW
+
+Saat bikin seasonal campaign baru (mid-year sale, back to school, black friday, dll), **selalu bikin folder baru dedicated** — JANGAN overwrite atau reuse `/seasonal/`.
+
+### Folder Naming Convention
+
+| Campaign | Folder |
+|----------|--------|
+| Mid-Year Sale | `/midyear/` |
+| Back to School | `/backtoschool/` |
+| Black Friday | `/blackfriday/` |
+| Christmas | `/xmas/` |
+
+### Required Files Per Campaign Folder
+
+```
+/new-campaign-folder/
++-- index.php          ← Landing page (new design + tracking)
++-- analytics.php      ← Copy exact dari LP existing
++-- log.php            ← Copy exact shared dashboard
++-- thankyou.php       ← Sesuai konvensi (atau gunakan root thankyou.php)
+```
+
+### Checklist Campaign Baru
+
+```
+[ ] Folder baru dengan nama benar
+[ ] index.php — design baru, packages, prices, gateway URLs benar
+[ ] analytics.php — exact copy
+[ ] log.php — exact copy
+[ ] GTM installed di index.php <head> + noscript
+[ ] Meta Pixel: kalau GTM handle, JANGAN add direct fbq() init — kasih comment saja
+[ ] TikTok Pixel installed directly (or via GTM)
+[ ] pkgMeta defined dengan correct item IDs, prices
+[ ] view_item dataLayer fires on pricing section visible
+[ ] ORDER NOW: Lead pixel + SubmitForm TikTok + begin_checkout + add_payment_info + LocalStorage bridge + redirect
+[ ] generate_lead dataLayer on WhatsApp CTA clicks
+[ ] trackEvent uses application/json format
+[ ] Packages baru added ke thankyou.php $packages
+[ ] Mapping baru di thankyou.php $refMap
+[ ] LP baru added ke /analytics/ source list
+```
+
+### Rotating Slot Workflow (jika ada folder rotating)
+
+Kalau pakai rotating campaign slot (misal `/seasonal/`), **selalu backup file lama sebelum replace.**
+
+1. Rename current `index.php` ke `index-{theme}.php` (misal `index-valentine.php`)
+2. Place new campaign sebagai `index.php`
+
+```
+Before:  seasonal/index.php             (Valentine campaign)
+After:   seasonal/index-valentine.php   (backup)
+         seasonal/index.php             (new campaign)
+```
+
+JANGAN pakai nama generik kayak `index-old.php` atau `index-backup.php` — selalu pakai theme name.
+
+---
+
+## 16. PHRASES TO AVOID (Compliance / Clarity)
+
+Sesuaikan dengan compliance industry kamu, tapi general rule:
+- Hindari klaim "Zero X / 100% guarantee" yang risky secara compliance
+- Replace dengan promise yang realistic: "automatic replacements", "full delivery commitment"
+- Hindari outdated timeline yang bisa di-quote balik kalau target bisnis berubah
+- Selalu sync wording di TNC, landing page, support script biar konsisten
+
+---
+
+## 17. HEADER & FOOTER CONVENTION
+
+### Header Navigation
+
+- Logo clickable ke main domain
+- Navigation links: Pricing → `#pricing`, How It Works → `#how-it-works`, Reviews/Testimonials → `#reviews`
+
+### Footer Sections
+
+**Section 1 — Brand:**
+- Logo
+- Tagline pendek
+- Optional: parent company / subsidiary line
+
+**Section 2 — Quick Links (3 links):**
+- Track / Status / Tracker page
+- Report Issue / Support
+- Terms & Conditions
+
+**Section 3 — Contact:**
+- WhatsApp number (formatted)
+- Email contact
+
+---
+
+## 18. QUICK REFERENCE TEMPLATE
+
+| Item | Value |
+|------|-------|
+| **Main Site** | https://example.com/ |
+| **Primary LP** | https://example.com/promo/ |
+| **WhatsApp** | +XXX-XXXX-XXXXX |
+| **Email** | contact@example.com |
+| **Facebook Pixel ID** | YOUR_PIXEL_ID |
+| **TikTok Pixel ID** | YOUR_TIKTOK_ID |
+| **GTM Container ID** | GTM-XXXXXXX |
+| **Logo URL** | https://example.com/path/to/logo.png |
+
+---
+
+**Document Version:** 1.0 (generic blueprint)
+**Status:** Ready to copy-paste sebagai `CLAUDE.md` atau project knowledge document.

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-industry\")",
+      "Bash(cp \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-california/analytics.php\" \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-industry/analytics.php\")",
+      "Bash(cp \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-california/log.php\" \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-industry/log.php\")",
+      "Bash(cp \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-california/thankyou.php\" \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-industry/thankyou.php\")",
+      "Bash(php -l \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-industry/index.php\")",
+      "Bash(php -l \"/Users/miftahulzaenalmutaqin/Desktop/Smart Buzzer/promo-industry/thankyou.php\")"
+    ]
+  }
+}

@@ -1,0 +1,183 @@
+# ============================================================================
+# File: /submit/.htaccess
+# Smart Buzzer URL Rewrite & Security Rules - v2.0
+# 
+# URL Mapping:
+# /submit/           → /submit/submit.php (client form - default)
+# /submit/login      → /submit/login.php
+# /submit/logout     → /submit/logout.php
+# /submit/manage     → /submit/manage.php (AM dashboard)
+# /submit/process    → /submit/process.php (API)
+# /submit/open-sheet → /submit/open-sheet.php (API)
+# 
+# Last Updated: December 2024
+# ============================================================================
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Set base directory
+RewriteBase /submit/
+
+# ============================================================================
+# SECURITY: Protect sensitive files
+# ============================================================================
+
+<Files "config.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "auth.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "functions.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "install.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "composer.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "composer.lock">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<FilesMatch "\.json$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.log$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# ============================================================================
+# SECURITY: Protect directories
+# ============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteRule ^data/ - [F,L]
+    RewriteRule ^credentials/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+</IfModule>
+
+Options -Indexes
+
+# ============================================================================
+# SECURITY HEADERS
+# ============================================================================
+
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header unset X-Powered-By
+</IfModule>
+
+# ============================================================================
+# CHARACTER ENCODING
+# ============================================================================
+
+AddDefaultCharset UTF-8
+
+<IfModule mod_mime.c>
+    AddCharset UTF-8 .php .html .css .js .json
+</IfModule>
+
+# ============================================================================
+# URL REWRITES
+# ============================================================================
+
+# Remove trailing slash (except for root)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [L,R=301]
+
+# ============================================================================
+# MAIN REDIRECTS
+# ============================================================================
+
+# Root /submit/ → show submit.php (client form)
+RewriteRule ^$ submit.php [L]
+
+# /submit/index → redirect to submit form
+RewriteRule ^index$ submit.php [L,R=302]
+RewriteRule ^index\.php$ submit.php [L,R=302]
+
+# ============================================================================
+# CLEAN URL REWRITES
+# ============================================================================
+
+# Check if request is not a file or directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite clean URLs to .php files
+# /submit/manage → /submit/manage.php
+# /submit/login → /submit/login.php
+RewriteRule ^([a-zA-Z0-9_-]+)$ $1.php [L,QSA]
+
+# ============================================================================
+# API ENDPOINTS (Allow direct .php access for AJAX)
+# ============================================================================
+
+RewriteRule ^process\.php$ - [L]
+RewriteRule ^open-sheet\.php$ - [L]
+RewriteRule ^update-status\.php$ - [L]
+
+# ============================================================================
+# CACHING
+# ============================================================================
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# ============================================================================
+# COMPRESSION
+# ============================================================================
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+</IfModule>
+
+# ============================================================================
+# PHP SETTINGS
+# ============================================================================
+
+<IfModule mod_php.c>
+    php_flag expose_php Off
+    php_flag session.cookie_httponly On
+    php_flag session.use_only_cookies On
+    php_value session.cookie_samesite Strict
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 60
+    php_value memory_limit 128M
+</IfModule>
+
+# ============================================================================
+# END
+# ============================================================================

@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hidupmu dalam Minggu</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%237fb685'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #fafaf7;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.25s, color 0.25s;
+  }
+
+  /* ===== Dark mode ===== */
+  [data-theme="dark"] body { background: #0f0f0e; color: #e8e6e0; }
+  [data-theme="dark"] h1 { color: #f0ede5; }
+  [data-theme="dark"] .subtitle { color: #888; }
+  [data-theme="dark"] .subtitle b { color: #e8e6e0; }
+  [data-theme="dark"] .countdown-box,
+  [data-theme="dark"] .grid-wrap,
+  [data-theme="dark"] .stat-card,
+  [data-theme="dark"] .milestones { background: #1a1a18; border-color: #2a2a26; }
+  [data-theme="dark"] .countdown-value { color: #e8e6e0; }
+  [data-theme="dark"] .countdown-value .unit { color: #888; }
+  [data-theme="dark"] .countdown-label,
+  [data-theme="dark"] .field label,
+  [data-theme="dark"] .zoom-bar,
+  [data-theme="dark"] .stat-label { color: #888; }
+  [data-theme="dark"] .cell { background: #2a2a26; }
+  [data-theme="dark"] .legend-dot.remaining { background: #2a2a26; }
+  [data-theme="dark"] .legend { color: #aaa; }
+  [data-theme="dark"] .legend b { color: #e8e6e0; }
+  [data-theme="dark"] .field input,
+  [data-theme="dark"] .field select,
+  [data-theme="dark"] .ms-emoji,
+  [data-theme="dark"] .ms-name,
+  [data-theme="dark"] .ms-date,
+  [data-theme="dark"] .ms-btn,
+  [data-theme="dark"] .zoom-btn { background: #1a1a18; color: #e8e6e0; border-color: #3a3a35; }
+  [data-theme="dark"] .ms-item { background: #131311; border-color: #2a2a26; }
+  [data-theme="dark"] .milestones-title { color: #e8e6e0; }
+  [data-theme="dark"] .tooltip { background: #e8e6e0; color: #1a1a1a; }
+  [data-theme="dark"] .footer-note { color: #666; }
+  [data-theme="dark"] .ms-empty { color: #666; }
+
+  /* Actions bar (share & export) */
+  .actions-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0 4px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    background: #fff;
+    border: 1px solid #d4d1ca;
+    color: #555;
+    padding: 10px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .action-btn:hover { border-color: #7fb685; color: #7fb685; transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.06); }
+  .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  [data-theme="dark"] .action-btn { background: #1a1a18; color: #e8e6e0; border-color: #3a3a35; }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #d4d1ca;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .theme-toggle:hover { transform: scale(1.08); border-color: #7fb685; }
+  [data-theme="dark"] .theme-toggle { background: #1a1a18; border-color: #3a3a35; }
+  body { padding: 32px 20px 60px; min-height: 100vh; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  h1 {
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(24px, 4.5vw, 36px);
+    text-align: center;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .subtitle b { color: #1a1a1a; font-weight: 500; }
+
+  .form-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+  }
+  .field input, .field select {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid #d4d1ca;
+    background: #fff;
+    color: #1a1a1a;
+    border-radius: 4px;
+    min-width: 220px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: #7fb685;
+  }
+
+  .countdown-box {
+    text-align: center;
+    margin: 28px auto 32px;
+    padding: 20px 24px;
+    background: #fff;
+    border: 1px solid #ece9e0;
+    border-radius: 6px;
+    max-width: 640px;
+  }
+  .countdown-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-bottom: 10px;
+  }
+  .countdown-value {
+    font-family: 'Lora', Georgia, serif;
+    font-size: clamp(18px, 3.2vw, 24px);
+    font-weight: 500;
+    color: #1a1a1a;
+    letter-spacing: 0.01em;
+  }
+  .countdown-value .num { color: #7fb685; font-weight: 600; }
+  .countdown-value .unit { color: #666; font-size: 0.75em; margin: 0 4px 0 2px; }
+
+  .stats-section {
+    max-width: 800px;
+    margin: 0 auto 32px;
+  }
+  .stats-toggle {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ece9e0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: all 0.15s;
+  }
+  .stats-toggle:hover { border-color: #7fb685; color: #7fb685; }
+  .stats-chevron { transition: transform 0.2s; font-size: 10px; color: #999; }
+  .stats-toggle[aria-expanded="true"] .stats-chevron { transform: rotate(180deg); }
+  [data-theme="dark"] .stats-toggle { background: #1a1a18; color: #aaa; border-color: #2a2a26; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .stats-grid.hidden { display: none; }
+  .stat-card {
+    background: #fff;
+    border: 1px solid #ece9e0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-emoji { font-size: 22px; margin-bottom: 4px; }
+  .stat-value {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #7fb685;
+    line-height: 1.2;
+  }
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  .zoom-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .zoom-bar input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 180px;
+    height: 4px;
+    background: #d4d1ca;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  .zoom-bar input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #7fb685;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .zoom-bar input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #7fb685;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .zoom-btn {
+    background: #fff;
+    border: 1px solid #d4d1ca;
+    color: #555;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .zoom-btn:hover { border-color: #7fb685; color: #7fb685; }
+
+  .grid-wrap {
+    background: #fff;
+    border: 1px solid #ece9e0;
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 52), 1fr);
+    gap: 2px;
+  }
+  .cell {
+    aspect-ratio: 1 / 1;
+    background: #e0ddd6;
+    border-radius: 1px;
+    transition: transform 0.1s ease;
+    position: relative;
+  }
+  .cell.lived { background: #7fb685; }
+  .cell.now {
+    background: #d96b6b;
+    animation: pulse 1.6s ease-in-out infinite;
+    z-index: 1;
+  }
+  .cell:hover {
+    transform: scale(1.4);
+    z-index: 2;
+    cursor: help;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.9); }
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    font-size: 12px;
+    color: #555;
+    padding-top: 8px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 2px;
+  }
+  .legend-dot.lived { background: #7fb685; }
+  .legend-dot.now { background: #d96b6b; }
+  .legend-dot.remaining { background: #e0ddd6; }
+  .legend b { color: #1a1a1a; font-weight: 600; }
+
+  .tooltip {
+    position: fixed;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  .tooltip.show { opacity: 1; }
+
+  /* ===== Milestone editor ===== */
+  .milestones {
+    background: #fff;
+    border: 1px solid #ece9e0;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .milestones-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .milestones-title {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  .milestones-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ms-btn {
+    background: #fff;
+    border: 1px solid #d4d1ca;
+    color: #555;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    transition: all 0.15s;
+  }
+  .ms-btn:hover { border-color: #7fb685; color: #7fb685; }
+  .ms-btn.primary { background: #7fb685; color: #fff; border-color: #7fb685; }
+  .ms-btn.primary:hover { background: #6ea476; color: #fff; }
+  .ms-btn.danger:hover { border-color: #d96b6b; color: #d96b6b; }
+
+  .ms-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+  }
+  .ms-item {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ece9e0;
+    border-radius: 4px;
+    background: #fafaf7;
+    border-left-width: 4px;
+  }
+  .ms-color-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid #ece9e0;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+  }
+  .ms-color-swatch input[type="color"] {
+    position: absolute;
+    inset: -4px;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+  }
+  .ms-inputs { display: grid; gap: 4px; min-width: 0; }
+  .ms-name-row { display: flex; gap: 4px; }
+  .ms-emoji {
+    width: 32px;
+    text-align: center;
+    border: 1px solid #d4d1ca;
+    background: #fff;
+    border-radius: 3px;
+    padding: 4px 0;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .ms-name {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid #d4d1ca;
+    background: #fff;
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #1a1a1a;
+  }
+  .ms-dates { display: flex; gap: 4px; }
+  .ms-date {
+    flex: 1;
+    border: 1px solid #d4d1ca;
+    background: #fff;
+    border-radius: 3px;
+    padding: 4px 6px;
+    font-size: 11px;
+    font-family: inherit;
+    color: #555;
+    min-width: 0;
+  }
+  .ms-delete {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 3px;
+    transition: all 0.15s;
+  }
+  .ms-delete:hover { color: #d96b6b; background: #fef2f2; }
+  .ms-empty {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-size: 12px;
+  }
+
+  /* Milestone cells = full color (override lived green) */
+  .cell.has-ms { background: var(--ms-color, #ccc); }
+  .cell.has-ms.lived { background: var(--ms-color, #7fb685); }
+  /* "now" cell tetap merah pulsing kalau current week kebetulan dlm milestone */
+  .cell.now { background: #d96b6b; }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    margin-top: 28px;
+    line-height: 1.7;
+  }
+  .footer-note a { color: #7fb685; text-decoration: none; }
+
+  @media (max-width: 680px) {
+    body { padding: 20px 12px 40px; }
+    .grid { gap: 1.5px; }
+    .grid-wrap { padding: 14px; }
+    .field input, .field select { min-width: 0; width: 100%; }
+    .field { flex: 1 1 100%; }
+    .countdown-box { padding: 16px; }
+    .countdown-value { font-size: 16px; }
+    .zoom-bar input[type="range"] { width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" title="Ganti tema (gelap/terang)" aria-label="Toggle theme">🌙</button>
+
+<div class="wrap">
+
+  <h1>Setiap kotak adalah 1 minggu hidupmu</h1>
+  <p class="subtitle"><b id="totalWeeks">—</b> kotak = <b id="totalYears">—</b> tahun (rata-rata harapan hidup di negaramu)</p>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="birth">Tanggal Lahir</label>
+      <input type="date" id="birth" max="">
+    </div>
+    <div class="field">
+      <label for="country">Negara</label>
+      <select id="country"></select>
+    </div>
+  </div>
+
+  <div class="countdown-box">
+    <div class="countdown-label">Sisa hidupmu (perkiraan)</div>
+    <div class="countdown-value" id="countdown">— · — · — · — · — · —</div>
+  </div>
+
+  <div class="stats-section">
+    <button class="stats-toggle" id="statsToggle" aria-expanded="false">
+      <span>📊 Sisa pengalaman hidupmu</span>
+      <span class="stats-chevron">▼</span>
+    </button>
+    <div class="stats-grid hidden" id="statsGrid"></div>
+  </div>
+
+  <div class="zoom-bar">
+    <button class="zoom-btn" id="zoomOut" title="Zoom out (kotak lebih kecil)">−</button>
+    <input type="range" id="zoom" min="26" max="120" step="2" value="52">
+    <button class="zoom-btn" id="zoomIn" title="Zoom in (kotak lebih besar)">+</button>
+    <span id="zoomLabel" style="min-width:54px;">52 kol</span>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot lived"></span>Terpakai · <b id="livedCount">0</b> minggu (<span id="livedPct">0%</span>)</div>
+    <div class="legend-item"><span class="legend-dot now"></span>Minggu ini</div>
+    <div class="legend-item"><span class="legend-dot remaining"></span>Tersisa · <b id="remainCount">0</b> minggu (<span id="remainPct">0%</span>)</div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="action-btn" id="shareImg" title="Download visualisasi sebagai gambar PNG">📥 Download Gambar</button>
+    <button class="action-btn" id="downloadCsv" title="Download data per minggu sebagai CSV (buka di Excel)">📊 Download Data (CSV)</button>
+  </div>
+
+  <div class="milestones" id="milestonesSection" style="margin-top:24px;">
+    <div class="milestones-header">
+      <div class="milestones-title">🎯 Milestone & Pencapaian</div>
+      <div class="milestones-actions">
+        <button class="ms-btn" id="msAdd">+ Tambah</button>
+        <button class="ms-btn danger" id="msReset">Reset Default</button>
+      </div>
+    </div>
+    <div class="ms-list" id="msList"></div>
+  </div>
+
+  <p class="footer-note">
+    Data harapan hidup: WHO Life Expectancy 2024 · Visualisasi ini perkiraan statistik, bukan ramalan.<br>
+    Gunakan setiap minggumu dengan baik.
+  </p>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+  // ===== Data harapan hidup (WHO 2024, dalam tahun) =====
+  const COUNTRIES = {
+    ID: { nama: "Indonesia",      exp: 71.7, flag: "🇮🇩" },
+    SG: { nama: "Singapore",      exp: 83.5, flag: "🇸🇬" },
+    MY: { nama: "Malaysia",       exp: 76.2, flag: "🇲🇾" },
+    TH: { nama: "Thailand",       exp: 77.7, flag: "🇹🇭" },
+    VN: { nama: "Vietnam",        exp: 74.6, flag: "🇻🇳" },
+    PH: { nama: "Filipina",       exp: 70.5, flag: "🇵🇭" },
+    JP: { nama: "Jepang",         exp: 84.5, flag: "🇯🇵" },
+    KR: { nama: "Korea Selatan",  exp: 83.7, flag: "🇰🇷" },
+    CN: { nama: "China",          exp: 78.6, flag: "🇨🇳" },
+    IN: { nama: "India",          exp: 70.8, flag: "🇮🇳" },
+    AU: { nama: "Australia",      exp: 83.2, flag: "🇦🇺" },
+    NZ: { nama: "Selandia Baru",  exp: 82.5, flag: "🇳🇿" },
+    US: { nama: "Amerika Serikat",exp: 78.4, flag: "🇺🇸" },
+    CA: { nama: "Kanada",         exp: 82.7, flag: "🇨🇦" },
+    UK: { nama: "Inggris",        exp: 81.3, flag: "🇬🇧" },
+    DE: { nama: "Jerman",         exp: 81.4, flag: "🇩🇪" },
+    FR: { nama: "Prancis",        exp: 82.5, flag: "🇫🇷" },
+    IT: { nama: "Italia",         exp: 83.2, flag: "🇮🇹" },
+    ES: { nama: "Spanyol",        exp: 83.7, flag: "🇪🇸" },
+    NL: { nama: "Belanda",        exp: 81.7, flag: "🇳🇱" },
+    SE: { nama: "Swedia",         exp: 83.0, flag: "🇸🇪" },
+    CH: { nama: "Swiss",          exp: 84.0, flag: "🇨🇭" },
+    NO: { nama: "Norwegia",       exp: 83.2, flag: "🇳🇴" },
+    AE: { nama: "Uni Emirat Arab",exp: 78.7, flag: "🇦🇪" },
+    SA: { nama: "Arab Saudi",     exp: 75.0, flag: "🇸🇦" },
+    TR: { nama: "Turki",          exp: 78.6, flag: "🇹🇷" },
+    BR: { nama: "Brasil",         exp: 75.9, flag: "🇧🇷" },
+    MX: { nama: "Meksiko",        exp: 75.1, flag: "🇲🇽" },
+    AR: { nama: "Argentina",      exp: 76.7, flag: "🇦🇷" },
+    ZA: { nama: "Afrika Selatan", exp: 65.3, flag: "🇿🇦" },
+    NG: { nama: "Nigeria",        exp: 54.7, flag: "🇳🇬" },
+    EG: { nama: "Mesir",          exp: 71.8, flag: "🇪🇬" },
+  };
+
+  // ===== LocalStorage keys =====
+  const LS_BIRTH = 'lifegrid_birth';
+  const LS_COUNTRY = 'lifegrid_country';
+  const LS_ZOOM = 'lifegrid_zoom';
+  const LS_MILESTONES = 'lifegrid_milestones';
+  const LS_MS_CUSTOMIZED = 'lifegrid_ms_customized'; // flag: user sudah edit milestones
+  const LS_THEME = 'lifegrid_theme';
+
+  // ===== Elements =====
+  const elBirth = document.getElementById('birth');
+  const elCountry = document.getElementById('country');
+  const elGrid = document.getElementById('grid');
+  const elCountdown = document.getElementById('countdown');
+  const elTotalWeeks = document.getElementById('totalWeeks');
+  const elTotalYears = document.getElementById('totalYears');
+  const elLivedCount = document.getElementById('livedCount');
+  const elLivedPct = document.getElementById('livedPct');
+  const elRemainCount = document.getElementById('remainCount');
+  const elRemainPct = document.getElementById('remainPct');
+  const elTooltip = document.getElementById('tooltip');
+  const elZoom = document.getElementById('zoom');
+  const elZoomLabel = document.getElementById('zoomLabel');
+  const elZoomIn = document.getElementById('zoomIn');
+  const elZoomOut = document.getElementById('zoomOut');
+  const elStatsGrid = document.getElementById('statsGrid');
+  const elMsList = document.getElementById('msList');
+  const elMsAdd = document.getElementById('msAdd');
+  const elMsReset = document.getElementById('msReset');
+  const elThemeToggle = document.getElementById('themeToggle');
+  const elStatsToggle = document.getElementById('statsToggle');
+
+  // ===== Stats dropdown =====
+  const LS_STATS_OPEN = 'lifegrid_stats_open';
+  function setStatsOpen(open) {
+    if (open) {
+      elStatsGrid.classList.remove('hidden');
+      elStatsToggle.setAttribute('aria-expanded', 'true');
+    } else {
+      elStatsGrid.classList.add('hidden');
+      elStatsToggle.setAttribute('aria-expanded', 'false');
+    }
+    localStorage.setItem(LS_STATS_OPEN, open ? '1' : '0');
+  }
+  setStatsOpen(localStorage.getItem(LS_STATS_OPEN) === '1');
+  elStatsToggle.addEventListener('click', () => {
+    setStatsOpen(elStatsGrid.classList.contains('hidden'));
+  });
+
+  // ===== Dark mode =====
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      elThemeToggle.textContent = '☀️';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      elThemeToggle.textContent = '🌙';
+    }
+    localStorage.setItem(LS_THEME, theme);
+  }
+  applyTheme(localStorage.getItem(LS_THEME) || 'light');
+  elThemeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // ===== Populate dropdown =====
+  Object.keys(COUNTRIES).sort((a,b) => COUNTRIES[a].nama.localeCompare(COUNTRIES[b].nama)).forEach(code => {
+    const c = COUNTRIES[code];
+    const opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = `${c.flag} ${c.nama} (${c.exp} thn)`;
+    elCountry.appendChild(opt);
+  });
+
+  // ===== Set max date to today =====
+  const today = new Date();
+  elBirth.max = today.toISOString().split('T')[0];
+
+  // ===== Restore from localStorage =====
+  const savedBirth = localStorage.getItem(LS_BIRTH);
+  const savedCountry = localStorage.getItem(LS_COUNTRY);
+  const savedZoom = localStorage.getItem(LS_ZOOM);
+  if (savedBirth) elBirth.value = savedBirth;
+  if (savedCountry && COUNTRIES[savedCountry]) elCountry.value = savedCountry;
+  else elCountry.value = 'ID'; // default Indonesia
+  if (savedZoom) elZoom.value = savedZoom;
+
+  // ===== Zoom (jumlah kolom grid) =====
+  function applyZoom() {
+    const cols = parseInt(elZoom.value, 10);
+    elGrid.style.setProperty('--cols', cols);
+    elZoomLabel.textContent = cols + ' kol';
+    localStorage.setItem(LS_ZOOM, cols);
+  }
+  applyZoom();
+
+  // ===== Helpers =====
+  const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+  const MS_PER_DAY = 24 * 60 * 60 * 1000;
+  const MS_PER_HOUR = 60 * 60 * 1000;
+  const MS_PER_MIN = 60 * 1000;
+
+  function formatDate(d) {
+    const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    return `${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  function num(n) { return n.toLocaleString('id-ID'); }
+
+  // ===== Milestones =====
+  function addYearsToDate(dateStr, yearsToAdd) {
+    const d = new Date(dateStr);
+    d.setFullYear(d.getFullYear() + yearsToAdd);
+    return d.toISOString().split('T')[0];
+  }
+
+  const DEFAULT_MS_COLORS = {
+    sd:     '#f59e0b', // amber
+    smp:    '#3b82f6', // blue
+    sma:    '#8b5cf6', // purple
+    kuliah: '#ec4899', // pink
+  };
+
+  function generateDefaultMilestones(birthStr) {
+    if (!birthStr) return [];
+    return [
+      { id: 'sd',     emoji: '🎒', name: 'SD',     start: addYearsToDate(birthStr, 7),  end: addYearsToDate(birthStr, 13), color: DEFAULT_MS_COLORS.sd },
+      { id: 'smp',    emoji: '🏫', name: 'SMP',    start: addYearsToDate(birthStr, 13), end: addYearsToDate(birthStr, 16), color: DEFAULT_MS_COLORS.smp },
+      { id: 'sma',    emoji: '🎓', name: 'SMA',    start: addYearsToDate(birthStr, 16), end: addYearsToDate(birthStr, 19), color: DEFAULT_MS_COLORS.sma },
+      { id: 'kuliah', emoji: '👨‍🎓', name: 'Kuliah', start: addYearsToDate(birthStr, 19), end: addYearsToDate(birthStr, 23), color: DEFAULT_MS_COLORS.kuliah },
+    ];
+  }
+
+  // One-shot migration: restore default vivid colors for milestones that were muted in the short-lived v2
+  function migrateMsColors(milestones) {
+    if (!Array.isArray(milestones)) return { list: milestones, changed: false };
+    const MUTED = ['#d4a574', '#87a8c4', '#ab95c4', '#c895ab'];
+    let changed = false;
+    const list = milestones.map(m => {
+      if (DEFAULT_MS_COLORS[m.id] && MUTED.includes((m.color || '').toLowerCase())) {
+        changed = true;
+        return { ...m, color: DEFAULT_MS_COLORS[m.id] };
+      }
+      return m;
+    });
+    return { list, changed };
+  }
+
+  function loadMilestones() {
+    const saved = localStorage.getItem(LS_MILESTONES);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        const { list, changed } = migrateMsColors(parsed);
+        if (changed) localStorage.setItem(LS_MILESTONES, JSON.stringify(list));
+        return list;
+      } catch(e) {}
+    }
+    return generateDefaultMilestones(elBirth.value);
+  }
+  function saveMilestones() {
+    localStorage.setItem(LS_MILESTONES, JSON.stringify(state.milestones || []));
+    localStorage.setItem(LS_MS_CUSTOMIZED, '1');
+  }
+  function getMilestoneForWeek(weekIdx) {
+    if (!state.birth || !state.milestones) return null;
+    const cellDate = new Date(state.birth.getTime() + weekIdx * MS_PER_WEEK);
+    for (const m of state.milestones) {
+      if (!m.start || !m.end) continue;
+      const s = new Date(m.start), e = new Date(m.end);
+      if (cellDate >= s && cellDate <= e) return m;
+    }
+    return null;
+  }
+
+  function renderMilestoneEditor() {
+    const list = state.milestones || [];
+    if (!list.length) {
+      elMsList.innerHTML = '<div class="ms-empty">Belum ada milestone. Klik "+ Tambah" buat nambah, atau "Reset Default" buat generate SD/SMP/SMA otomatis.</div>';
+      return;
+    }
+    elMsList.innerHTML = list.map((m, i) => `
+      <div class="ms-item" style="border-left-color: ${m.color}">
+        <label class="ms-color-swatch" style="background: ${m.color}">
+          <input type="color" data-i="${i}" data-f="color" value="${m.color}">
+        </label>
+        <div class="ms-inputs">
+          <div class="ms-name-row">
+            <input class="ms-emoji" data-i="${i}" data-f="emoji" value="${escapeHtml(m.emoji||'')}" maxlength="3">
+            <input class="ms-name" data-i="${i}" data-f="name" value="${escapeHtml(m.name||'')}" placeholder="Nama milestone">
+          </div>
+          <div class="ms-dates">
+            <input class="ms-date" type="date" data-i="${i}" data-f="start" value="${m.start||''}">
+            <input class="ms-date" type="date" data-i="${i}" data-f="end" value="${m.end||''}">
+          </div>
+        </div>
+        <button class="ms-delete" data-del="${i}" title="Hapus">×</button>
+      </div>
+    `).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // Warnai ulang grid sesuai milestone TANPA rebuild editor (biar focus input gak lepas)
+  function applyMilestonesToGrid() {
+    if (!state.birth) return;
+    const cells = elGrid.children;
+    for (let c = 0; c < cells.length; c++) {
+      const cell = cells[c];
+      if (!cell.dataset || cell.dataset.week === undefined) continue;
+      const wk = parseInt(cell.dataset.week, 10);
+      const ms = getMilestoneForWeek(wk);
+      if (ms) {
+        cell.classList.add('has-ms');
+        cell.style.setProperty('--ms-color', ms.color);
+        cell.dataset.ms = ms.name;
+      } else {
+        cell.classList.remove('has-ms');
+        cell.style.removeProperty('--ms-color');
+        delete cell.dataset.ms;
+      }
+    }
+  }
+
+  function updateMilestoneField(i, field, value) {
+    if (!state.milestones[i]) return;
+    state.milestones[i][field] = value;
+    saveMilestones();
+    // JANGAN render() penuh — itu rebuild editor & hancurin input yang lagi diketik.
+    // Cukup warnai ulang grid + update swatch/border live.
+    applyMilestonesToGrid();
+    if (field === 'color') {
+      const item = elMsList.children[i];
+      if (item) {
+        item.style.borderLeftColor = value;
+        const swatch = item.querySelector('.ms-color-swatch');
+        if (swatch) swatch.style.background = value;
+      }
+    }
+  }
+
+  function addMilestone() {
+    const palette = ['#f59e0b','#3b82f6','#8b5cf6','#ec4899','#10b981','#ef4444','#06b6d4','#a855f7','#f97316'];
+    const newMs = {
+      id: 'ms_' + Date.now(),
+      emoji: '⭐',
+      name: 'Pencapaian baru',
+      start: new Date().toISOString().split('T')[0],
+      end: new Date().toISOString().split('T')[0],
+      color: palette[(state.milestones?.length || 0) % palette.length],
+    };
+    state.milestones = [...(state.milestones || []), newMs];
+    saveMilestones();
+    render();
+  }
+
+  function deleteMilestone(i) {
+    state.milestones.splice(i, 1);
+    saveMilestones();
+    render();
+  }
+
+  function resetMilestones() {
+    if (!elBirth.value) { alert('Masukkan tanggal lahir dulu.'); return; }
+    if (!confirm('Reset semua milestone ke default (SD/SMP/SMA/Kuliah)? Semua custom milestone akan hilang.')) return;
+    state.milestones = generateDefaultMilestones(elBirth.value);
+    saveMilestones();
+    render();
+  }
+
+  // Editor event delegation
+  elMsList.addEventListener('input', (e) => {
+    const t = e.target;
+    if (t.dataset.i !== undefined && t.dataset.f) {
+      updateMilestoneField(parseInt(t.dataset.i,10), t.dataset.f, t.value);
+    }
+  });
+  elMsList.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.type === 'color' && t.dataset.i !== undefined) {
+      updateMilestoneField(parseInt(t.dataset.i,10), 'color', t.value);
+    }
+  });
+  elMsList.addEventListener('click', (e) => {
+    if (e.target.dataset.del !== undefined) {
+      deleteMilestone(parseInt(e.target.dataset.del,10));
+    }
+  });
+  elMsAdd.addEventListener('click', addMilestone);
+  elMsReset.addEventListener('click', resetMilestones);
+
+  // ===== Main render =====
+  let state = { birth: null, country: 'ID', totalWeeks: 0, livedWeeks: 0, milestones: [] };
+
+  function render() {
+    if (!elBirth.value) {
+      elGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#999;padding:40px 20px;font-size:13px;">Masukkan tanggal lahir untuk melihat hidupmu dalam minggu.</p>';
+      elCountdown.innerHTML = '— · — · — · — · — · —';
+      elTotalWeeks.textContent = '—';
+      elTotalYears.textContent = '—';
+      elLivedCount.textContent = '0';
+      elLivedPct.textContent = '0%';
+      elRemainCount.textContent = '0';
+      elRemainPct.textContent = '0%';
+      elStatsGrid.innerHTML = '';
+      state = { birth: null, country: 'ID', totalWeeks: 0, livedWeeks: 0, milestones: state.milestones || [] };
+      renderMilestoneEditor();
+      return;
+    }
+
+    const birth = new Date(elBirth.value);
+    const country = COUNTRIES[elCountry.value];
+    const expYears = country.exp;
+    const totalWeeks = Math.floor(expYears * 52.1775); // pakai 52.1775 mgg/thn (1 thn = 365.25 hari)
+
+    // Tanggal akhir hidup (perkiraan)
+    const endDate = new Date(birth.getTime());
+    endDate.setFullYear(endDate.getFullYear() + Math.floor(expYears));
+    const fracYear = expYears - Math.floor(expYears);
+    endDate.setDate(endDate.getDate() + Math.round(fracYear * 365.25));
+
+    const now = new Date();
+    const livedMs = now - birth;
+    const livedWeeks = Math.floor(livedMs / MS_PER_WEEK);
+    const currentWeekIdx = livedWeeks; // kotak yang lagi dijalanin
+
+    state = { birth, country, totalWeeks, livedWeeks, endDate, milestones: state.milestones || [] };
+
+    // Update header
+    elTotalWeeks.textContent = num(totalWeeks);
+    elTotalYears.textContent = expYears.toFixed(1);
+
+    // Render grid
+    elGrid.innerHTML = '';
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < totalWeeks; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      if (i < livedWeeks) cell.classList.add('lived');
+      else if (i === currentWeekIdx) cell.classList.add('now');
+      cell.dataset.week = i;
+      const ms = getMilestoneForWeek(i);
+      if (ms) {
+        cell.classList.add('has-ms');
+        cell.style.setProperty('--ms-color', ms.color);
+        cell.dataset.ms = ms.name;
+      }
+      frag.appendChild(cell);
+    }
+    elGrid.appendChild(frag);
+    renderMilestoneEditor();
+
+    // Update legend
+    const remaining = Math.max(0, totalWeeks - livedWeeks);
+    const livedPct = totalWeeks > 0 ? (livedWeeks / totalWeeks * 100) : 0;
+    const remainPct = totalWeeks > 0 ? (remaining / totalWeeks * 100) : 0;
+    elLivedCount.textContent = num(livedWeeks);
+    elLivedPct.textContent = livedPct.toFixed(1) + '%';
+    elRemainCount.textContent = num(remaining);
+    elRemainPct.textContent = remainPct.toFixed(1) + '%';
+
+    renderStats();
+    updateCountdown();
+  }
+
+  // ===== Stats Sisa Pengalaman =====
+  function renderStats() {
+    if (!state.endDate) { elStatsGrid.innerHTML = ''; return; }
+    const now = new Date();
+    const msLeft = Math.max(0, state.endDate - now);
+    const daysLeft = Math.floor(msLeft / MS_PER_DAY);
+    const weeksLeft = Math.floor(msLeft / MS_PER_WEEK);
+    const yearsLeft = msLeft / (365.25 * MS_PER_DAY);
+    const fullMoonsLeft = Math.floor(yearsLeft * 12.37); // 12.37 bulan purnama/tahun
+    const birthdaysLeft = Math.floor(yearsLeft);
+    const newYearsLeft = Math.floor(yearsLeft);
+
+    const stats = [
+      { emoji: '🛌', value: num(daysLeft),     label: 'Tidur lagi' },
+      { emoji: '🌅', value: num(weeksLeft),    label: 'Akhir pekan' },
+      { emoji: '🎆', value: num(newYearsLeft), label: 'Tahun baru' },
+    ];
+
+    elStatsGrid.innerHTML = stats.map(s =>
+      `<div class="stat-card"><div class="stat-emoji">${s.emoji}</div>` +
+      `<div class="stat-value">${s.value}</div>` +
+      `<div class="stat-label">${s.label}</div></div>`
+    ).join('');
+  }
+
+  // ===== Countdown =====
+  function updateCountdown() {
+    if (!state.endDate) return;
+    const now = new Date();
+    let diff = state.endDate - now;
+    if (diff <= 0) {
+      elCountdown.innerHTML = '<span style="color:#d96b6b;">Sudah melewati rata-rata harapan hidup. Setiap hari adalah bonus.</span>';
+      return;
+    }
+
+    // Hitung breakdown tahun/bulan/hari/jam/menit/detik
+    const tempEnd = new Date(state.endDate);
+    const tempNow = new Date(now);
+
+    let years = tempEnd.getFullYear() - tempNow.getFullYear();
+    let months = tempEnd.getMonth() - tempNow.getMonth();
+    let days = tempEnd.getDate() - tempNow.getDate();
+    let hours = tempEnd.getHours() - tempNow.getHours();
+    let mins = tempEnd.getMinutes() - tempNow.getMinutes();
+    let secs = tempEnd.getSeconds() - tempNow.getSeconds();
+
+    if (secs < 0) { secs += 60; mins--; }
+    if (mins < 0) { mins += 60; hours--; }
+    if (hours < 0) { hours += 24; days--; }
+    if (days < 0) {
+      const prevMonth = new Date(tempEnd.getFullYear(), tempEnd.getMonth(), 0);
+      days += prevMonth.getDate();
+      months--;
+    }
+    if (months < 0) { months += 12; years--; }
+
+    elCountdown.innerHTML =
+      `<span class="num">${years}</span><span class="unit">thn</span> ` +
+      `<span class="num">${months}</span><span class="unit">bln</span> ` +
+      `<span class="num">${days}</span><span class="unit">hari</span> ` +
+      `<span class="num">${String(hours).padStart(2,'0')}</span><span class="unit">jam</span> ` +
+      `<span class="num">${String(mins).padStart(2,'0')}</span><span class="unit">mnt</span> ` +
+      `<span class="num">${String(secs).padStart(2,'0')}</span><span class="unit">dtk</span>`;
+  }
+
+  // ===== Tooltip =====
+  elGrid.addEventListener('mousemove', (e) => {
+    const cell = e.target.closest('.cell');
+    if (!cell || !state.birth) { elTooltip.classList.remove('show'); return; }
+    const weekIdx = parseInt(cell.dataset.week, 10);
+    const cellDate = new Date(state.birth.getTime() + weekIdx * MS_PER_WEEK);
+    const ageYears = (weekIdx / 52.1775).toFixed(1);
+    const msName = cell.dataset.ms ? ` · 🎯 ${cell.dataset.ms}` : '';
+    elTooltip.textContent = `Minggu ke-${num(weekIdx + 1)} · ${formatDate(cellDate)} · Usia ${ageYears} thn${msName}`;
+    elTooltip.style.left = (e.clientX + 12) + 'px';
+    elTooltip.style.top = (e.clientY + 12) + 'px';
+    elTooltip.classList.add('show');
+  });
+  elGrid.addEventListener('mouseleave', () => elTooltip.classList.remove('show'));
+
+  // ===== Events =====
+  elBirth.addEventListener('change', () => {
+    localStorage.setItem(LS_BIRTH, elBirth.value);
+    // Kalau user belum pernah edit milestone, auto-regenerate default berdasarkan tanggal lahir baru
+    if (!localStorage.getItem(LS_MS_CUSTOMIZED) && elBirth.value) {
+      state.milestones = generateDefaultMilestones(elBirth.value);
+      localStorage.setItem(LS_MILESTONES, JSON.stringify(state.milestones));
+    }
+    render();
+  });
+  elCountry.addEventListener('change', () => {
+    localStorage.setItem(LS_COUNTRY, elCountry.value);
+    render();
+  });
+  elZoom.addEventListener('input', applyZoom);
+  elZoomIn.addEventListener('click', () => {
+    elZoom.value = Math.max(parseInt(elZoom.min,10), parseInt(elZoom.value,10) - 6);
+    applyZoom();
+  });
+  elZoomOut.addEventListener('click', () => {
+    elZoom.value = Math.min(parseInt(elZoom.max,10), parseInt(elZoom.value,10) + 6);
+    applyZoom();
+  });
+
+  // ===== Share as Image =====
+  document.getElementById('shareImg').addEventListener('click', async () => {
+    if (!state.birth) { alert('Masukkan tanggal lahir dulu.'); return; }
+    if (typeof html2canvas === 'undefined') { alert('Library html2canvas belum termuat. Cek koneksi internet.'); return; }
+
+    const btn = document.getElementById('shareImg');
+    btn.disabled = true;
+    btn.textContent = '⏳ Memproses...';
+
+    // Sembunyikan elemen yang gak perlu di gambar
+    const hide = [
+      document.querySelector('.form-row'),
+      document.querySelector('.zoom-bar'),
+      document.querySelector('.actions-bar'),
+      document.getElementById('milestonesSection'),
+      document.querySelector('.theme-toggle'),
+    ];
+    hide.forEach(el => { if (el) el.style.visibility = 'hidden'; });
+
+    try {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const canvas = await html2canvas(document.querySelector('.wrap'), {
+        backgroundColor: isDark ? '#0f0f0e' : '#fafaf7',
+        scale: 2,
+        logging: false,
+        useCORS: true,
+      });
+      const link = document.createElement('a');
+      const dateStr = new Date().toISOString().split('T')[0];
+      link.download = `hidup-dalam-minggu-${dateStr}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      alert('Gagal membuat gambar: ' + err.message);
+    } finally {
+      hide.forEach(el => { if (el) el.style.visibility = ''; });
+      btn.disabled = false;
+      btn.textContent = '📥 Download Gambar';
+    }
+  });
+
+  // ===== Download CSV =====
+  document.getElementById('downloadCsv').addEventListener('click', () => {
+    if (!state.birth || !state.totalWeeks) { alert('Masukkan tanggal lahir dulu.'); return; }
+
+    const rows = [['Minggu_Ke', 'Tanggal', 'Usia_Tahun', 'Status', 'Milestone']];
+    const now = new Date();
+    for (let i = 0; i < state.totalWeeks; i++) {
+      const d = new Date(state.birth.getTime() + i * MS_PER_WEEK);
+      const age = (i / 52.1775).toFixed(2);
+      let status = 'Sisa';
+      if (i < state.livedWeeks) status = 'Terpakai';
+      else if (i === state.livedWeeks) status = 'Sekarang';
+      const ms = getMilestoneForWeek(i);
+      const msLabel = ms ? `${ms.emoji||''} ${ms.name}`.trim() : '';
+      rows.push([
+        i + 1,
+        d.toISOString().split('T')[0],
+        age,
+        status,
+        msLabel,
+      ]);
+    }
+    // Tambahkan baris summary di atas
+    const summary = [
+      ['# Hidupmu dalam Minggu'],
+      ['# Tanggal lahir', elBirth.value],
+      ['# Negara', state.country.nama, '(harapan hidup: ' + state.country.exp + ' tahun)'],
+      ['# Total minggu', state.totalWeeks],
+      ['# Sudah dilewati', state.livedWeeks, ((state.livedWeeks/state.totalWeeks*100).toFixed(2) + '%')],
+      ['# Sisa', state.totalWeeks - state.livedWeeks, (((state.totalWeeks-state.livedWeeks)/state.totalWeeks*100).toFixed(2) + '%')],
+      ['# Diunduh', now.toISOString()],
+      [''],
+    ];
+    const allRows = [...summary, ...rows];
+
+    const csv = allRows.map(row =>
+      row.map(cell => {
+        const s = String(cell ?? '');
+        return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s;
+      }).join(',')
+    ).join('\n');
+
+    // BOM biar Excel kenal UTF-8 (emoji & akusara)
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateStr = now.toISOString().split('T')[0];
+    link.download = `hidup-dalam-minggu-${dateStr}.csv`;
+    link.href = url;
+    link.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // ===== Tick =====
+  setInterval(updateCountdown, 1000);
+
+  // ===== Initial state =====
+  state.milestones = loadMilestones();
+  // Kalau ada birth date dan belum ada milestones tersimpan, generate default
+  if (elBirth.value && (!state.milestones || !state.milestones.length) && !localStorage.getItem(LS_MS_CUSTOMIZED)) {
+    state.milestones = generateDefaultMilestones(elBirth.value);
+  }
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+    "name": "smart-buzzer/order-system",
+    "description": "Smart Buzzer Order Management System",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "google/apiclient": "^2.0"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}

@@ -1,0 +1,18 @@
+
+Tolong analisis dlu bug root causenya dimana dan sebutin ke gua , jgn updapte scriptnya dlu kita diskusi dlu, lu nunggu approval gua
+
+Tolong analisis dlu designnya dri segi ui ux yang terbaik gimana improvemenetnnya gmna ini untuk manusia 
+
+Tolong analisis dlu bug root causenya dimana dan sebutin ke gua dan kasih preview dengan "|" framework baiknya gmna 
+
+
+—- command —- 
+Editin filenya 
+taruh di artifact baru. jangan hapus core features / design / copywriting/l ayout yg sudah ada tanpa izin
+Tampilkan full script, tunjukin aja artifactnya gk usah bawel without elaboration and make sure engga ada broken emoji, chars, atau yg lain dan tolong jgn sampe ada javascript yg error, gunakan unique code, bisa aja gunakan str_replace biar cepet lu cek dlu file ori dari gw apa yg ditambah/ diedit. Dan verify file make sure it working well dan gak nabrak2. Make the changelog trimmed or summarize to make it not too long like make it description. Gk usah bnyk mikir
+
+Tolong analisis dlu designnya dri segi ui ux yang terbaik gimana improvemenetnnya gmna ini untuk manusia 
+
+tunjukin detailed plannya dan beirkan preview ui ux nya dan kasih tau file apa yg diedit dan confidencde rate berapa eprsen 
+
+analisis deep dive make it high conversion kamu adalah web develooer terbaik didunia 
