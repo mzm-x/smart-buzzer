@@ -61,7 +61,11 @@ $refMap = [
     'LP-ID-55'  => 'industry_starter',
     'LP-ID-88'  => 'industry_growth',
     'LP-ID-110' => 'industry_performance',
-    // LP Tripadvisor
+    // LP Tripadvisor (current ref codes)
+    'LP-TRIP-28' => 'tripadvisor_starter',
+    'LP-TRIP-35' => 'tripadvisor_growth',
+    'LP-TRIP-50' => 'tripadvisor_performance',
+    // LP Tripadvisor (legacy ref codes — kept for backward compat)
     'LP-TRIPADVISOR-30' => 'tripadvisor_starter',
     'LP-TRIPADVISOR-40' => 'tripadvisor_growth',
     'LP-TRIPADVISOR-50' => 'tripadvisor_performance',

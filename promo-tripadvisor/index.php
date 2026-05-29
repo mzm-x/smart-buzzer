@@ -1971,9 +1971,9 @@
 
     // Fanbasis payment URLs per package
     var fanbasisLinks = {
-        'starter':     'https://www.fanbasis.com/agency-checkout/smartbuzzer/P1kLA',
-        'growth':      'https://www.fanbasis.com/agency-checkout/smartbuzzer/RgmNV',
-        'performance': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/WnrVE'
+        'starter':     'https://www.fanbasis.com/agency-checkout/smartbuzzer/KAGGR',
+        'growth':      'https://www.fanbasis.com/agency-checkout/smartbuzzer/OJGGp',
+        'performance': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/OJGGp'
     };
 
     // Scroll to order form + pre-select package
