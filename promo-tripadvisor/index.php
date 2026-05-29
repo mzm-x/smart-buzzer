@@ -1973,7 +1973,7 @@
     var fanbasisLinks = {
         'starter':     'https://www.fanbasis.com/agency-checkout/smartbuzzer/KAGGR',
         'growth':      'https://www.fanbasis.com/agency-checkout/smartbuzzer/OJGGp',
-        'performance': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/OJGGp'
+        'performance': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/QAXXl'
     };
 
     // Scroll to order form + pre-select package
