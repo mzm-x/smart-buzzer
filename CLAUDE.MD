@@ -61,8 +61,8 @@ This is the canonical service-delivery knowledge that must be reflected in all c
 ### 1. Daily Submission Cadence
 **We submit 5-10 reviews daily.** Around 5 will show up and stick (roughly 3 per day). This gradual pace keeps the account safe and looks natural to the algorithm. **We only count reviews that stick** — if a review doesn't stick, it does NOT count toward the order.
 
-### 2. Drops Are Normal
-Some reviews may drop after posting. This is expected behavior. **We automatically replace any dropped reviews until the full order is complete.** Timeline depends on package size.
+### 2. Drops Are Normal — Per-Review 7-Day Replacement
+Each review counts as **delivered the moment it shows up** on the listing (1 review = 1 delivered). Every delivered review carries its **own 7-day replacement window starting the day it appears** — NOT after the whole order is complete. If a review drops within those 7 days, **we replace it free, one replacement per review**. Reviews that stay live past 7 days are **final**. If a replacement later drops, it is **not replaced again** (one replacement per review). This is the canonical guarantee model — do NOT describe the guarantee as starting "after the full order completes".
 
 ### 3. Error Names (Asian-Server Accounts)
 Since we use real people to post reviews, occasionally some reviews may come from Asian-server accounts. **These are not counted as valid orders** — we automatically replace them with new reviews until the full order is fulfilled.
@@ -74,7 +74,7 @@ Incorrect reviews (wrong language/rating) cannot be removed but **will not count
 Google rolls out algorithm updates ("waves") a few times a year — usually around mid-year, but timing is unpredictable. When a wave hits, a few reviews may get affected. The account stays safe, and **we replace any affected reviews until the order is complete**. As a seller, we have no advance notice of these waves.
 
 ### 6. Review Posting Timeline
-Estimated timeline depends on the business, but typically takes around **2-3 months for 55 reviews (baseline)**. Larger orders take longer. **Once the campaign has started, the order is final and cannot be cancelled or disputed.**
+Estimated timeline depends on the business, but **full delivery of 55 reviews typically takes around 3 months (default baseline)**. Larger orders take longer. **Once the campaign has started, the order is final and cannot be cancelled or disputed.**
 
 ### 7. Content Guidelines
 Customer may provide input on review content, **but cannot select reviewer names**. All names follow local naming conventions for authenticity.
@@ -87,9 +87,10 @@ Customer may provide input on review content, **but cannot select reviewer names
 
 ### Phrases to AVOID (compliance / clarity)
 - "Zero account bans" / "0 account bans" / "no account bans" — compliance risk
-- **"Zero drops" / "no drops" / "0 drops" / "zero ban" / "zero bans"** — compliance risk. We promise replacement, not zero drops. Some drops are normal Google behavior. Instead say: "automatic replacements", "we replace until your full count is delivered", "drops auto-replaced free".
+- **"Zero drops" / "no drops" / "0 drops" / "zero ban" / "zero bans"** — compliance risk. We promise replacement, not zero drops. Some drops are normal Google behavior. Instead say: "7-day per-review replacement", "if a review drops within 7 days we replace it free (one replacement per review)", "drops within 7 days auto-replaced free".
+- **"guarantee starts after the full order completes" / "7 days from completion" / "after campaign completion you have 7 days"** — outdated guarantee model. Replaced by per-review 7-day window: each review's 7 days starts the day it shows up. One replacement per review.
 - "Reviews are posted 1-3 per week" — outdated, replaced by "5-10 submitted daily, ~3 stick per day"
-- "1-2 months" hardcoded timeline — replaced by "2-3 months for 55 reviews baseline, varies by business"
+- "1-2 months" / "2-3 months" hardcoded timeline — replaced by "around 3 months for 55 reviews (default), varies by business"
 
 ### Mobile section ordering rule (CRITICAL — applies to ALL LPs)
 **On mobile (≤880px), the image/visual ALWAYS appears ABOVE text in any image+text split section.**

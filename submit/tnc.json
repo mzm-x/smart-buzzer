@@ -5,8 +5,8 @@
             "subtitle": "Around 5 will show up and stick (roughly 3 per day). This gradual pace keeps your account safe and looks natural to the algorithm. We only count reviews that stick \u2014 if a review doesn't stick, we will not count it toward your order."
         },
         {
-            "title": "Drops are normal \u2014 we replace them automatically",
-            "subtitle": "Some reviews may drop after posting. This is expected. We automatically replace any dropped reviews until your full order is complete. Timeline depends on package size."
+            "title": "Drops are normal \u2014 7-day replacement per review",
+            "subtitle": "Each review counts as delivered the moment it shows up on your listing (1 review = 1 delivered). Every delivered review has its own 7-day window that starts the day it appears. If a review drops within those 7 days, we replace it free \u2014 one replacement per review. Reviews that stay live past 7 days are final. If a replacement later drops, it is not replaced again."
         },
         {
             "title": "Error Names",
@@ -22,7 +22,7 @@
         },
         {
             "title": "Review Posting Timeline",
-            "subtitle": "Estimated timeline depends on your business, but typically takes around 2-3 months for 55 reviews (baseline). Larger orders take longer. Once your campaign has started, the order is final and cannot be cancelled or disputed."
+            "subtitle": "Estimated timeline depends on your business, but full delivery of 55 reviews typically takes around 3 months (default). Larger orders take longer. Once your campaign has started, the order is final and cannot be cancelled or disputed."
         },
         {
             "title": "Content Guidelines",
@@ -30,13 +30,13 @@
         },
         {
             "title": "Guarantee & Claim Period",
-            "subtitle": "After campaign completion, you have 7 calendar days to report any issues. Once this 7-day window closes, NO FURTHER CLAIMS WILL BE ACCEPTED - this is final and permanent with no exceptions. We will notify you via WhatsApp when your campaign is complete."
+            "subtitle": "The guarantee is counted per review, not after the whole order is complete. Each review carries a 7-day replacement window starting the day it shows up on your listing. If it drops within those 7 days, we replace it free (one replacement per review). Once a review's 7-day window closes, that review is final and NO FURTHER CLAIMS WILL BE ACCEPTED for it - this is final and permanent with no exceptions."
         },
         {
             "title": "Refund Policy",
             "subtitle": "We offer a full refund if you are not satisfied, as long as the order has not progressed beyond 10%."
         }
     ],
-    "lastUpdated": "2026-04-07",
+    "lastUpdated": "2026-06-12",
     "updatedBy": "admin"
 }

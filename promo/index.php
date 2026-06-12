@@ -1,3 +1,4 @@
+<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2733,6 +2734,10 @@ checkReturnVisitor();
         }
 
         @media (max-width: 768px) {
+            .guarantee-steps {
+                grid-template-columns: 1fr !important;
+            }
+
             .next-steps-badge {
                 font-size: 13px;
                 padding: 10px 20px;
@@ -2771,7 +2776,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <a href="#pricing">Pricing</a>
                     <a href="#how-it-works">How It Works</a>
                     <a href="#reviews">Our Reviews</a>
-                    <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Google%20Reviews.%20I%20am%20from%20the%20Promo%20page." target="_blank" class="header-cta">WhatsApp Us</a>
+                    <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20ggl%20rvw.%20I%20am%20from%20the%20Promo%20page." target="_blank" class="header-cta">WhatsApp Us</a>
                 </nav>
             </div>
         </div>
@@ -2899,16 +2904,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="pricing-header">
                         <h3>Starter</h3>
                     </div>
-                    <div class="pricing-price">$360</div>
-                    <div class="per-review">Only <strong>$6.55</strong>/review</div>
-                    <div class="pricing-reviews">55 Local Reviews</div>
+                    <div class="pricing-price">$240</div>
+                    <div class="pricing-reviews">30 Local Reviews</div>
                     <ul class="pricing-features">
                         <li>(20%) 4-Star + (80%) 5-Star Ratings <span class="uvp-info-icon" onclick="openUvpModal('ratings')">i</span></li>
                         <li>Local Names <span class="uvp-info-icon" onclick="openUvpModal('names')">i</span></li>
                         <li>Human-Written Custom Content</li>
                         <li>5-10 Reviews Submitted Daily, ~3 Stick</li>
                         <li>Detailed Delivery Report</li>
-                        <li>For 2 Business Links</li>
+                        <li>For 1 Business Links</li>
                     </ul>
                     <a href="#order-form" class="btn btn-primary" data-package="starter" onclick="preSelectPkg('starter')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">5</span> left at this price</div>
@@ -2917,45 +2921,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="pricing-card popular">
                     <div class="popular-badge">POPULAR</div>
                     <div class="pricing-header">
-                        <h3>Growth <span class="discount-badge">🔥 SAVE $22</span></h3>
+                        <h3>Growth <span class="discount-badge">🔥 SAVE $6</span></h3>
                     </div>
                     <div class="pricing-price">
-                        $550 
-                        <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$572</span>
+                        $330
+                        <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$336</span>
                     </div>
-                    <div class="per-review">Only <strong>$6.25</strong>/review</div>
-                    <div class="pricing-reviews">88 Local Reviews</div>
+                    <div class="pricing-reviews">42 Local Reviews</div>
                     <ul class="pricing-features">
                         <li>(20%) 4-Star + (80%) 5-Star Ratings <span class="uvp-info-icon" onclick="openUvpModal('ratings')">i</span></li>
                         <li>Local Names <span class="uvp-info-icon" onclick="openUvpModal('names')">i</span></li>
                         <li>Human-Written Custom Content</li>
                         <li>5-10 Reviews Submitted Daily, ~3 Stick</li>
                         <li>Detailed Delivery Report</li>
-                        <li>For 3 Business Links</li>
+                        <li>For 2 Business Links</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="growth" onclick="preSelectPkg('growth')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $22</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="growth" onclick="preSelectPkg('growth')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $6</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">3</span> left at this price</div>
                 </div>
 
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Performance <span class="discount-badge">🔥 SAVE $55</span></h3>
+                        <h3>Performance <span class="discount-badge">🔥 SAVE $34</span></h3>
                     </div>
                     <div class="pricing-price">
-                        $660 
-                        <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$715</span>
+                        $350
+                        <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$384</span>
                     </div>
-                    <div class="per-review">Only <strong>$6.00</strong>/review</div>
-                    <div class="pricing-reviews">110 Local Reviews</div>
+                    <div class="pricing-reviews">48 Local Reviews</div>
                     <ul class="pricing-features">
                         <li>(20%) 4-Star + (80%) 5-Star Ratings <span class="uvp-info-icon" onclick="openUvpModal('ratings')">i</span></li>
                         <li>Local Names <span class="uvp-info-icon" onclick="openUvpModal('names')">i</span></li>
                         <li>Human-Written Custom Content</li>
                         <li>5-10 Reviews Submitted Daily, ~3 Stick</li>
                         <li>Detailed Delivery Report</li>
-                        <li>For 4 Business Links</li>
+                        <li>For 2 Business Links</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="performance" onclick="preSelectPkg('performance')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $55</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="performance" onclick="preSelectPkg('performance')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $34</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">7</span> left at this price</div>
                 </div>
             </div>
@@ -2994,25 +2996,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <label class="of-pkg" data-pkg="starter" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="starter" class="of-pkg-radio">
                         <div class="of-pkg-info">
-                            <span class="of-pkg-name">Starter — 55 Reviews</span>
+                            <span class="of-pkg-name">Starter — 30 Reviews</span>
                         </div>
-                        <span class="of-pkg-price">$360</span>
+                        <span class="of-pkg-price">$240</span>
                     </label>
                     <label class="of-pkg selected" data-pkg="growth" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="growth" class="of-pkg-radio" checked>
                         <div class="of-pkg-info">
-                            <span class="of-pkg-name">Growth — 88 Reviews <span class="of-pkg-popular">POPULAR</span></span>
-                            <span class="of-pkg-detail"><s>$572</s> — Save $22</span>
+                            <span class="of-pkg-name">Growth — 42 Reviews <span class="of-pkg-popular">POPULAR</span></span>
+                            <span class="of-pkg-detail"><s>$336</s> — Save $6</span>
                         </div>
-                        <span class="of-pkg-price">$550</span>
+                        <span class="of-pkg-price">$330</span>
                     </label>
                     <label class="of-pkg" data-pkg="performance" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="performance" class="of-pkg-radio">
                         <div class="of-pkg-info">
-                            <span class="of-pkg-name">Performance — 110 Reviews</span>
-                            <span class="of-pkg-detail"><s>$715</s> — Save $55</span>
+                            <span class="of-pkg-name">Performance — 48 Reviews</span>
+                            <span class="of-pkg-detail"><s>$384</s> — Save $34</span>
                         </div>
-                        <span class="of-pkg-price">$660</span>
+                        <span class="of-pkg-price">$350</span>
                     </label>
                 </div>
 
@@ -3066,7 +3068,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Screenshot-2024-12-19-at-16.30.55-2048x1097.png" alt="Review Sentences" data-preview="true">
                 </div>
                 <div class="content-text">
-                    <p class="content-desc">You choose the content, or let us create comprehensive variety for you. For every 55 reviews ordered, we prepare <strong>440+ unique sentences</strong> to ensure zero repetition.</p>
+                    <p class="content-desc">You choose the content, or let us create comprehensive variety for you. For every 30 reviews ordered, we prepare <strong>240+ unique sentences</strong> to ensure zero repetition.</p>
                     <div class="content-checklist">
                         <div class="content-check-item"><span class="content-check content-check-pink"><i class="fa-solid fa-circle-check"></i></span> Human-written content tailored to your business</div>
                         <div class="content-check-item"><span class="content-check content-check-pink"><i class="fa-solid fa-circle-check"></i></span> Preview &amp; approve all content before posting</div>
@@ -3164,7 +3166,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <div class="testi-card">
                     <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p>I was skeptical at first but the results speak for themselves. 88 reviews delivered exactly as promised. The tracking dashboard is a nice touch too. Will order again for my other location.</p>
+                    <p>I was skeptical at first but the results speak for themselves. 42 reviews delivered exactly as promised. The tracking dashboard is a nice touch too. Will order again for my other location.</p>
                     <div class="testi-author">
                         <div class="testi-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt="Sarah L." loading="lazy"></div>
                         <div class="testi-meta"><strong>Sarah L.</strong><span>Dental Clinic, California</span></div>
@@ -3236,6 +3238,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </section>
 
+    <!-- Replacement Guarantee Section -->
+    <section class="guarantee-section" id="guarantee" style="background: var(--blue-light); padding: 60px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span class="accent">Replacement Guarantee</span></h2>
+                <p>Simple and fair. Here is exactly how it works.</p>
+            </div>
+
+            <div style="max-width: 880px; margin: 0 auto;">
+                <!-- 3 simple steps -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px;" class="guarantee-steps">
+                    <div style="background: #fff; border-radius: 14px; padding: 24px 18px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--blue-50); color: var(--blue-primary); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">1</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--blue-hover);">A review shows up</strong>
+                        <span style="font-size: 14px; color: #475569; line-height: 1.6;">The moment a review appears on your Google listing, it counts as delivered. 1 review = 1 delivered.</span>
+                    </div>
+                    <div style="background: #fff; border-radius: 14px; padding: 24px 18px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--blue-50); color: var(--blue-primary); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">2</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--blue-hover);">You get 7 days per review</strong>
+                        <span style="font-size: 14px; color: #475569; line-height: 1.6;">Each review has its own 7-day window that starts the day it shows up &mdash; not after the whole order is done.</span>
+                    </div>
+                    <div style="background: #fff; border-radius: 14px; padding: 24px 18px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: #DCFCE7; color: var(--green-success); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">3</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--green-success);">Drops in 7 days? We replace it</strong>
+                        <span style="font-size: 14px; color: #475569; line-height: 1.6;">If a review drops inside its 7 days, we add a new one for free &mdash; one replacement per review.</span>
+                    </div>
+                </div>
+
+                <!-- Plain summary card -->
+                <div style="background: #fff; border: 1px solid var(--blue-50); border-radius: 14px; padding: 22px 24px; font-size: 15px; line-height: 1.7; color: #334155;">
+                    <p style="margin: 0 0 10px;"><span style="color: var(--green-success); font-weight: 700;">&#10003; If it drops within 7 days of showing up</span> &mdash; we replace it free, one time.</p>
+                    <p style="margin: 0 0 10px;"><span style="color: #94a3b8; font-weight: 700;">&#8212; If it stays live past 7 days</span> &mdash; it&rsquo;s final and counts as delivered.</p>
+                    <p style="margin: 0;"><span style="color: #94a3b8; font-weight: 700;">&#8212; If a replacement later drops</span> &mdash; that one is not replaced again (one replacement per review).</p>
+                    <p style="margin: 14px 0 0; font-size: 13px; color: #64748b;">Full delivery of 55 reviews typically takes around 3 months. By completing your order you agree to this fair-use guarantee.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="faq-section" id="faq">
         <div class="container">
             <div class="section-header">
@@ -3249,15 +3290,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" onclick="toggleFaq(this)">How long until I see my reviews?<span class="faq-arrow">&#9660;</span></button>
-                    <div class="faq-a"><div class="faq-a-inner">First reviews appear within 24 hours of content approval. Full completion typically takes 2-3 months for 55 reviews (baseline) — larger orders take longer. We submit 5-10 reviews daily, with around 3 sticking per day, to maintain a natural pattern that keeps your account safe from detection.</div></div>
+                    <div class="faq-a"><div class="faq-a-inner">First reviews appear within 24 hours of content approval. Full delivery of 55 reviews typically takes around 3 months — larger orders take longer. We submit 5-10 reviews daily, with around 3 sticking per day, to maintain a natural pattern that keeps your account safe from detection.</div></div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" onclick="toggleFaq(this)">What if reviews get removed?<span class="faq-arrow">&#9660;</span></button>
-                    <div class="faq-a"><div class="faq-a-inner">We offer a 7-day replacement guarantee for any removed reviews at no extra cost. Review drops are rare (under 10%) and can happen even with organic reviews due to Google's algorithm. We guarantee to complete your full order quantity.</div></div>
+                    <div class="faq-a"><div class="faq-a-inner">Each review is counted as delivered the moment it shows up on your listing. Every delivered review gets its own 7-day replacement window starting the day it appears — if it drops within those 7 days, we replace it free (one replacement per review). Reviews that stay live past 7 days are considered final. Some drops are normal and can happen even with organic reviews due to Google's algorithm.</div></div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" onclick="toggleFaq(this)">Can I choose what the reviews say?<span class="faq-arrow">&#9660;</span></button>
-                    <div class="faq-a"><div class="faq-a-inner">Yes! You can provide your own review drafts, or let us create them. For every review ordered, we prepare 8x the sentences (55 reviews = 440 unique sentences) to ensure maximum variety and a natural look. You approve all content before we start posting.</div></div>
+                    <div class="faq-a"><div class="faq-a-inner">Yes! You can provide your own review drafts, or let us create them. For every review ordered, we prepare 8x the sentences (30 reviews = 240 unique sentences) to ensure maximum variety and a natural look. You approve all content before we start posting.</div></div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" onclick="toggleFaq(this)">What payment methods do you accept?<span class="faq-arrow">&#9660;</span></button>
@@ -3289,7 +3330,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="footer-section">
                     <h3>Contact</h3>
                     <ul>
-                        <li>📞 WhatsApp: <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Google%20Reviews.%20I%20am%20from%20the%20Promo%20page.">+62857-7311-6557</a></li>
+                        <li>📞 WhatsApp: <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20ggl%20rvw.%20I%20am%20from%20the%20Promo%20page."><?php echo $SB_WA_DISPLAY; ?></a></li>
                         <li>📧 Email: <a href="mailto:contact@smart-buzzer.com">contact@smart-buzzer.com</a></li>
                     </ul>
                 </div>
@@ -3318,7 +3359,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
             </div>
             <div class="wa-chat-footer">
-                <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Google%20Reviews.%20I%20am%20from%20the%20Promo%20page." target="_blank" rel="noopener">Start Chat</a>
+                <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20ggl%20rvw.%20I%20am%20from%20the%20Promo%20page." target="_blank" rel="noopener">Start Chat</a>
             </div>
         </div>
         <button class="wa-trigger" id="waTrigger" aria-label="Chat on WhatsApp">
@@ -3336,7 +3377,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="sp-toast-text" id="spToastText">
             <strong>Mike from Texas</strong>
-            <span class="sp-action">just ordered 88 reviews</span>
+            <span class="sp-action">just ordered 42 reviews</span>
             <span class="sp-time">2 hours ago</span>
         </div>
     </div>
@@ -3550,9 +3591,9 @@ window.addEventListener('scroll', function() {
 
 // === GLOBAL PACKAGE METADATA ===
 var sbPkgMeta = {
-    'starter':     {id: 'pkg_starter_55',     name: 'Buy Google Reviews - 55 Local',  item_category: 'Google Reviews', price: 360.00, reviews: 55},
-    'growth':      {id: 'pkg_growth_88',      name: 'Buy Google Reviews - 88 Local',  item_category: 'Google Reviews', price: 550.00, reviews: 88},
-    'performance': {id: 'pkg_performance_110', name: 'Buy Google Reviews - 110 Local', item_category: 'Google Reviews', price: 660.00, reviews: 110}
+    'starter':     {id: 'pkg_starter_55',     name: 'Buy Google Reviews - 30 Local',  item_category: 'Google Reviews', price: 240.00, reviews: 30},
+    'growth':      {id: 'pkg_growth_88',      name: 'Buy Google Reviews - 42 Local',  item_category: 'Google Reviews', price: 330.00, reviews: 42},
+    'performance': {id: 'pkg_performance_110', name: 'Buy Google Reviews - 48 Local', item_category: 'Google Reviews', price: 350.00, reviews: 48}
 };
 
 // Track last selected package for WhatsApp / floating CTA tracking
@@ -3848,14 +3889,14 @@ document.addEventListener('keydown', function(e) {
 // ===== SOCIAL PROOF TOAST =====
 (function() {
     var toastData = [
-        {name: 'Mike from Texas', action: 'ordered 88 reviews', time: '2 hours ago', color: '#2563EB'},
-        {name: 'Sarah from California', action: 'ordered 110 reviews', time: '4 hours ago', color: '#7C3AED'},
-        {name: 'James from Florida', action: 'ordered 55 reviews', time: '5 hours ago', color: '#0891B2'},
-        {name: 'David from New York', action: 'ordered 88 reviews', time: '7 hours ago', color: '#059669'},
-        {name: 'Anna from Illinois', action: 'ordered 110 reviews', time: '8 hours ago', color: '#DC2626'},
-        {name: 'Chris from Ohio', action: 'ordered 55 reviews', time: '12 hours ago', color: '#D97706'},
-        {name: 'Lisa from Arizona', action: 'ordered 88 reviews', time: '1 day ago', color: '#7C3AED'},
-        {name: 'Robert from Colorado', action: 'ordered 110 reviews', time: '1 day ago', color: '#2563EB'}
+        {name: 'Mike from Texas', action: 'ordered 42 reviews', time: '2 hours ago', color: '#2563EB'},
+        {name: 'Sarah from California', action: 'ordered 48 reviews', time: '4 hours ago', color: '#7C3AED'},
+        {name: 'James from Florida', action: 'ordered 30 reviews', time: '5 hours ago', color: '#0891B2'},
+        {name: 'David from New York', action: 'ordered 42 reviews', time: '7 hours ago', color: '#059669'},
+        {name: 'Anna from Illinois', action: 'ordered 48 reviews', time: '8 hours ago', color: '#DC2626'},
+        {name: 'Chris from Ohio', action: 'ordered 30 reviews', time: '12 hours ago', color: '#D97706'},
+        {name: 'Lisa from Arizona', action: 'ordered 42 reviews', time: '1 day ago', color: '#7C3AED'},
+        {name: 'Robert from Colorado', action: 'ordered 48 reviews', time: '1 day ago', color: '#2563EB'}
     ];
     var toastEl = document.getElementById('spToast');
     var toastTextEl = document.getElementById('spToastText');
@@ -4146,9 +4187,9 @@ function submitOrder() {
 
     // Fanbasis payment links per package
     var fanbasisLinks = {
-        'starter': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/Rgl3R',
-        'growth': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/Vmv31',
-        'performance': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/WnP3g'
+        'starter': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/zq1Ay',
+        'growth': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/B1DvY',
+        'performance': 'https://www.fanbasis.com/agency-checkout/smartbuzzer/YVjnM'
     };
 
     var paymentUrl = fanbasisLinks[pkgValue];

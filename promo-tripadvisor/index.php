@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Get authentic Tripadvisor reviews from real local travelers. Trusted by 1,200+ hotels, restaurants & attractions. Starting $250 for 28 reviews.">
+    <meta name="description" content="Get authentic Tripadvisor reviews from real travelers — a natural mix of local + global names. Trusted by 1,200+ hotels, restaurants & attractions. Starting $250 for 28 reviews.">
     <title>Tripadvisor Reviews - Smart Buzzer | 1,200+ Happy Hospitality Clients</title>
     
     <link rel="icon" type="image/x-icon" href="https://smart-buzzer.com/tracker/sb.ico">
@@ -1326,8 +1326,8 @@
                         <span style="color: var(--ta-green)">★★★★★</span>
                         <span>1,200+ Happy Hospitality Clients</span>
                     </div>
-                    <h1>Boost Your <span class="text-green">Tripadvisor Rating</span> With Local Traveler Reviews</h1>
-                    <p>Buy genuine Tripadvisor reviews from real local travelers. Safe, natural posting. Trusted by 1,200+ hotels, restaurants & attractions across the USA.</p>
+                    <h1>Boost Your <span class="text-green">Tripadvisor Rating</span> With Real Traveler Reviews</h1>
+                    <p>Buy genuine Tripadvisor reviews from real travelers — a natural mix of local + global names. Safe, natural posting. Trusted by 1,200+ hotels, restaurants & attractions across the USA.</p>
                     <div class="hero-buttons">
                         <a href="#pricing" class="btn btn-primary btn-lg">LEARN MORE</a>
                     </div>
@@ -1394,9 +1394,9 @@
                     </div>
                     <div class="plan-reviews">28 Reviews</div>
                     <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> 100% Local Names</li>
+                        <li><span class="check-icon">✓</span> Local + Global Traveler Names</li>
                         <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week</li>
+                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
                         <li><span class="check-icon">✓</span> Detailed Report With Names</li>
                         <li><span class="check-icon">✓</span> For 1 Business Link</li>
                     </ul>
@@ -1415,9 +1415,9 @@
                     <div class="plan-reviews">35 Reviews</div>
                     <div class="savings-badge">Save $15 (4% OFF)</div>
                     <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> 100% Local Names</li>
+                        <li><span class="check-icon">✓</span> Local + Global Traveler Names</li>
                         <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week</li>
+                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
                         <li><span class="check-icon">✓</span> Detailed Report With Names</li>
                         <li><span class="check-icon">✓</span> For 2 Business Links</li>
                     </ul>
@@ -1435,15 +1435,18 @@
                     <div class="plan-reviews">50 Reviews</div>
                     <div class="savings-badge">Save $50 (10% OFF)</div>
                     <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> 100% Local Names</li>
+                        <li><span class="check-icon">✓</span> Local + Global Traveler Names</li>
                         <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week</li>
+                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
                         <li><span class="check-icon">✓</span> Detailed Report With Names</li>
                         <li><span class="check-icon">✓</span> For 3 Business Links</li>
                     </ul>
                     <a href="javascript:void(0)" onclick="scrollToOrder('performance')" class="btn btn-plan" data-package="performance">ORDER NOW</a>
                 </div>
             </div>
+            <p style="max-width:760px; margin:0 auto; text-align:center; font-size:13px; line-height:1.6; color:var(--gray-500);">
+                <span style="color:var(--ta-green-dark); font-weight:800;">*</span> Reviews are posted gradually (1–3 per week) to stay natural and compliant. Each review counts as <strong style="color:var(--gray-700);">delivered the moment it shows up</strong> on your listing (1 review = 1 delivered), and we <strong style="color:var(--gray-700);">replace any review that drops within 7 days, free (one replacement per review)</strong>. Reviews staying live past 7 days are considered final. All packages include this guarantee.
+            </p>
         </div>
     </section>
 
@@ -1514,7 +1517,13 @@
                     </div>
                 </div>
 
+                <div class="of-guarantee" style="border:1px solid var(--ta-green); background:#f0fdf9; border-radius:10px; padding:13px 15px; margin-bottom:14px; font-size:13px; line-height:1.6; color:var(--dark);">
+                    <strong style="display:block; margin-bottom:4px; color:var(--ta-green-dark);">✓ Free 7-Day Replacement Guarantee</strong>
+                    You're protected. Each review counts as <strong>delivered the moment it shows up</strong> on your listing (1 review = 1 delivered). If any delivered review drops <strong>within 7 days</strong>, we <strong>replace it free, one time per review</strong> — no questions asked. Reviews staying live past 7 days are considered final. <span style="color:var(--gray-500);">By completing your order you agree to this fair-use policy.</span>
+                </div>
+
                 <button class="of-submit" onclick="submitOrder()">COMPLETE ORDER →</button>
+                <p style="text-align:center; font-size:12px; color:var(--gray-500); margin-top:8px;">No recurring charges · One-time payment · Cancel anytime before campaign starts</p>
 
                 <div class="of-trust">
                     <span>🔒 Secure Checkout</span>
@@ -1532,7 +1541,7 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-badge">Proof</div>
-                <h2>REAL LOCAL REVIEWS</h2>
+                <h2>REAL TRAVELER REVIEWS</h2>
             </div>
             <div class="proof-grid">
                 <div class="proof-card">
@@ -1587,8 +1596,8 @@
                         <li style="border-left: 3px solid var(--ta-green);">
                             <div class="check-icon">✓</div>
                             <div>
-                                <strong style="display: block; font-size: 16px; color: var(--dark); margin-bottom: 4px;">100% Genuine Local Name Reviews</strong>
-                                <span style="font-size: 14px; color: var(--gray-500);">Every reviewer has authentic local identity</span>
+                                <strong style="display: block; font-size: 16px; color: var(--dark); margin-bottom: 4px;">Genuine Local + Global Traveler Names</strong>
+                                <span style="font-size: 14px; color: var(--gray-500);">A natural mix of local + global traveler names — exactly how real TripAdvisor reviews look</span>
                             </div>
                         </li>
                         <li style="border-left: 3px solid var(--ta-green);">
@@ -1707,11 +1716,11 @@
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" type="button">
-                        <span>Are reviewers real local travelers (not bots)?</span>
+                        <span>Are reviewers real travelers (not bots)?</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-a">
-                        100%. We use a 70% local + 30% global mix of real-person accounts — never bots, never AI-generated profiles. Each review is human-written and tailored to your business. You'll get a detailed report with reviewer names so you can verify authenticity.
+                        Yes — real human travelers, never bots or AI-generated profiles. Because TripAdvisor reviewers are travelers from everywhere, names are a natural mix of local + global — exactly how genuine TripAdvisor reviews look. Each review is human-written and tailored to your business, and you'll get a detailed report with reviewer names so you can verify authenticity.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1720,7 +1729,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-a">
-                        Some drops are normal — it's how Tripadvisor's algorithm works. We <strong>automatically replace any dropped reviews for free</strong> until your full order count is delivered and sticking. Only reviews that stick count toward your order.
+                        Some drops are normal — it's how Tripadvisor's algorithm works. Each review counts as delivered once it shows up on your listing (counted per review). If a delivered review drops <strong>within 7 days</strong> of posting, we <strong>replace it for free (one replacement per review)</strong>. After the 7-day window, that review is considered final and is no longer covered by the replacement guarantee.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -2162,6 +2171,58 @@
             });
         });
     });
+    </script>
+
+    <!-- Floating CTWA Sales Button -->
+    <a href="https://wa.me/628979133204?text=Hi%20Smart%20Buzzer!%20I%20saw%20your%20Tripadvisor%20packages%20and%20I'd%20like%20to%20get%20a%20quote%20%26%20check%20my%20listing."
+       id="ctwaSalesBtn" class="ctwa-fab" target="_blank" rel="noopener" aria-label="Chat with Sales on WhatsApp">
+        <span class="ctwa-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/>
+            </svg>
+        </span>
+        <span class="ctwa-text">
+            <span class="ctwa-label">Chat with Sales</span>
+            <span class="ctwa-sub"><span class="ctwa-online"></span>Online now · replies in minutes</span>
+        </span>
+    </a>
+    <style>
+        .ctwa-fab {
+            position: fixed; bottom: 22px; right: 22px; z-index: 9999;
+            display: inline-flex; align-items: center; gap: 11px;
+            background: #25D366; color: #fff; text-decoration: none;
+            padding: 10px 18px 10px 12px; border-radius: 50px;
+            box-shadow: 0 6px 20px rgba(37,211,102,.45);
+            font-family: inherit; transition: transform .15s ease, box-shadow .15s ease;
+            animation: ctwaPulse 2.4s infinite;
+        }
+        .ctwa-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(37,211,102,.55); animation: none; }
+        .ctwa-icon { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.18); flex-shrink:0; }
+        .ctwa-text { display:flex; flex-direction:column; line-height:1.15; }
+        .ctwa-label { font-size:15px; font-weight:700; white-space:nowrap; }
+        .ctwa-sub { font-size:11px; font-weight:500; opacity:.92; white-space:nowrap; display:flex; align-items:center; gap:5px; }
+        .ctwa-online { width:7px; height:7px; border-radius:50%; background:#bbf7d0; box-shadow:0 0 0 0 rgba(187,247,208,.8); animation:ctwaBlink 1.6s infinite; }
+        @keyframes ctwaPulse { 0%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,.45);} 70%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 14px rgba(37,211,102,0);} 100%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,0);} }
+        @keyframes ctwaBlink { 0%,100%{opacity:1;} 50%{opacity:.35;} }
+        @media (max-width: 600px) {
+            .ctwa-fab { bottom: 16px; right: 16px; padding: 8px; gap: 0; }
+            .ctwa-text { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) { .ctwa-fab, .ctwa-online { animation: none; } }
+    </style>
+    <script>
+        document.getElementById('ctwaSalesBtn').addEventListener('click', function() {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'generate_lead',
+                method: 'WhatsApp',
+                value: (typeof sbPkgMeta !== 'undefined' && sbPkgMeta.growth) ? sbPkgMeta.growth.price : 0,
+                currency: 'USD'
+            });
+            if (typeof trackEvent === 'function') {
+                trackEvent('CTWA_SALES_CLICK', { location: 'floating_button', destination: 'whatsapp_sales' });
+            }
+        });
     </script>
 </body>
 </html>
