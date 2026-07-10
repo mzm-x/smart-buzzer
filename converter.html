@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Buzzer — Google Reviews Converter</title>
+<link rel="icon" type="image/x-icon" href="https://smart-buzzer.com/tracker/sb.ico">
+<style>
+  :root{
+    --blue:#2563eb; --blue-dark:#1d4ed8; --blue-soft:#eff6ff;
+    --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f1f5f9;
+    --green:#16a34a; --amber:#f59e0b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.5;
+    min-height:100vh; padding:24px 16px;
+  }
+  .wrap{max-width:960px; margin:0 auto}
+  .brand{display:flex; align-items:center; gap:12px; margin-bottom:20px}
+  .brand img{height:38px}
+  .brand h1{font-size:18px; font-weight:700}
+  .brand span{font-size:13px; color:var(--muted); font-weight:500}
+
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:16px;
+    padding:24px; box-shadow:0 1px 3px rgba(15,23,42,.06); margin-bottom:20px;
+  }
+  .card h2{font-size:15px; font-weight:700; margin-bottom:4px}
+  .card .sub{font-size:13px; color:var(--muted); margin-bottom:18px}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  .field{display:flex; flex-direction:column; gap:6px}
+  .field.full{grid-column:1 / -1}
+  label{font-size:13px; font-weight:600; color:var(--ink)}
+  input{
+    font-size:15px; padding:11px 13px; border:1.5px solid var(--line);
+    border-radius:10px; outline:none; transition:border-color .15s; width:100%;
+    font-family:inherit;
+  }
+  input:focus{border-color:var(--blue)}
+  input::placeholder{color:#94a3b8}
+  textarea{
+    font-size:14px; padding:12px 13px; border:1.5px solid var(--line);
+    border-radius:10px; outline:none; width:100%; font-family:inherit;
+    min-height:140px; resize:vertical; line-height:1.55;
+  }
+  textarea:focus{border-color:var(--blue)}
+  textarea::placeholder{color:#94a3b8}
+
+  .seg{display:inline-flex; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:3px; gap:3px; margin-bottom:16px}
+  .seg-btn{background:transparent; border:0; color:var(--muted); padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:.15s}
+  .seg-btn.active{background:var(--blue); color:#fff}
+
+  .batch-err{color:#dc2626; font-size:12.5px; line-height:1.6; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; padding:10px 13px; margin-bottom:12px}
+
+  .hint{font-size:12px; color:var(--muted)}
+
+  /* Result */
+  .result-card{display:none}
+  .result-card.show{display:block}
+  .res-head{display:flex; align-items:center; gap:10px; margin-bottom:4px}
+  .res-head .dot{width:9px;height:9px;border-radius:50%;background:var(--green)}
+  .res-meta{
+    background:var(--blue-soft); border-radius:10px; padding:14px 16px;
+    margin-bottom:18px; font-size:14px;
+  }
+  .res-meta div{display:flex; justify-content:space-between; padding:3px 0}
+  .res-meta div span:first-child{color:var(--muted)}
+  .res-meta div span:last-child{font-weight:600}
+
+  .conv-list{display:flex; flex-direction:column; gap:10px}
+  .conv-item{
+    display:flex; align-items:center; gap:14px;
+    border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+  }
+  .conv-icon{
+    width:42px; height:42px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; color:#fff; font-weight:700;
+  }
+  .conv-body{flex:1}
+  .conv-name{font-weight:600; font-size:14px}
+  .conv-desc{font-size:12px; color:var(--muted)}
+  .conv-qty{font-size:22px; font-weight:800; color:var(--ink)}
+  .conv-qty small{font-size:12px; font-weight:600; color:var(--muted)}
+
+  .btn-row{display:flex; gap:10px; margin-top:8px; flex-wrap:wrap}
+  button{
+    font-family:inherit; font-size:14px; font-weight:600; cursor:pointer;
+    border:none; border-radius:10px; padding:12px 18px; transition:.15s;
+  }
+  .btn-primary{background:var(--blue); color:#fff; flex:1}
+  .btn-primary:hover{background:var(--blue-dark)}
+  .btn-ghost{background:#fff; color:var(--ink); border:1.5px solid var(--line)}
+  .btn-ghost:hover{background:var(--bg)}
+  .btn-green{background:var(--green); color:#fff}
+  .btn-green:hover{filter:brightness(.93)}
+
+  .msg-box{
+    margin-top:18px; border:1px dashed var(--line); border-radius:12px;
+    padding:14px 16px; background:#fafbfc;
+  }
+  .msg-box .lbl{font-size:12px; font-weight:700; color:var(--muted); margin-bottom:8px; letter-spacing:.03em}
+  .msg-box pre{font-family:inherit; font-size:13.5px; white-space:pre-wrap; color:var(--ink); line-height:1.6}
+  .copied{color:var(--green); font-size:12px; font-weight:600; margin-left:8px; opacity:0; transition:opacity .2s}
+  .copied.show{opacity:1}
+  .footer{text-align:center; font-size:12px; color:var(--muted); margin-top:8px}
+
+  /* Batch table */
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px}
+  table.conv-table{border-collapse:collapse; width:100%; font-size:13px; min-width:760px}
+  .conv-table th,.conv-table td{border-bottom:1px solid var(--line); padding:9px 11px; text-align:left; white-space:nowrap; vertical-align:middle}
+  .conv-table th{background:var(--bg); font-weight:700; font-size:11.5px; color:var(--muted); letter-spacing:.02em}
+  .conv-table td.num{text-align:right; font-variant-numeric:tabular-nums}
+  .conv-table tbody tr:hover{background:#fafbfc}
+  .conv-table .biz{font-weight:600}
+  .bi-copy{font-size:12px; padding:7px 13px}
+  .hidden-msg{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/REV-COLOR-Smart-Buzzer-11.png" alt="Smart Buzzer">
+    <div>
+      <h1>Google Reviews Converter</h1>
+      <span>Konversi sisa order Google Review → kompensasi platform lain</span>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="card">
+    <h2>Detail Client</h2>
+    <p class="sub">Isi data order yang tidak bisa kami fulfill di Google Maps.</p>
+
+    <div class="seg" id="modeSeg">
+      <button type="button" class="seg-btn active" data-mode="single" onclick="setMode('single')">Single</button>
+      <button type="button" class="seg-btn" data-mode="batch" onclick="setMode('batch')">Batch (Banyak Client)</button>
+    </div>
+
+    <div class="field full" style="margin-bottom:16px">
+      <label>Segment <span class="hint">(pengaruh ke kalimat penutup pesan)</span></label>
+      <div class="seg" id="segSeg" style="margin-bottom:0">
+        <button type="button" class="seg-btn active" data-seg="180" onclick="setSegment('180')">&gt;180 Days</button>
+        <button type="button" class="seg-btn" data-seg="120" onclick="setSegment('120')">&gt;120 Days</button>
+      </div>
+    </div>
+
+    <div id="singleMode">
+      <div class="grid">
+        <div class="field full">
+          <label for="clientName">Nama Client</label>
+          <input id="clientName" type="text" placeholder="Contoh: Bright Smile Dental" autocomplete="off">
+        </div>
+        <div class="field full">
+          <label for="sEmail">Email Client <span class="hint">(opsional)</span></label>
+          <input id="sEmail" type="email" placeholder="client@email.com" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="deal">Deal (Jumlah Order)</label>
+          <input id="deal" type="number" min="0" inputmode="numeric" placeholder="55" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="remaining">Sisa Review (Remaining)</label>
+          <input id="remaining" type="number" min="0" inputmode="numeric" placeholder="40" autocomplete="off">
+        </div>
+        <div class="field full">
+          <label for="deadline">Deadline <span class="hint">(opsional)</span></label>
+          <input id="deadline" type="date" autocomplete="off">
+        </div>
+        <div class="field full">
+          <span class="hint">Sisa review itu yang dikonversi. qty FB / TripAdvisor / Socmed otomatis terhitung. Deadline (kalau diisi) masuk ke pesan sebagai batas konfirmasi.</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="batchMode" style="display:none">
+      <div class="field full">
+        <label for="batchDeadline">Deadline <span class="hint">(opsional — berlaku untuk semua client di batch ini)</span></label>
+        <input id="batchDeadline" type="date" autocomplete="off">
+      </div>
+      <div class="field full">
+        <label for="batchInput">Banyak Client — 1 baris = 1 client</label>
+        <textarea id="batchInput" placeholder="Format: NamaClient, Email, Deal, SisaReview&#10;&#10;Winaffix Auto Glass, ops@winaffix.com, 55, 40&#10;Mind Brain Institute, info@mindbrain.com, 40, 30&#10;Bright Smile Dental, , 30, 25"></textarea>
+        <span class="hint">Pisah dengan koma. Email opsional — kalau dikosongkan cukup tulis: <b>Nama, Deal, SisaReview</b>. Bisa paste langsung dari spreadsheet (tab juga kebaca).</span>
+      </div>
+      <button class="btn-primary" id="batchGenBtn" style="margin-top:10px; width:100%">Generate Tabel</button>
+    </div>
+  </div>
+
+  <!-- SINGLE RESULT -->
+  <div class="card result-card" id="resultCard">
+    <div class="res-head">
+      <span class="dot"></span>
+      <h2>Hasil Konversi</h2>
+    </div>
+    <p class="sub">Berdasarkan sisa review yang dikonversi.</p>
+
+    <div class="res-meta" id="resMeta"></div>
+
+    <div class="conv-list" id="convList"></div>
+
+    <div class="msg-box">
+      <div class="lbl">PESAN SIAP KIRIM <span class="copied" id="copiedTag">✓ Tersalin</span></div>
+      <pre id="msgText"></pre>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="copyBtn">Salin Pesan</button>
+      <button class="btn-ghost" id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- BATCH RESULT -->
+  <div class="card result-card" id="batchCard">
+    <div class="res-head">
+      <span class="dot"></span>
+      <h2>Hasil Batch <span id="batchCount" style="color:var(--muted);font-weight:500;font-size:13px"></span></h2>
+    </div>
+    <p class="sub">Kolom Copy = pesan siap kirim per client. Export untuk dapat file Google Sheets.</p>
+
+    <div class="btn-row" style="margin-bottom:14px">
+      <button class="btn-green" id="exportCsvBtn">Export CSV</button>
+      <button class="btn-green" id="exportXlsBtn">Export XLS</button>
+      <button class="btn-ghost" id="copyAllBtn">Copy Semua Pesan</button>
+      <button class="btn-ghost" id="batchResetBtn">Reset</button>
+    </div>
+
+    <div id="batchErr" class="batch-err" style="display:none"></div>
+
+    <div class="tbl-wrap">
+      <table class="conv-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>client_name</th>
+            <th>email</th>
+            <th>deal</th>
+            <th>remaining_reviews</th>
+            <th>qty_fb</th>
+            <th>qty_trip</th>
+            <th>qty_socmed</th>
+            <th>Copy</th>
+          </tr>
+        </thead>
+        <tbody id="batchBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">Smart Buzzer · Internal AM Tool</div>
+</div>
+
+<script>
+  // ===== Conversion config =====
+  // 1 Google Review = 1 TripAdvisor + 1 Facebook Review (1:1)
+  // Social Media (Folicom Socmed) = remaining × (2625 / 55) = × 47.7273
+  var SMM_PER_REVIEW = 2625 / 55; // 47.7272...
+
+  var $ = function(id){ return document.getElementById(id); };
+  var currentMode = 'single';
+  var currentSegment = '180'; // '180' | '120' — shared across single & batch
+  var batchRows = []; // [{name,email,deal,remaining,fb,trip,socmed,msg}]
+
+  function setMode(m){
+    currentMode = m;
+    $('singleMode').style.display = (m==='single') ? '' : 'none';
+    $('batchMode').style.display  = (m==='batch')  ? '' : 'none';
+    document.querySelectorAll('#modeSeg .seg-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.mode===m); });
+    if (m==='single'){ $('batchCard').classList.remove('show'); compute(); }
+    else { $('resultCard').classList.remove('show'); }
+  }
+
+  function setSegment(s){
+    currentSegment = s;
+    document.querySelectorAll('#segSeg .seg-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.seg===s); });
+    if (currentMode === 'single') compute();
+  }
+
+  // ===== Quantity math (single source of truth) =====
+  function qtys(remaining){
+    return {
+      fb: remaining,                                   // 1:1
+      trip: remaining,                                 // 1:1
+      socmed: Math.round(remaining * SMM_PER_REVIEW)   // followers/likes
+    };
+  }
+
+  // ===== Deadline formatter (YYYY-MM-DD -> "July 8, 2026", timezone-safe) =====
+  function fmtDeadline(v){
+    if (!v) return '';
+    var p = String(v).split('-');
+    if (p.length !== 3) return '';
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var mo = months[parseInt(p[1], 10) - 1];
+    if (!mo) return '';
+    return mo + ' ' + parseInt(p[2], 10) + ', ' + p[0];
+  }
+
+  // ===== Message template (balance-transfer update) =====
+  function buildMessage(name, deal, remaining, fb, trip, socmed, deadline, segment){
+    var d  = deal.toLocaleString();
+    var r  = remaining.toLocaleString();
+    var hi = name ? ('Hi ' + name + ',') : 'Hi,';
+
+    var deadlinePara, closingLine;
+    if (deadline){
+      if (segment === '180'){
+        // >180: tegas — sisa hangus & campaign ditutup
+        deadlinePara = 'Please confirm your preferred option by ' + deadline + '. If we do not receive your response by that date, your remaining balance will be forfeited and your campaign will be closed.';
+      } else {
+        // >120: lembut — no forfeit/hold wording (hindari dispute)
+        deadlinePara = 'Kindly confirm your preferred option by ' + deadline + ' so we can process the transfer and begin delivery for you right away.';
+      }
+      closingLine = 'If you’d like to talk through the options or explore other alternatives, we’re happy to help — just reply before the deadline.';
+    } else {
+      deadlinePara = 'Please confirm your preferred option at your earliest convenience so we can process the transfer right away.';
+      closingLine = 'If you’d like to talk through the options or explore other alternatives, we’re happy to help — just send us a reply.';
+    }
+
+    return hi + '\n\n' +
+      'This is Smart Buzzer reaching out about your ongoing order. You have ' + r + ' reviews remaining out of the ' + d + ' originally placed with us, and we have an important update that affects how we can best deliver value on that remaining balance.\n\n' +
+      'Google’s recent algorithm update now filters reviews on Business Profiles far more strictly. This is affecting all Google Maps campaigns broadly, and continuing on this platform may no longer deliver the results your investment deserves.\n\n' +
+      'So your balance goes toward services with the strongest, most consistent results, please choose one of the following:\n\n' +
+      '1. ' + fb.toLocaleString() + ' Facebook Reviews\n' +
+      'A trusted platform for building credibility. Reviews display prominently on your page and strengthen your social presence.\n\n' +
+      '2. ' + trip.toLocaleString() + ' TripAdvisor Reviews\n' +
+      'Great for boosting visibility and trust — especially effective if you serve tourist or travel-related customers.\n\n' +
+      '3. ' + socmed.toLocaleString() + ' Folicom Social Engagements\n' +
+      'Followers, likes, and comments across your social media to build stronger social proof and online presence.\n\n' +
+      'Your full balance transfers at value, with no deductions.\n\n' +
+      deadlinePara + '\n\n' +
+      closingLine + '\n\n' +
+      'Thank you, and we look forward to your response.\n\n' +
+      'Best regards,\nSmart Buzzer Team';
+  }
+
+  // ===== Single mode =====
+  function compute(){
+    var name      = $('clientName').value.trim();
+    var email     = $('sEmail').value.trim();
+    var deal      = parseInt($('deal').value, 10) || 0;
+    var remaining = parseInt($('remaining').value, 10) || 0;
+    var deadline  = fmtDeadline($('deadline').value);
+
+    var card = $('resultCard');
+    if (deal <= 0 || remaining <= 0){ card.classList.remove('show'); return; }
+
+    var q = qtys(remaining);
+
+    var meta = '';
+    if (name)  meta += '<div><span>Client</span><span>'+ esc(name) +'</span></div>';
+    if (email) meta += '<div><span>Email</span><span>'+ esc(email) +'</span></div>';
+    meta += '<div><span>Deal</span><span>'+ deal.toLocaleString() +' Google Reviews</span></div>';
+    meta += '<div><span>Sisa Dikonversi</span><span>'+ remaining.toLocaleString() +' Google Reviews</span></div>';
+    if (remaining > deal) meta += '<div><span style="color:#dc2626">Catatan</span><span style="color:#dc2626">Sisa &gt; Deal, cek lagi</span></div>';
+    $('resMeta').innerHTML = meta;
+
+    $('convList').innerHTML =
+      convItem('#00AA6C', '★', 'TripAdvisor',    '1 : 1 conversion', q.trip, 'rvws') +
+      convItem('#1877F2', 'f', 'Facebook',       '1 : 1 conversion', q.fb, 'rvws') +
+      convItem('#7c3aed', '♥', 'Folicom Social Engagements', '≈ '+ SMM_PER_REVIEW.toFixed(1) +' per item', q.socmed, 'engagements');
+
+    $('msgText').textContent = buildMessage(name, deal, remaining, q.fb, q.trip, q.socmed, deadline, currentSegment);
+    card.classList.add('show');
+  }
+
+  function convItem(color, glyph, nameTxt, descTxt, qty, unit){
+    return '<div class="conv-item">' +
+      '<div class="conv-icon" style="background:'+ color +'">'+ glyph +'</div>' +
+      '<div class="conv-body">' +
+        '<div class="conv-name">'+ nameTxt +'</div>' +
+        '<div class="conv-desc">'+ descTxt +'</div>' +
+      '</div>' +
+      '<div class="conv-qty">'+ qty.toLocaleString() +' <small>'+ unit +'</small></div>' +
+    '</div>';
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  // ===== Batch mode =====
+  function parseLine(line){
+    var parts = line.split(/[,;\t]/).map(function(x){ return x.trim(); });
+    var name = parts[0] || '';
+    var email = '', deal = 0, remaining = 0;
+    if (parts.length >= 4){
+      email     = parts[1];
+      deal      = parseInt(parts[2], 10) || 0;
+      remaining = parseInt(parts[3], 10) || 0;
+    } else {
+      // 3-field fallback: Nama, Deal, SisaReview (email blank)
+      deal      = parseInt(parts[1], 10) || 0;
+      remaining = parseInt(parts[2], 10) || 0;
+    }
+    return { name: name, email: email, deal: deal, remaining: remaining };
+  }
+
+  function generateBatch(){
+    var lines = $('batchInput').value.split('\n');
+    var deadline = fmtDeadline($('batchDeadline').value);
+    batchRows = [];
+    var errs = [];
+
+    lines.forEach(function(line, idx){
+      var t = line.trim();
+      if (!t) return;
+      var p = parseLine(t);
+      if (!p.name || p.deal <= 0 || p.remaining <= 0){
+        errs.push('Baris ' + (idx+1) + ': "' + esc(t) + '" — format/angka tidak valid (butuh: Nama, [Email], Deal, SisaReview).');
+        return;
+      }
+      if (p.remaining > p.deal){
+        errs.push('Baris ' + (idx+1) + ': ' + esc(p.name) + ' — sisa (' + p.remaining + ') lebih besar dari deal (' + p.deal + '), cek lagi.');
+        return;
+      }
+      var q = qtys(p.remaining);
+      batchRows.push({
+        name: p.name, email: p.email, deal: p.deal, remaining: p.remaining,
+        fb: q.fb, trip: q.trip, socmed: q.socmed,
+        msg: buildMessage(p.name, p.deal, p.remaining, q.fb, q.trip, q.socmed, deadline, currentSegment)
+      });
+    });
+
+    renderBatch(errs);
+  }
+
+  function renderBatch(errs){
+    var html = '';
+    batchRows.forEach(function(r, i){
+      var n = i + 1, mid = 'bmsg' + n;
+      html += '<tr>' +
+        '<td class="num">' + n + '</td>' +
+        '<td class="biz">' + esc(r.name) + '</td>' +
+        '<td>' + (r.email ? esc(r.email) : '<span class="hint">—</span>') + '</td>' +
+        '<td class="num">' + r.deal.toLocaleString() + '</td>' +
+        '<td class="num">' + r.remaining.toLocaleString() + '</td>' +
+        '<td class="num">' + r.fb.toLocaleString() + '</td>' +
+        '<td class="num">' + r.trip.toLocaleString() + '</td>' +
+        '<td class="num">' + r.socmed.toLocaleString() + '</td>' +
+        '<td><button class="btn-ghost bi-copy" data-target="' + mid + '">Salin</button>' +
+          '<pre class="hidden-msg" id="' + mid + '">' + esc(r.msg) + '</pre></td>' +
+      '</tr>';
+    });
+
+    $('batchBody').innerHTML = html;
+    $('batchCount').textContent = batchRows.length ? '· ' + batchRows.length + ' client' : '';
+
+    if (errs && errs.length){ $('batchErr').style.display = 'block'; $('batchErr').innerHTML = errs.join('<br>'); }
+    else { $('batchErr').style.display = 'none'; $('batchErr').innerHTML = ''; }
+
+    $('batchCard').classList.toggle('show', batchRows.length > 0 || (errs && errs.length > 0));
+
+    document.querySelectorAll('#batchBody .bi-copy').forEach(function(b){
+      b.onclick = function(){
+        var el = document.getElementById(b.dataset.target);
+        navigator.clipboard.writeText(el.textContent).then(function(){
+          var orig = b.textContent; b.textContent = '✓ Tersalin';
+          setTimeout(function(){ b.textContent = orig; }, 1400);
+        });
+      };
+    });
+  }
+
+  // ===== Export =====
+  var HEADERS = ['client_name','email','deal','remaining_reviews','qty_fb','qty_trip','qty_socmed','Copy'];
+
+  function rowValues(r){
+    return [r.name, r.email, r.deal, r.remaining, r.fb, r.trip, r.socmed, r.msg];
+  }
+
+  function download(content, filename, mime){
+    var blob = new Blob([content], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+
+  // RFC 4180: quote fields containing comma, quote, CR or LF; double internal quotes.
+  function csvCell(v){
+    v = String(v == null ? '' : v);
+    if (/[",\r\n]/.test(v)) return '"' + v.replace(/"/g, '""') + '"';
+    return v;
+  }
+
+  function exportCSV(){
+    if (!batchRows.length) return;
+    var lines = [HEADERS.map(csvCell).join(',')];
+    batchRows.forEach(function(r){ lines.push(rowValues(r).map(csvCell).join(',')); });
+    // UTF-8 BOM (﻿) so Excel + Google Sheets read accents/curly quotes correctly.
+    download('﻿' + lines.join('\r\n'), 'smartbuzzer-conversion.csv', 'text/csv;charset=utf-8;');
+  }
+
+  function xlsCell(v){
+    return String(v == null ? '' : v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\r?\n/g, '<br>');
+  }
+
+  function exportXLS(){
+    if (!batchRows.length) return;
+    var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">' +
+      '<head><meta charset="utf-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>' +
+      '<x:Name>Conversion</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>' +
+      '</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->' +
+      '<style>td{mso-data-placement:same-cell;vertical-align:top}</style></head><body>' +
+      '<table border="1"><tr>';
+    HEADERS.forEach(function(h){ html += '<th>' + xlsCell(h) + '</th>'; });
+    html += '</tr>';
+    batchRows.forEach(function(r){
+      html += '<tr>';
+      rowValues(r).forEach(function(c){ html += '<td>' + xlsCell(c) + '</td>'; });
+      html += '</tr>';
+    });
+    html += '</table></body></html>';
+    download(html, 'smartbuzzer-conversion.xls', 'application/vnd.ms-excel;charset=utf-8;');
+  }
+
+  function copyAll(){
+    if (!batchRows.length) return;
+    var all = batchRows.map(function(r){ return r.msg; }).join('\n\n———\n\n');
+    navigator.clipboard.writeText(all).then(function(){
+      var b = $('copyAllBtn'), orig = b.textContent;
+      b.textContent = '✓ Semua tersalin';
+      setTimeout(function(){ b.textContent = orig; }, 1600);
+    });
+  }
+
+  // ===== Wiring =====
+  ['clientName','sEmail','deal','remaining','deadline'].forEach(function(id){
+    $(id).addEventListener('input', compute);
+  });
+  $('batchGenBtn').addEventListener('click', generateBatch);
+  $('exportCsvBtn').addEventListener('click', exportCSV);
+  $('exportXlsBtn').addEventListener('click', exportXLS);
+  $('copyAllBtn').addEventListener('click', copyAll);
+  $('batchResetBtn').addEventListener('click', function(){
+    $('batchInput').value = ''; $('batchDeadline').value = ''; $('batchBody').innerHTML = ''; batchRows = [];
+    $('batchErr').style.display = 'none'; $('batchCard').classList.remove('show');
+    $('batchInput').focus();
+  });
+
+  $('copyBtn').addEventListener('click', function(){
+    var txt = $('msgText').textContent;
+    if (!txt) return;
+    navigator.clipboard.writeText(txt).then(function(){
+      var tag = $('copiedTag');
+      tag.classList.add('show');
+      setTimeout(function(){ tag.classList.remove('show'); }, 1600);
+    });
+  });
+
+  $('resetBtn').addEventListener('click', function(){
+    ['clientName','sEmail','deal','remaining','deadline'].forEach(function(id){ $(id).value = ''; });
+    $('resultCard').classList.remove('show');
+    $('clientName').focus();
+  });
+</script>
+</body>
+</html>

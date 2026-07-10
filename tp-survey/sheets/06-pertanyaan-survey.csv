@@ -1,0 +1,30 @@
+PERTANYAAN SURVEY v3 — 24 pertanyaan (~5 menit). Tipe & opsi jawaban.,,,,
+"Tipe input di web: radio = Pilih 1 | checkbox = Multiple | max2 = maksimal 2 | text = Free text | reveal = ada isian singkat | note = ada kolom tambahan | contact = nama+email/WA",,,,
+,,,,
+Sec,Q#,Pertanyaan (EN),Tipe,Opsi jawaban
+A,Q1,What's your role?,radio + reveal,Owner / Manager / Marketing / Other(isi)
+A,Q2,How many locations do you operate?,radio,1 / 2-4 / 5-15 / 15+
+A,Q3,Roughly what's your current average rating?,radio,Under 3.5 / 3.5-4.2 / 4.3-4.6 / 4.7+ / Not sure
+A,Q4,Roughly how many reviews on your main platform?,radio,<20 / 20-100 / 100-500 / 500+
+B,Q5,What's the #1 thing you're trying to GROW right now?,radio + reveal,More new customers / More bookings / More repeat customers / Higher-value customers / Keep it steady / Other(isi)
+B,Q6,Where do most of your NEW customers come from today?,checkbox max2,Walk-ins / Google / Tripadvisor / Instagram-Facebook / Booking.com-OTAs / Referrals / Paid ads / Other(isi)
+B,Q7,"When customers are deciding, what do they check or care about most?",checkbox max2,Rating & reviews / Photos / Price / Location / Recommendations / Social media / Not sure
+B,Q8,Which platforms do you actively push or invest in today?,checkbox,Google / Tripadvisor / Facebook / Yelp / Booking.com / Instagram / None actively / Other(isi)
+C,Q9,Is Tripadvisor driving customers or revenue for your business?,radio,Yes clearly / Somewhat / Not really / Not sure / We're not on TA
+C,Q10,What do you mainly use Tripadvisor for?,checkbox,Attracting new customers / Reputation & trust / Bookings & enquiries / Photos & business info / Replying to reviews / We don't actively use it
+C,Q11,"How often do you maintain your TA listing (photos, info, replies)?",radio,Weekly / Monthly / Rarely / Never
+D,Q12,What's your single biggest challenge with your online PRESENCE right now?,text,(free text) — high-signal
+D,Q13,Which of these eat your time or worry you?,checkbox,Replying to reviews / Keeping photos & info updated / Ranking or visibility vs competitors / Monitoring what's said about you / Managing multiple platforms or locations / Getting bookings or enquiries from listings / None
+D,Q14,Of those which ones can you NOT fix on your own — where you'd want help?,text,(free text) — high-signal
+D,Q15,"When you get a negative review, what usually happens?",radio,We respond fast / We respond eventually / We don't respond / We often don't see it in time
+D,Q16,What do you currently DO to get more reviews?,checkbox,Ask in person / Signage or QR / Email / SMS / Nothing systematic / A tool or agency does it / Other(isi)
+E,Q17,Do you use any tool or service for this today?,radio + reveal,No / Free tools only / Paid tool(which?) / An agency(who?)
+E,Q18,Have you ever PAID to improve reviews/reputation/presence?,radio + reveal,Yes(how much/mo?) / No / Considered it
+E,Q19,Roughly how much do you spend on MARKETING per month?,radio + note,<$100 / $100-500 / $500-2000 / $2000+ / Prefer not to say — note: mostly goes to___
+E,Q20,Have you ever actively searched for a service to fix this? (where + what mattered),text,(free text) — high-signal
+F,Q21,If a tool could fix your biggest problem — how valuable?,radio,Must-have / Nice-to-have / Not needed
+F,Q22,What would you expect to pay per month for that?,radio,<$30 / $30-75 / $75-150 / $150-300 / $300+ / Wouldn't pay
+F,Q23,Magic wand: fix ONE thing about how customers find & choose you online?,text,(free text) — high-signal
+G,Q24,Open to a quick 15-min call? (no pitch + thank-you),radio + contact,Yes(name+email/WA) / Maybe later / No
+,,,,
+"Reward (layar terakhir, opsional): pilih 1 — 10 Tripadvisor reviews / 1000 Instagram followers / No thanks. Kalau pilih, isi kontak (bisnis + email/WA). Kecatet di kolom Reward + Reward contact.",,,,

@@ -5,16 +5,16 @@
 
 // Package details
 $packages = [
-    'starter' => ['name' => 'Starter', 'reviews' => '55', 'price' => '360.00', 'display' => '$360', 'item_id' => 'pkg_starter_55', 'item_name' => 'Buy Google Reviews - 55 Local'],
-    'growth' => ['name' => 'Growth', 'reviews' => '88', 'price' => '550.00', 'display' => '$550', 'item_id' => 'pkg_growth_88', 'item_name' => 'Buy Google Reviews - 88 Local'],
-    'performance' => ['name' => 'Performance', 'reviews' => '110', 'price' => '660.00', 'display' => '$660', 'item_id' => 'pkg_performance_110', 'item_name' => 'Buy Google Reviews - 110 Local']
+    'starter' => ['name' => 'Starter', 'reviews' => '30', 'price' => '240.00', 'display' => '$240', 'item_id' => 'pkg_starter_55', 'item_name' => 'Buy Google Reviews - 30 Local'],
+    'growth' => ['name' => 'Growth', 'reviews' => '42', 'price' => '330.00', 'display' => '$330', 'item_id' => 'pkg_growth_88', 'item_name' => 'Buy Google Reviews - 42 Local'],
+    'performance' => ['name' => 'Performance', 'reviews' => '48', 'price' => '350.00', 'display' => '$350', 'item_id' => 'pkg_performance_110', 'item_name' => 'Buy Google Reviews - 48 Local']
 ];
 
 // Fanbasis ref code to package key mapping
 $refMap = [
-    'LP-PROMO-55' => 'starter',
-    'LP-PROMO-88' => 'growth',
-    'LP-PROMO-110' => 'performance'
+    'LP-PROMO-30' => 'starter',
+    'LP-PROMO-42' => 'growth',
+    'LP-PROMO-48' => 'performance'
 ];
 
 // ===== PARSE FANBASIS PARAMS =====

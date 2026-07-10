@@ -1,3 +1,4 @@
+<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -358,7 +359,7 @@ button{cursor:pointer;border:none;background:none;font-family:inherit}
     <h2 class="done-title">Thank you! Survey complete.</h2>
     <p class="done-sub">Your answers help us improve our system and serve you better.</p>
     <p class="done-contact">Questions? WhatsApp us:</p>
-    <a href="https://wa.me/6285773116557" class="wa-link">📞 +62857-7311-6557</a>
+    <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>" class="wa-link">📞 <?php echo $SB_WA_DISPLAY; ?></a>
     <a href="https://smart-buzzer.com/promo/" class="btn-site">Visit our website →</a>
 </div>
 </div>

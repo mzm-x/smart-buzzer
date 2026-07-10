@@ -3269,7 +3269,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- Plain summary card -->
                 <div style="background: #fff; border: 1px solid var(--blue-50); border-radius: 14px; padding: 22px 24px; font-size: 15px; line-height: 1.7; color: #334155;">
                     <p style="margin: 0 0 10px;"><span style="color: var(--green-success); font-weight: 700;">&#10003; If it drops within 7 days of showing up</span> &mdash; we replace it free, one time.</p>
-                    <p style="margin: 0 0 10px;"><span style="color: #94a3b8; font-weight: 700;">&#8212; If it stays live past 7 days</span> &mdash; it&rsquo;s final and counts as delivered.</p>
+                    <p style="margin: 0 0 10px;"><span style="color: #94a3b8; font-weight: 700;">&#8212; If it stays live past 7 days</span> &mdash; it&rsquo;s final and counts as delivered. If it drops <strong>after</strong> the 7 days, it is <strong>not replaced</strong>.</p>
                     <p style="margin: 0;"><span style="color: #94a3b8; font-weight: 700;">&#8212; If a replacement later drops</span> &mdash; that one is not replaced again (one replacement per review).</p>
                     <p style="margin: 14px 0 0; font-size: 13px; color: #64748b;">Full delivery of 55 reviews typically takes around 3 months. By completing your order you agree to this fair-use guarantee.</p>
                 </div>
@@ -3294,7 +3294,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" onclick="toggleFaq(this)">What if reviews get removed?<span class="faq-arrow">&#9660;</span></button>
-                    <div class="faq-a"><div class="faq-a-inner">Each review is counted as delivered the moment it shows up on your listing. Every delivered review gets its own 7-day replacement window starting the day it appears — if it drops within those 7 days, we replace it free (one replacement per review). Reviews that stay live past 7 days are considered final. Some drops are normal and can happen even with organic reviews due to Google's algorithm.</div></div>
+                    <div class="faq-a"><div class="faq-a-inner">Each review is counted as delivered the moment it shows up on your listing. Every delivered review gets its own 7-day replacement window starting the day it appears — if it drops within those 7 days, we replace it free (one replacement per review). Reviews that stay live past 7 days are considered final — if a review drops after 7 days, it is not replaced. Some drops are normal and can happen even with organic reviews due to Google's algorithm.</div></div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" onclick="toggleFaq(this)">Can I choose what the reviews say?<span class="faq-arrow">&#9660;</span></button>

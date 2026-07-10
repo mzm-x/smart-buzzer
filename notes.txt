@@ -3,7 +3,9 @@ Tolong analisis dlu bug root causenya dimana dan sebutin ke gua , jgn updapte sc
 
 Tolong analisis dlu designnya dri segi ui ux yang terbaik gimana improvemenetnnya gmna ini untuk manusia 
 
-Tolong analisis dlu bug root causenya dimana dan sebutin ke gua dan kasih preview dengan "|" framework baiknya gmna 
+Tolong analisis dlu bug root causenya dimana dan sebutin ke gua dan 
+
+kasih preview dengan "|" framework baiknya gmna 
 
 
 —- command —- 
@@ -14,5 +16,7 @@ Tampilkan full script, tunjukin aja artifactnya gk usah bawel without elaboratio
 Tolong analisis dlu designnya dri segi ui ux yang terbaik gimana improvemenetnnya gmna ini untuk manusia 
 
 tunjukin detailed plannya dan beirkan preview ui ux nya dan kasih tau file apa yg diedit dan confidencde rate berapa eprsen 
+
+kasih preview dengan "|" framework baiknya gmna 
 
 analisis deep dive make it high conversion kamu adalah web develooer terbaik didunia 

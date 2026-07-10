@@ -1,3 +1,4 @@
+<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3345,7 +3346,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="footer-col">
                 <h5>Contact</h5>
                 <ul>
-                    <li>📞 WhatsApp: <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Google%20Reviews.%20I%20am%20from%20the%20Promo%20Industry%20page.">+62857-7311-6557</a></li>
+                    <li>📞 WhatsApp: <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20ggl%20rvw.%20I%20am%20from%20the%20Promo%20Industry%20page."><?php echo $SB_WA_DISPLAY; ?></a></li>
                     <li>📧 Email: <a href="mailto:contact@smart-buzzer.com">contact@smart-buzzer.com</a></li>
                 </ul>
             </div>
@@ -3362,7 +3363,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <!-- ===== FLOATING WHATSAPP WIDGET ===== -->
-<a href="https://wa.me/85777311657?text=Hi%20Smart%20Buzzer%20team%2C%0A%0AI%20am%20interested%20in%20your%20Google%20Reviews%20service.%0A%0ACould%20you%20share%3A%0A-%20Package%20details%20and%20pricing%0A-%20Delivery%20timeline%0A-%20Industries%20you%20support%0A%0AThank%20you." class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+<a href="https://wa.me/85777311657?text=Hi%20Smart%20Buzzer%20team%2C%0A%0AI%20am%20interested%20in%20your%20ggl%20rvw%20service.%0A%0ACould%20you%20share%3A%0A-%20Package%20details%20and%20pricing%0A-%20Delivery%20timeline%0A-%20Industries%20you%20support%0A%0AThank%20you." class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
     <i class="fa-brands fa-whatsapp"></i>
     <span class="wa-float-label">Chat with us</span>
 </a>

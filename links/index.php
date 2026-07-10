@@ -1,3 +1,4 @@
+<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -488,7 +489,7 @@
         <!-- Links Container -->
         <div class="links-container">
             <!-- WhatsApp - Priority Contact -->
-            <a href="https://api.whatsapp.com/send?phone=6285773116557&text=Hi%2C%20I%27m%20from%20Social%20Media.%20I%20want%20to%20grow%20my%20business.%20Could%20you%20help%20me%3F" 
+            <a href="https://api.whatsapp.com/send?phone=<?php echo $SB_WA_NUMBER; ?>&text=Hi%2C%20I%27m%20from%20Social%20Media.%20I%20want%20to%20grow%20my%20business.%20Could%20you%20help%20me%3F" 
                class="link-item whatsapp" target="_blank">
                 <span class="badge">FAST REPLY</span>
                 <div class="link-content">

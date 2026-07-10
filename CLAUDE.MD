@@ -26,6 +26,14 @@
 
 ---
 
+## CHANGED-FILES CHECKLIST RULE (ALWAYS)
+
+**End EVERY response that creates, edits, or deletes files with a "File yang diubah:" list** — each file path + a short note of what changed (dibuat / diedit bagian apa / dihapus). Scope = that turn's changes only; give a full-session recap only when explicitly asked. Do this automatically, every single time, without being asked.
+
+**Why:** The user deploys to production manually (cPanel, file-by-file). A missing list means a changed file gets missed on upload. This has been re-requested many times — treat as high priority.
+
+---
+
 ## Project Overview
 **Product:** Smart Buzzer Google Review Service
 **Target Market:** US/Canada/Australia small-medium businesses (HVAC, dental, restaurants, professional services)
@@ -62,7 +70,7 @@ This is the canonical service-delivery knowledge that must be reflected in all c
 **We submit 5-10 reviews daily.** Around 5 will show up and stick (roughly 3 per day). This gradual pace keeps the account safe and looks natural to the algorithm. **We only count reviews that stick** — if a review doesn't stick, it does NOT count toward the order.
 
 ### 2. Drops Are Normal — Per-Review 7-Day Replacement
-Each review counts as **delivered the moment it shows up** on the listing (1 review = 1 delivered). Every delivered review carries its **own 7-day replacement window starting the day it appears** — NOT after the whole order is complete. If a review drops within those 7 days, **we replace it free, one replacement per review**. Reviews that stay live past 7 days are **final**. If a replacement later drops, it is **not replaced again** (one replacement per review). This is the canonical guarantee model — do NOT describe the guarantee as starting "after the full order completes".
+Each review counts as **delivered the moment it shows up** on the listing (1 review = 1 delivered). Every delivered review carries its **own 7-day replacement window starting the day it appears** — NOT after the whole order is complete. If a review drops within those 7 days, **we replace it free, one replacement per review**. Reviews that stay live past 7 days are **final** — **if a review drops after the 7-day window, it is NOT replaced**. If a replacement later drops, it is **not replaced again** (one replacement per review). This is the canonical guarantee model — do NOT describe the guarantee as starting "after the full order completes".
 
 ### 3. Error Names (Asian-Server Accounts)
 Since we use real people to post reviews, occasionally some reviews may come from Asian-server accounts. **These are not counted as valid orders** — we automatically replace them with new reviews until the full order is fulfilled.
@@ -1638,7 +1646,7 @@ page_url: window.location.pathname  // Just "/promo/"
 | promo-rating | /promo-rating/ | Active | Blue (Rating only) | starter/growth/performance | growth | /promo-rating/thankyou.php |
 | promo-australia | /promo-australia/ | Active | Blue (AU market) | starter/growth/performance | growth | /promo-australia/thankyou.php |
 | promo-california | /promo-california/ | Active | Coastal Blue + Sunset Gold (CA market) | starter ($360.00) / growth ($550) / performance ($660) | growth | /promo-california/thankyou.php |
-| promo-tripadvisor | /promo-tripadvisor/ | Active | TripAdvisor Green (#00AA6C) | starter ($360.00) / growth ($550) / performance ($660) | growth | /promo-tripadvisor/thankyou.php |
+| promo-tripadvisor | /promo-tripadvisor/ | Active | TripAdvisor Green (#00AA6C) | starter 28r ($250) / growth 35r ($300) / performance 50r ($400) | growth | /promo-tripadvisor/thankyou.php |
 | promo-trustpilot | /promo-trustpilot/ | Active | Trustpilot Green (#05B67A) | starter ($357.50) / growth ($550) / performance ($660) | growth | /promo-trustpilot/thankyou.php |
 | seasonal | /seasonal/ | Planned | TBD | TBD | TBD | /seasonal/thankyou.php |
 | xmas | /xmas/ | Active | Christmas (Emerald/Gold) | starter/growth/performance | growth | /xmas/thankyou.php |

@@ -1,0 +1,18 @@
+LEAD SOURCING — Prinsip: TRIPADVISOR = sumber kebenaran buat MILIH lead. Google Maps scraper = cuma buat cari KONTAK (email/phone) karena TA nggak expose kontak.,,,
+,,,
+#,Sumber,Cara,Output
+1,TripAdvisor top-list (PRIMARY),"Buka TA per kota target: kategori Restaurants / Hotels / Things to Do. Scan listing, catat yang match filter segment (bubble rating + review count TA). 15-20 menit/kota",Daftar bisnis per segment yang TA-nya beneran match
+2,Scraper /outbound/ (contact enrichment),Search nama bisnis hasil #1 di scraper (Apify Google Maps) buat ambil email + phone + socials. Alternatif cepat: scrape per kota lalu cross-match manual sama daftar TA,"Email/WA per lead, biaya ~$2-5 total"
+3,Komunitas & koneksi,"FB group restaurant/hotel owners US, asosiasi hospitality, existing client Smart Buzzer yang punya kenalan hospitality",Warm leads (completion rate lebih tinggi)
+,,,
+MAPPING FILTER SEGMENT (angka TRIPADVISOR — skala bubble 0.5: High = >=4.5 / Low = <=4.0) — 40 leads/segment,,,
+Segment,Kategori TA,Filter TA bubble + review count,Kota
+S1,Restaurants,>= 4.5 bubble & < 100 reviews,"Miami, Orlando, Las Vegas, New Orleans"
+S2,Restaurants,>= 4.5 bubble (kalau ada TA) & < 100 reviews — listing tipis/kosong justru sinyal batas wedge,"Charlotte, Columbus, Indianapolis, Kansas City"
+S4,Hotels,<= 4.0 bubble & >= 500 reviews,"Orlando, Las Vegas, Myrtle Beach, San Diego"
+,,,
+CHANNEL & ATURAN,,,
+Channel per lead,WhatsApp (WATI) -> respon tercepat. Email -> pakai alur outbound existing. Instagram DM -> buat resto/tour yang aktif IG.,,
+Link tracking,Tiap lead dapet link ?seg=S1&channel=whatsapp — segment & channel otomatis kecatet.,,
+Incentive,Ringkasan hasil riset (benchmark bisnis sejenis) gratis sebagai thank-you. Buat Q21 call: gift card kecil ($5-10).,,
+WA safety,"PENTING: jangan pakai nomor yang pernah kena ban. Pakai WATI / nomor central LP, max 30-40 pesan personal/hari, jangan blast template identik.",,

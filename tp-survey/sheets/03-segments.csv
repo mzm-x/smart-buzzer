@@ -1,0 +1,17 @@
+SEGMENTS — 4 kategori (Rating x Review) x 2 cabang (Tourist/Non) = 8 seg codes. Angka TripAdvisor.,,,,,,
+"Benchmark: Low rating <= 3.5 | High rating >= 4.5 | Low review < 50 | High review >= 100. Zona tengah di-skip biar kontras.",,,,,,
+"Param link: 1 param seg = digit kategori (1-4) + T/N. Contoh ?seg=3T&channel=email",,,,,,
+,,,,,,
+Kategori,Rating filter (TA),Review filter (TA),Seg Tourist,Seg Non-Tourist,Kuota Tourist,Kuota Non
+1. Low Rating x Low Review,<= 3.5 bubble,< 50 reviews,1T,1N,25,25
+2. Low Rating x High Review,<= 3.5 bubble,>= 100 reviews,2T,2N,45,45
+3. High Rating x Low Review,>= 4.5 bubble,< 50 reviews,3T,3N,45,45
+4. High Rating x High Review,>= 4.5 bubble,>= 100 reviews,4T,4N,35,35
+TOTAL,,,,,150,150
+,,,,,,
+"KENAPA:",,,,,,
+1. Low x Low,"Bisnis baru/struggling. 1-2 review jelek langsung dominan, butuh volume buat dilute. Pain ada tapi budget paling kecil.",,,,,
+2. Low x High,"Reputasi rusak & mengakar, review udah banyak, ga bisa dibenerin sendiri. Pain paling dalem + paling berani bayar (recovery).",,,,,
+3. High x Low,"Bisnis actually bagus tapi bukti kurang, keliatan kecil dibanding kompetitor. Pain paling jelas, solusinya persis produk kita.",,,,,
+4. High x High,"Leader di kategorinya. Pain bukan nambah review tapi jaga posisi: monitoring, bales review, defend. Kandidat produk lain.",,,,,
+Tourist vs Non,"Tourist = TA-nya hidup, langsung testable. Non-tourist = ngetes batas: TA masih laku ga, atau customer nyari di Google semua.",,,,,

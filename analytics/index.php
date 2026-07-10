@@ -31,6 +31,7 @@ $BASE_PATH = '/home/u387681977/domains/smart-buzzer.com/public_html';
 $DEFAULT_LANDING_PAGES = [
     'promo',
     'promo-2',
+    'sw-google',
     'promo-outbound',
     'promo-b1g1',
     'promo-rating',
@@ -76,7 +77,44 @@ if (isset($_GET['action'])) {
     }
     
     $action = $_GET['action'];
-    
+
+    // ============================================
+    // WHATSAPP NUMBER — CENTRAL CONFIG (single source of truth for all LPs)
+    // Writes web-root /wa-config.json; every landing page reads it via wa-config.php
+    // ============================================
+    $WA_CONFIG_FILE = dirname(__DIR__) . '/wa-config.json';
+
+    if ($action === 'get_wa') {
+        $num = '628979133204'; $disp = '+62 897-9133-204';
+        if (is_readable($WA_CONFIG_FILE)) {
+            $cfg = json_decode((string)file_get_contents($WA_CONFIG_FILE), true);
+            if (is_array($cfg)) {
+                if (!empty($cfg['wa_number']))  $num  = $cfg['wa_number'];
+                if (!empty($cfg['wa_display'])) $disp = $cfg['wa_display'];
+            }
+        }
+        echo json_encode(['success' => true, 'wa_number' => $num, 'wa_display' => $disp, 'exists' => is_readable($WA_CONFIG_FILE)]);
+        exit;
+    }
+
+    if ($action === 'save_wa') {
+        $num  = isset($_POST['wa_number'])  ? preg_replace('/[^0-9]/', '', $_POST['wa_number']) : '';
+        $disp = isset($_POST['wa_display']) ? preg_replace('/[\t\r\n<>]/', '', trim($_POST['wa_display'])) : '';
+        if (!preg_match('/^[0-9]{6,20}$/', $num)) {
+            echo json_encode(['error' => 'Invalid WhatsApp number — digits only, country code without "+", 6-20 digits. Example: 628979133204']);
+            exit;
+        }
+        if ($disp === '') { $disp = '+' . $num; }
+        $payload = json_encode(['wa_number' => $num, 'wa_display' => $disp], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $ok = @file_put_contents($WA_CONFIG_FILE, $payload . "\n");
+        if ($ok === false) {
+            echo json_encode(['error' => 'Could not write wa-config.json at web root (' . $WA_CONFIG_FILE . '). Check folder write permission.']);
+            exit;
+        }
+        echo json_encode(['success' => true, 'wa_number' => $num, 'wa_display' => $disp]);
+        exit;
+    }
+
     // Add source
     if ($action === 'add_source' && isset($_POST['name']) && isset($_POST['url'])) {
         $sources = loadSources($SOURCES_DIR);
@@ -2185,6 +2223,25 @@ $sources = loadSources($SOURCES_DIR);
     <!-- TAB: Sources -->
     <div class="tab-panel" id="tab-sources">
     <div class="sources-section" style="margin-top: 0;">
+        <div class="card" style="margin-bottom: 20px;">
+            <div class="card-header">📱 WhatsApp Number (all landing pages)</div>
+            <div class="card-body">
+                <p style="margin: 0 0 14px; color: #64748b; font-size: 13px; line-height: 1.5;">
+                    Single source of truth for the WhatsApp number across <strong>every</strong> landing page chat widget, header, and footer.
+                    Change it here once &mdash; all LPs update automatically on their next page load. No need to edit each page.
+                </p>
+                <div class="add-source-form" style="flex-wrap: wrap;">
+                    <input type="text" id="waNumber" placeholder="Number, country code, no + (e.g. 628979133204)" style="flex: 1 1 260px;">
+                    <input type="text" id="waDisplay" placeholder="Display text (e.g. +62 897-9133-204)" style="flex: 1 1 220px;">
+                    <button class="btn btn-primary" onclick="saveWaNumber()">Save Number</button>
+                </div>
+                <div id="waStatus" style="margin-top: 12px; font-size: 13px;"></div>
+                <p style="margin: 12px 0 0; color: #94a3b8; font-size: 12px;">
+                    Links use the number (<code>wa.me/&lt;number&gt;</code>); display text is what visitors read.
+                    Leaving display blank auto-fills <code>+&lt;number&gt;</code>.
+                </p>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header">⚙️ Data Sources</div>
             <div class="card-body">
@@ -2314,7 +2371,61 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize LP Trend tooltip
     initLpTrendTooltip();
+
+    // Load current WhatsApp number into the Sources tab editor
+    loadWaNumber();
 });
+
+// ============================================
+// WHATSAPP NUMBER — CENTRAL CONFIG EDITOR
+// ============================================
+async function loadWaNumber() {
+    try {
+        const res = await fetch('?action=get_wa');
+        const data = await res.json();
+        if (data && data.success) {
+            const numEl = document.getElementById('waNumber');
+            const dispEl = document.getElementById('waDisplay');
+            if (numEl)  numEl.value  = data.wa_number  || '';
+            if (dispEl) dispEl.value = data.wa_display || '';
+            const st = document.getElementById('waStatus');
+            if (st) {
+                st.innerHTML = data.exists
+                    ? '<span style="color:#16a34a;">Current: <strong>wa.me/' + (data.wa_number||'') + '</strong> &middot; shown as <strong>' + (data.wa_display||'') + '</strong></span>'
+                    : '<span style="color:#d97706;">No wa-config.json yet — showing fallback. Save to create it.</span>';
+            }
+        }
+    } catch (e) { /* silent */ }
+}
+
+async function saveWaNumber() {
+    const num  = (document.getElementById('waNumber').value || '').replace(/[^0-9]/g, '');
+    const disp = (document.getElementById('waDisplay').value || '').trim();
+    const st = document.getElementById('waStatus');
+    if (!/^[0-9]{6,20}$/.test(num)) {
+        if (st) st.innerHTML = '<span style="color:#dc2626;">Enter a valid number — digits only, country code without "+", 6-20 digits. Example: 628979133204</span>';
+        return;
+    }
+    if (!confirm('Update the WhatsApp number for ALL landing pages to wa.me/' + num + ' ?')) return;
+    setLoading(true);
+    try {
+        const fd = new FormData();
+        fd.append('wa_number', num);
+        fd.append('wa_display', disp);
+        const res = await fetch('?action=save_wa', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.error) {
+            showToast(data.error, 'error');
+            if (st) st.innerHTML = '<span style="color:#dc2626;">' + data.error + '</span>';
+        } else {
+            showToast('WhatsApp number updated for all landing pages', 'success');
+            loadWaNumber();
+        }
+    } catch (e) {
+        showToast('Failed to save: ' + e.message, 'error');
+    }
+    setLoading(false);
+}
 
 // Show toast notification
 function showToast(message, type = '') {

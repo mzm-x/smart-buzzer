@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['status' => 'error']);
     exit;
 }
+$__wa=$_SERVER['DOCUMENT_ROOT'].'/wa-config.php'; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER='628979133204';} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY='+62 897-9133-204';}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -1137,7 +1138,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div class="footer-col">
                 <h4>Contact</h4>
-                <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I'm%20interested%20in%20the%20Mid-Year%20Sale%20package.%20Can%20you%20share%20more%20details%3F" target="_blank">&#128222; +62 857-7311-6557</a>
+                <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I'm%20interested%20in%20the%20Mid-Year%20Sale%20package.%20Can%20you%20share%20more%20details%3F" target="_blank">&#128222; <?php echo $SB_WA_DISPLAY; ?></a>
                 <a href="mailto:contact@smart-buzzer.com">&#128231; contact@smart-buzzer.com</a>
             </div>
         </div>
@@ -1146,7 +1147,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <!-- WHATSAPP FLOAT -->
-<a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I'm%20interested%20in%20the%20Mid-Year%20Sale%20package." target="_blank" class="wa-float-btn" aria-label="WhatsApp">
+<a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I'm%20interested%20in%20the%20Mid-Year%20Sale%20package." target="_blank" class="wa-float-btn" aria-label="WhatsApp">
     <i class="fa-brands fa-whatsapp"></i>
 </a>
 
@@ -1166,7 +1167,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="desktop-sticky-text">&#9889; Mid-Year Sale &#8212; <span>Save up to $195</span> on Google Reviews</div>
         <div class="desktop-sticky-btns">
             <a href="#pricing" class="btn-amber">See Packages</a>
-            <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I'm%20interested%20in%20the%20Mid-Year%20Sale%20package." target="_blank" class="btn-wa-sm">WhatsApp Us</a>
+            <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I'm%20interested%20in%20the%20Mid-Year%20Sale%20package." target="_blank" class="btn-wa-sm">WhatsApp Us</a>
         </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
 <?php
+$__wa=$_SERVER['DOCUMENT_ROOT'].'/wa-config.php'; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER='628979133204';}
 /**
  * ============================================================================
  * File: /submit/submit.php
@@ -4329,7 +4330,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
     // ============================================================================
     // BONUS — FREE MARKETING AUDIT (NDA Modal + WhatsApp + Backend Log)
     // ============================================================================
-    const SB_AUDIT_WA_NUMBER   = '6285773116557'; // wa.me/<number>
+    const SB_AUDIT_WA_NUMBER   = '<?php echo $SB_WA_NUMBER; ?>'; // wa.me/<number> — from central wa-config.php
     const SB_AUDIT_NDA_VERSION = '1.0';
     const SB_AUDIT_TOTAL_STEPS = 4;
     let   sbAuditCurrentStep   = 1;

@@ -1,0 +1,28 @@
+TP SURVEY PLAN — GUIDE,
+,
+Item,Isi
+Project,PMF Discovery — produk presence/reputasi Tripadvisor (Smart Buzzer)
+Tujuan,"Cari tahu WHO buyer-nya, real JOB yang mereka mau selesaikan (sering bukan ""review""), cara mereka solve sekarang, dan willingness-to-pay"
+Metode,"Survey online (21Q, ~5 min) + outbound manual — BUKAN ads"
+Goal,20 completed surveys (bukan 20 approach)
+Survey URL,https://smart-buzzer.com/tp-survey/?seg=S1&channel=whatsapp (ganti seg & channel per lead)
+Admin panel,https://smart-buzzer.com/tp-survey/log.php (6 tab: Overview / Analysis / Responses / Calls / Outbound / Playbook)
+Export data,Admin -> tab Responses -> Export CSV / XLS
+RULE #1,"SURVEY = NO UPSELL. Sekali pitch, tujuan riset hilang. Upsell cuma kalau MEREKA yang nanya"
+RULE #2,"GOAL = 20 completed, bukan 20 approach. Completion rate per segment = sinyal engagement"
+RULE #3,JANGAN scale ke ads sebelum tahu siapa buyer sebenarnya. 1 sale dari ad tidak sama dengan channel works
+,
+LIVE COUNTER,Rumus aktif setelah tab '7. Lead Bank' dan '8. Response Log' dibuat dengan nama persis
+Completed total,"=COUNTIF('8. Response Log'!C:C,""completed"")"
+Sisa ke goal 20,"=20-COUNTIF('8. Response Log'!C:C,""completed"")"
+Completed S1,"=COUNTIFS('8. Response Log'!D:D,""S1"",'8. Response Log'!C:C,""completed"")"
+Completed S2,"=COUNTIFS('8. Response Log'!D:D,""S2"",'8. Response Log'!C:C,""completed"")"
+Completed S4,"=COUNTIFS('8. Response Log'!D:D,""S4"",'8. Response Log'!C:C,""completed"")"
+Approached S1,"=COUNTIFS('7. Lead Bank'!B:B,""S1"",'7. Lead Bank'!R:R,""<>New"",'7. Lead Bank'!R:R,""<>"")"
+Approached S2,"=COUNTIFS('7. Lead Bank'!B:B,""S2"",'7. Lead Bank'!R:R,""<>New"",'7. Lead Bank'!R:R,""<>"")"
+Approached S4,"=COUNTIFS('7. Lead Bank'!B:B,""S4"",'7. Lead Bank'!R:R,""<>New"",'7. Lead Bank'!R:R,""<>"")"
+Completion rate S1,"=IFERROR(B18/B21,0)"
+Completion rate S2,"=IFERROR(B19/B22,0)"
+Completion rate S4,"=IFERROR(B20/B23,0)"
+Persen Must-have (Q17),"=IFERROR(COUNTIF('8. Response Log'!W:W,""Must-have"")/COUNTIF('8. Response Log'!C:C,""completed""),0)"
+Yes-to-call (Q21),"=COUNTIF('8. Response Log'!AA:AA,""Yes"")"

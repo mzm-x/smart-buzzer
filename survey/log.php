@@ -102,6 +102,27 @@ if (file_exists($DATA_FILE)) {
 usort($responses, fn($a,$b) => strcmp($b['submitted_at'], $a['submitted_at']));
 
 // ── CSV EXPORT ────────────────────────────────────────────
+if (isset($_GET['export']) && $_GET['export'] === 'callrequests') {
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="survey-call-requests-'.date('Y-m-d').'.csv"');
+    $timeLabels = ['morning'=>'Morning (9-12pm)','afternoon'=>'Afternoon (12-3pm)','late_pm'=>'Late PM (3-6pm)','flexible'=>'Flexible / Anytime'];
+    $callReqs = array_values(array_filter($responses, fn($r) => !empty($r['call_requested'])));
+    $fp = fopen('php://output', 'w');
+    fputcsv($fp, ['ID','Submitted At','Name','Email','Phone','Best Time','Status']);
+    foreach ($callReqs as $r) {
+        $pt = $r['call_preferred_time'] ?? '';
+        fputcsv($fp, [
+            $r['id'], $r['submitted_at'],
+            $r['name'] ?: ($r['answers']['name'] ?? ''),
+            $r['email'] ?? '',
+            $r['call_phone'] ?? '',
+            $timeLabels[$pt] ?? $pt,
+            $r['call_status'] ?? 'pending',
+        ]);
+    }
+    fclose($fp);
+    exit;
+}
 if (isset($_GET['export'])) {
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="survey-responses-'.date('Y-m-d').'.csv"');
@@ -448,9 +469,14 @@ input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#2E7D32;
 <div class="tbl-box">
     <div class="tbl-head">
         <h3>Call Requests (<?= count($call_requests) ?>)</h3>
-        <?php if ($pending_calls > 0): ?>
-            <span style="font-size:13px;color:#856404;font-weight:600">&#9203; <?= $pending_calls ?> pending</span>
-        <?php endif; ?>
+        <div style="display:flex;align-items:center;gap:14px">
+            <?php if ($pending_calls > 0): ?>
+                <span style="font-size:13px;color:#856404;font-weight:600">&#9203; <?= $pending_calls ?> pending</span>
+            <?php endif; ?>
+            <?php if ($call_requests): ?>
+                <a href="?export=callrequests" class="btn-csv">&#8595; Export CSV</a>
+            <?php endif; ?>
+        </div>
     </div>
     <?php if (!$call_requests): ?>
         <div class="call-empty">No call requests yet.<br><small>Respondents who click "Yes, call me!" will appear here.</small></div>

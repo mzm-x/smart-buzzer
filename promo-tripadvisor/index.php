@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Get authentic Tripadvisor reviews from real travelers — a natural mix of local + global names. Trusted by 1,200+ hotels, restaurants & attractions. Starting $250 for 28 reviews.">
+    <meta name="description" content="Get authentic Tripadvisor reviews from real travelers — a natural mix of local + global names. Trusted by 1,200+ hotels, restaurants & attractions. Starting $360 for 40 reviews.">
     <title>Tripadvisor Reviews - Smart Buzzer | 1,200+ Happy Hospitality Clients</title>
     
     <link rel="icon" type="image/x-icon" href="https://smart-buzzer.com/tracker/sb.ico">
@@ -91,9 +91,9 @@
 
     // ===== Tripadvisor Package Metadata (for GTM dataLayer) =====
     var sbPkgMeta = {
-        'starter':     {id: 'pkg_tripadvisor_starter_28',     name: 'Buy Tripadvisor Reviews - 28 Local',  item_category: 'Tripadvisor Reviews', price: 250.00, reviews: 28},
-        'growth':      {id: 'pkg_tripadvisor_growth_35',      name: 'Buy Tripadvisor Reviews - 35 Local',  item_category: 'Tripadvisor Reviews', price: 300.00, reviews: 35},
-        'performance': {id: 'pkg_tripadvisor_performance_50', name: 'Buy Tripadvisor Reviews - 50 Local',  item_category: 'Tripadvisor Reviews', price: 400.00, reviews: 50}
+        'starter':     {id: 'pkg_tripadvisor_starter_40',     name: 'Buy Tripadvisor Reviews - 40 Local',  item_category: 'Tripadvisor Reviews', price: 360.00, reviews: 40},
+        'growth':      {id: 'pkg_tripadvisor_growth_50',      name: 'Buy Tripadvisor Reviews - 50 Local',  item_category: 'Tripadvisor Reviews', price: 430.00, reviews: 50},
+        'performance': {id: 'pkg_tripadvisor_performance_63', name: 'Buy Tripadvisor Reviews - 63 Local',  item_category: 'Tripadvisor Reviews', price: 530.00, reviews: 63}
     };
 
     // Fire view_item when pricing section becomes visible
@@ -214,6 +214,68 @@
             display: flex;
             gap: 12px;
             align-items: center;
+        }
+
+        /* Sticky Announcement Bar (countdown) */
+        .ta-announce {
+            position: sticky;
+            top: 72px;
+            z-index: 49;
+            background: var(--ta-green);
+            color: var(--dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .ta-announce-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 9px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: nowrap;
+        }
+        .ta-announce-text {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+        .ta-announce-timer {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ta-announce-timer .tab {
+            background: rgba(0,0,0,0.2);
+            color: var(--dark);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            min-width: 30px;
+            text-align: center;
+        }
+        .ta-announce-timer .tsep { font-weight: 800; font-size: 12px; opacity: 0.55; }
+        .ta-announce-cta {
+            background: var(--dark);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 12px;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .ta-announce-cta:hover { background: var(--gray-900); transform: translateY(-1px); }
+        @media (max-width: 600px) {
+            .ta-announce-inner { gap: 9px; padding: 8px 14px; }
+            .ta-announce-text { display: none; }
+            .ta-announce-timer .tab { font-size: 12px; padding: 3px 6px; min-width: 27px; }
+            .ta-announce-cta { padding: 6px 13px; font-size: 11px; }
         }
 
         /* Buttons */
@@ -977,15 +1039,248 @@
             color: var(--gray-500);
         }
 
+        /* ============ WHY TRIPADVISOR ============ */
+        .wta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .wta-card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 32px 24px;
+            transition: all 0.2s;
+        }
+        .wta-card:hover {
+            border-color: var(--ta-green);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+        .wta-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(52,224,161,0.15);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 18px;
+        }
+        .wta-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        .wta-desc {
+            font-size: 14px;
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+
+        /* ============ INFO ICON + UVP MODAL ============ */
+        .ta-info {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            background: var(--ta-green-dark);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            font-style: italic;
+            cursor: pointer;
+            margin-left: 4px;
+            flex-shrink: 0;
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1;
+            transition: transform 0.15s;
+        }
+        .ta-info:hover { transform: scale(1.18); }
+        .ta-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,10,10,0.6);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .ta-modal-overlay.open { display: flex; }
+        .ta-modal {
+            background: #fff;
+            border-radius: 18px;
+            max-width: 460px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.3);
+        }
+        .ta-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--gray-100);
+            border-radius: 999px;
+            font-size: 18px;
+            color: var(--gray-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ta-modal-close:hover { background: var(--gray-200); }
+        .ta-modal h3 {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 14px;
+            padding-right: 30px;
+        }
+        .ta-modal > p { font-size: 15px; color: var(--gray-700); line-height: 1.6; margin-bottom: 18px; }
+        .ta-modal-benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 0;
+            border-top: 1px solid var(--gray-100);
+        }
+        .ta-modal-benefit .tick {
+            color: var(--ta-green-dark);
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .ta-modal-benefit b { color: var(--dark); }
+        .ta-modal-benefit .txt { font-size: 14px; color: var(--gray-700); }
+        .ta-modal-warn {
+            margin-top: 20px;
+            background: #FFF7ED;
+            border: 1px solid #FED7AA;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 13.5px;
+            color: #9A3412;
+            line-height: 1.55;
+        }
+
+        /* ============ PICK YOUR INDUSTRY ============ */
+        .ind-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        .ind-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 20px;
+            border-radius: 999px;
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+        .ind-tab:hover { border-color: var(--ta-green); }
+        .ind-tab.active {
+            background: var(--dark);
+            color: #fff;
+            border-color: var(--dark);
+        }
+        .ind-tab .ind-emoji { font-size: 17px; }
+        .ind-panel {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+            box-shadow: 0 10px 40px -12px rgba(0,0,0,0.12);
+        }
+        .ind-panel.active { display: grid; }
+        .ind-left {
+            background: var(--dark);
+            color: #fff;
+            padding: 48px 44px;
+        }
+        .ind-left-icon {
+            width: 64px;
+            height: 64px;
+            border: 1.5px solid var(--ta-green);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 28px;
+        }
+        .ind-left h3 { font-size: 30px; font-weight: 900; margin-bottom: 16px; color:#fff; }
+        .ind-lead { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 28px; }
+        .ind-feat { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); }
+        .ind-check {
+            width: 22px; height: 22px; flex-shrink: 0;
+            background: var(--ta-green); color: var(--dark);
+            border-radius: 999px; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 900; margin-top: 1px;
+        }
+        .ind-feat b { display: block; font-size: 15px; margin-bottom: 2px; color:#fff; }
+        .ind-feat span { font-size: 13px; color: rgba(255,255,255,0.6); }
+        .ind-right { background: #fff; padding: 48px 44px; }
+        .ind-right-label { font-size: 12px; font-weight: 800; letter-spacing: 0.5px; color: var(--gray-500); text-transform: uppercase; margin-bottom: 20px; }
+        .ind-struggle { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; font-size: 15px; color: var(--gray-700); }
+        .ind-warn { color: #DC2626; flex-shrink: 0; font-weight: 800; }
+        .ind-sample-label {
+            display: inline-block;
+            margin: 24px 0 14px;
+            background: #FEF3C7;
+            color: #92400E;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 999px;
+        }
+        .ind-review {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 22px;
+        }
+        .ind-stars { color: var(--ta-green-dark); font-size: 16px; margin-bottom: 12px; letter-spacing: 2px; }
+        .ind-review p { font-size: 15px; color: var(--gray-700); line-height: 1.65; margin-bottom: 16px; }
+        .ind-reviewer { display: flex; align-items: center; gap: 10px; }
+        .ind-avatar {
+            width: 36px; height: 36px; border-radius: 999px;
+            overflow: hidden; flex-shrink: 0;
+            background: var(--gray-200);
+        }
+        .ind-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ind-reviewer span { font-size: 14px; color: var(--gray-500); }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .hero-grid,
             .pricing-grid,
             .process-grid,
             .content-flex,
-            .why-flex {
+            .why-flex,
+            .ind-panel.active {
                 grid-template-columns: 1fr;
             }
+            .wta-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .ind-left, .ind-right { padding: 36px 28px; }
 
             .hero-grid {
                 gap: 48px;
@@ -1026,6 +1321,10 @@
         }
 
         @media (max-width: 640px) {
+            .guarantee-steps {
+                grid-template-columns: 1fr !important;
+            }
+
             h1 {
                 font-size: 36px;
             }
@@ -1059,6 +1358,9 @@
             .process-grid {
                 gap: 16px;
             }
+            .wta-grid { grid-template-columns: 1fr; }
+            .ind-tab { padding: 9px 14px; font-size: 14px; }
+            .ind-left h3 { font-size: 24px; }
         }
 
         /* ============ INLINE ORDER FORM ============ */
@@ -1233,6 +1535,63 @@
             .of-trust { gap: 10px; font-size: 11px; }
         }
 
+        /* ============ GUARANTEE SUMMARY ============ */
+        .guarantee-summary {
+            background: #f0fdf9;
+            border: 1px solid var(--ta-green);
+            border-radius: 14px;
+            padding: 24px 26px;
+            color: var(--gray-700);
+        }
+        .gs-intro {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 0 0 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(52,224,161,0.35);
+        }
+        .gs-intro strong { color: var(--dark); }
+        .gs-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(52,224,161,0.18);
+        }
+        .gs-row:last-of-type { border-bottom: none; padding-bottom: 4px; }
+        .gs-tag {
+            flex-shrink: 0;
+            width: 188px;
+            font-weight: 800;
+            font-size: 14.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .gs-mark {
+            width: 20px; height: 20px; flex-shrink: 0;
+            border-radius: 999px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 900; color: #fff;
+        }
+        .gs-yes .gs-tag { color: var(--ta-green-dark); }
+        .gs-yes .gs-mark { background: var(--ta-green-dark); }
+        .gs-no .gs-tag { color: var(--gray-700); }
+        .gs-no .gs-mark { background: var(--gray-300); color: var(--gray-700); }
+        .gs-text { font-size: 15px; line-height: 1.6; }
+        .gs-agree {
+            margin: 16px 0 0;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        @media (max-width: 640px) {
+            .guarantee-summary { padding: 20px 18px; }
+            .gs-row { flex-direction: column; gap: 5px; padding: 14px 0; }
+            .gs-tag { width: auto; font-size: 15px; }
+            .gs-text { font-size: 14px; padding-left: 28px; }
+            .gs-intro { font-size: 14px; }
+        }
+
         /* ============ FAQ ACCORDION ============ */
         .faq-section { padding: 96px 0; background: var(--gray-50); }
         .faq-list { max-width: 760px; margin: 0 auto; }
@@ -1317,6 +1676,19 @@
         </div>
     </header>
 
+    <!-- Sticky Announcement Bar -->
+    <div class="ta-announce" id="taAnnounce">
+        <div class="ta-announce-inner">
+            <span class="ta-announce-text">⏰ Limited Offer Ends In:</span>
+            <div class="ta-announce-timer">
+                <span class="tab" id="taCdH">23</span><span class="tsep">:</span>
+                <span class="tab" id="taCdM">59</span><span class="tsep">:</span>
+                <span class="tab" id="taCdS">59</span>
+            </div>
+            <a href="#pricing" class="ta-announce-cta">ORDER NOW →</a>
+        </div>
+    </div>
+
     <!-- Hero -->
     <section class="hero">
         <div class="container">
@@ -1327,13 +1699,219 @@
                         <span>1,200+ Happy Hospitality Clients</span>
                     </div>
                     <h1>Boost Your <span class="text-green">Tripadvisor Rating</span> With Real Traveler Reviews</h1>
-                    <p>Buy genuine Tripadvisor reviews from real travelers — a natural mix of local + global names. Safe, natural posting. Trusted by 1,200+ hotels, restaurants & attractions across the USA.</p>
+                    <p>Climb the Tripadvisor rankings and win more bookings with genuine reviews from real travelers. Human-written, posted naturally, and backed by our 7-day replacement guarantee — trusted by 1,200+ hotels, restaurants & attractions across the USA.</p>
                     <div class="hero-buttons">
                         <a href="#pricing" class="btn btn-primary btn-lg">LEARN MORE</a>
                     </div>
                 </div>
                 <div class="hero-image">
                     <img src="https://smart-buzzer.com/promo-tripadvisor/x.png" alt="Tripadvisor Reviews Dashboard">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Why TripAdvisor Reviews -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Why TripAdvisor</div>
+                <h2>Why Your Business Needs TripAdvisor Reviews</h2>
+            </div>
+            <div class="wta-grid">
+                <div class="wta-card">
+                    <div class="wta-icon">🔍</div>
+                    <div class="wta-title">Improved Online Visibility</div>
+                    <div class="wta-desc">More reviews push your listing higher in TripAdvisor search results, giving you more exposure to travelers.</div>
+                </div>
+                <div class="wta-card">
+                    <div class="wta-icon">🏆</div>
+                    <div class="wta-title">Competitive Advantage</div>
+                    <div class="wta-desc">Travelers compare options — businesses with high-quality TripAdvisor reviews always stand out from the crowd.</div>
+                </div>
+                <div class="wta-card">
+                    <div class="wta-icon">⚡</div>
+                    <div class="wta-title">Faster Decisions</div>
+                    <div class="wta-desc">Authentic feedback helps potential customers book and choose you without hesitation.</div>
+                </div>
+                <div class="wta-card">
+                    <div class="wta-icon">💰</div>
+                    <div class="wta-title">Increased Revenue</div>
+                    <div class="wta-desc">Positive words drive a steady stream of new business — people trust personal recommendations more than any paid ad.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Pick Your Industry -->
+    <section class="section" style="background: var(--gray-50);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Pick Your Industry</div>
+                <h2>Built For Your TripAdvisor Category</h2>
+                <p class="section-desc">We craft reviews that match how real travelers talk about your kind of business — see a sample below.</p>
+            </div>
+
+            <div class="ind-tabs">
+                <button class="ind-tab active" data-ind="hotels" type="button"><span class="ind-emoji">🏨</span> Hotels &amp; Lodging</button>
+                <button class="ind-tab" data-ind="restaurants" type="button"><span class="ind-emoji">🍽️</span> Restaurants</button>
+                <button class="ind-tab" data-ind="attractions" type="button"><span class="ind-emoji">🎡</span> Things to Do</button>
+                <button class="ind-tab" data-ind="tours" type="button"><span class="ind-emoji">🗺️</span> Tours &amp; Activities</button>
+                <button class="ind-tab" data-ind="bars" type="button"><span class="ind-emoji">🍸</span> Bars &amp; Nightlife</button>
+                <button class="ind-tab" data-ind="cafes" type="button"><span class="ind-emoji">☕</span> Cafés</button>
+            </div>
+
+            <!-- Hotels -->
+            <div class="ind-panel active" data-ind="hotels">
+                <div class="ind-left">
+                    <div class="ind-left-icon">🏨</div>
+                    <h3>Built for Hotels &amp; Lodging</h3>
+                    <p class="ind-lead">For hotels, resorts, B&amp;Bs, and vacation rentals. Reviews highlight cleanliness, service, location, and value for money.</p>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Hospitality-Tailored Content</b><span>Room comfort, staff, breakfast &amp; check-in</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Gradual Posting</b><span>1–3 per week, looks natural</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Local + Global Travelers</b><span>Authentic reviewer mix</span></div></div>
+                </div>
+                <div class="ind-right">
+                    <div class="ind-right-label">What Hotel Owners Struggle With</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> One bad review tanks bookings for weeks</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Competitors with 100+ reviews rank higher</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Happy guests rarely leave a review</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> OTAs bury low-rated listings</div>
+                    <div class="ind-sample-label">📝 Sample review we'd write</div>
+                    <div class="ind-review">
+                        <div class="ind-stars">★★★★★</div>
+                        <p>"Spotless room, the front desk upgraded us without being asked, and the location was a 5-minute walk to everything. Breakfast was fresh every morning — would absolutely stay again."</p>
+                        <div class="ind-reviewer"><div class="ind-avatar"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sarah M." loading="lazy"></div><span>Sarah M. · Traveled from Chicago</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurants -->
+            <div class="ind-panel" data-ind="restaurants">
+                <div class="ind-left">
+                    <div class="ind-left-icon">🍽️</div>
+                    <h3>Built for Restaurants</h3>
+                    <p class="ind-lead">For restaurants, bistros, and fine dining. Reviews highlight flavor, service, ambiance, and value.</p>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Menu-Aware Content</b><span>Specific dishes, service &amp; vibe</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Gradual Posting</b><span>1–3 per week, looks natural</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Local + Global Travelers</b><span>Authentic reviewer mix</span></div></div>
+                </div>
+                <div class="ind-right">
+                    <div class="ind-right-label">What Restaurant Owners Struggle With</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> A few bad reviews scare off new diners</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Tourists pick the place with more reviews</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Hard to get busy customers to review</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> One slow night turns into a 1-star</div>
+                    <div class="ind-sample-label">📝 Sample review we'd write</div>
+                    <div class="ind-review">
+                        <div class="ind-stars">★★★★★</div>
+                        <p>"Found this spot on TripAdvisor and so glad we did. The pasta was clearly made fresh, the server recommended the perfect wine, and the patio was lovely at sunset. A real hidden gem."</p>
+                        <div class="ind-reviewer"><div class="ind-avatar"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="David R." loading="lazy"></div><span>David R. · Traveled from London</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Things to Do -->
+            <div class="ind-panel" data-ind="attractions">
+                <div class="ind-left">
+                    <div class="ind-left-icon">🎡</div>
+                    <h3>Built for Things to Do</h3>
+                    <p class="ind-lead">For museums, theme parks, landmarks, and attractions. Reviews highlight the experience, value, and what to expect.</p>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Experience-Tailored Content</b><span>Highlights, tips &amp; worth-it factor</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Gradual Posting</b><span>1–3 per week, looks natural</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Local + Global Travelers</b><span>Authentic reviewer mix</span></div></div>
+                </div>
+                <div class="ind-right">
+                    <div class="ind-right-label">What Attraction Owners Struggle With</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Ranking matters — top results get the clicks</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Visitors compare nearby attractions first</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Seasonal dips kill review momentum</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> A handful of complaints skew the rating</div>
+                    <div class="ind-sample-label">📝 Sample review we'd write</div>
+                    <div class="ind-review">
+                        <div class="ind-stars">★★★★★</div>
+                        <p>"Worth every penny. The guided section was fascinating, the staff were friendly, and there was plenty to keep the kids engaged for hours. Buy tickets online to skip the line!"</p>
+                        <div class="ind-reviewer"><div class="ind-avatar"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Emma T." loading="lazy"></div><span>Emma T. · Traveled from Sydney</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tours -->
+            <div class="ind-panel" data-ind="tours">
+                <div class="ind-left">
+                    <div class="ind-left-icon">🗺️</div>
+                    <h3>Built for Tours &amp; Activities</h3>
+                    <p class="ind-lead">For tour operators, guides, and activity providers. Reviews highlight the guide, organization, and unforgettable moments.</p>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Activity-Tailored Content</b><span>Guides, pacing &amp; highlights</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Gradual Posting</b><span>1–3 per week, looks natural</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Local + Global Travelers</b><span>Authentic reviewer mix</span></div></div>
+                </div>
+                <div class="ind-right">
+                    <div class="ind-right-label">What Tour Operators Struggle With</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Bookings live and die by review count</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Travelers only book the top-rated tours</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> One weather-ruined day = a bad review</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> New operators have zero social proof</div>
+                    <div class="ind-sample-label">📝 Sample review we'd write</div>
+                    <div class="ind-review">
+                        <div class="ind-stars">★★★★★</div>
+                        <p>"Our guide Marco made the whole trip. Super knowledgeable, kept the group laughing, and took us to spots we'd never have found alone. Booked another tour with them the next day!"</p>
+                        <div class="ind-reviewer"><div class="ind-avatar"><img src="https://randomuser.me/api/portraits/men/75.jpg" alt="James K." loading="lazy"></div><span>James K. · Traveled from Toronto</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bars -->
+            <div class="ind-panel" data-ind="bars">
+                <div class="ind-left">
+                    <div class="ind-left-icon">🍸</div>
+                    <h3>Built for Bars &amp; Nightlife</h3>
+                    <p class="ind-lead">For bars, pubs, lounges, and clubs. Reviews highlight atmosphere, drinks, music, and the crowd.</p>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Nightlife-Tailored Content</b><span>Vibe, drinks &amp; service</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Gradual Posting</b><span>1–3 per week, looks natural</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Local + Global Travelers</b><span>Authentic reviewer mix</span></div></div>
+                </div>
+                <div class="ind-right">
+                    <div class="ind-right-label">What Bar Owners Struggle With</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Tourists pick the bar with buzz online</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> A rowdy night becomes a 1-star rant</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Hard to stand out in a packed area</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Slow midweek nights need more footfall</div>
+                    <div class="ind-sample-label">📝 Sample review we'd write</div>
+                    <div class="ind-review">
+                        <div class="ind-stars">★★★★★</div>
+                        <p>"Stumbled in on a Friday and stayed all night. Killer cocktails, the bartender knew his stuff, and the live band was incredible. Exactly the local spot we were hoping to find."</p>
+                        <div class="ind-reviewer"><div class="ind-avatar"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Laura P." loading="lazy"></div><span>Laura P. · Traveled from Berlin</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cafés -->
+            <div class="ind-panel" data-ind="cafes">
+                <div class="ind-left">
+                    <div class="ind-left-icon">☕</div>
+                    <h3>Built for Cafés</h3>
+                    <p class="ind-lead">For coffee shops, bakeries, and cafés. Reviews highlight coffee quality, treats, ambiance, and friendly service.</p>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Café-Tailored Content</b><span>Coffee, pastries &amp; cozy vibe</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Gradual Posting</b><span>1–3 per week, looks natural</span></div></div>
+                    <div class="ind-feat"><div class="ind-check">&#10003;</div><div><b>Local + Global Travelers</b><span>Authentic reviewer mix</span></div></div>
+                </div>
+                <div class="ind-right">
+                    <div class="ind-right-label">What Café Owners Struggle With</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Travelers search "best coffee near me"</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Chains dominate the top results</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> Regulars love you but never review</div>
+                    <div class="ind-struggle"><span class="ind-warn">⚠</span> One off day drags the rating down</div>
+                    <div class="ind-sample-label">📝 Sample review we'd write</div>
+                    <div class="ind-review">
+                        <div class="ind-stars">★★★★★</div>
+                        <p>"Best flat white I had all trip. Cozy little corner spot, the pastries were warm and fresh, and the barista remembered my order the second day. A perfect morning ritual."</p>
+                        <div class="ind-reviewer"><div class="ind-avatar"><img src="https://randomuser.me/api/portraits/women/90.jpg" alt="Anna L." loading="lazy"></div><span>Anna L. · Traveled from Amsterdam</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1375,6 +1953,56 @@
 
     <div class="section-divider"></div>
 
+    <!-- Replacement Guarantee Section -->
+    <section class="section guarantee-section" id="guarantee" style="background: var(--gray-50);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Guarantee</div>
+                <h2>Our Replacement Guarantee</h2>
+                <p style="color: var(--gray-500);">Simple and fair. Here is exactly how it works.</p>
+            </div>
+
+            <div style="max-width: 880px; margin: 0 auto;">
+                <!-- 3 simple steps -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px;" class="guarantee-steps">
+                    <div style="background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 24px 18px; text-align: center;">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--gray-100); color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">1</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--dark);">A review shows up</strong>
+                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">The moment a review appears on your Tripadvisor listing, it counts as delivered. 1 review = 1 delivered.</span>
+                    </div>
+                    <div style="background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 24px 18px; text-align: center;">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--gray-100); color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">2</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--dark);">You get 7 days per review</strong>
+                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">Each review has its own 7-day window that starts the day it shows up &mdash; not after the whole order is done.</span>
+                    </div>
+                    <div style="background: #fff; border: 1px solid var(--ta-green); border-radius: 14px; padding: 24px 18px; text-align: center;">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: #e6fbf2; color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">&#10003;</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--ta-green-dark);">Drops in 7 days? We replace it</strong>
+                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">If a review drops inside its 7 days, we add a new one for free &mdash; one replacement per review.</span>
+                    </div>
+                </div>
+
+                <!-- Plain summary card -->
+                <div class="guarantee-summary">
+                    <p class="gs-intro"><strong>Why do reviews sometimes drop?</strong> Drops are a normal part of how Tripadvisor's algorithm works &mdash; it happens to all reviews, for every business on Tripadvisor. We can't control their algorithm, but we <strong style="color: var(--ta-green-dark);">do</strong> stand behind every review we deliver:</p>
+
+                    <div class="gs-row gs-yes">
+                        <span class="gs-tag"><span class="gs-mark">&#10003;</span> Drops in first 7 days</span>
+                        <span class="gs-text">We add <strong>1 free replacement</strong> for that review &mdash; no extra charge. Each review gets a <strong>maximum of 1 free replacement</strong>.</span>
+                    </div>
+                    <div class="gs-row gs-no">
+                        <span class="gs-tag"><span class="gs-mark">&times;</span> Drops after 7 days</span>
+                        <span class="gs-text">As noted above, the review was already counted as delivered when it first appeared &mdash; so once it passes 7 days, it&rsquo;s final and not replaced.</span>
+                    </div>
+
+                    <p class="gs-agree">By completing your order you agree to this fair-use guarantee.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
     <!-- Pricing -->
     <section class="section" id="pricing">
         <div class="container">
@@ -1389,15 +2017,17 @@
                     <div class="plan-name">Starter</div>
                     <div class="plan-price">
                         <span class="price-currency">$</span>
-                        <span class="price-amount">250</span>
+                        <span class="price-amount">360</span>
                         <span class="price-decimal">.00</span>
                     </div>
-                    <div class="plan-reviews">28 Reviews</div>
+                    <div class="plan-reviews">40 Reviews</div>
                     <ul class="plan-features">
                         <li><span class="check-icon">✓</span> Local + Global Traveler Names</li>
-                        <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
+                        <li><span class="check-icon">✓</span> Customized Content Based On Your Business</li>
+                        <li><span class="check-icon">✓</span> Mix between 4 &amp; 5 Star <span class="ta-info" onclick="openTaInfo()" title="Why mix 4 &amp; 5 star?">i</span></li>
+                        <li><span class="check-icon">✓</span> Safe Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
                         <li><span class="check-icon">✓</span> Detailed Report With Names</li>
+                        <li><span class="check-icon">✓</span> Guaranteed Quality</li>
                         <li><span class="check-icon">✓</span> For 1 Business Link</li>
                     </ul>
                     <a href="javascript:void(0)" onclick="scrollToOrder('starter')" class="btn btn-plan" data-package="starter">ORDER NOW</a>
@@ -1409,16 +2039,18 @@
                     <div class="plan-name">Growth</div>
                     <div class="plan-price">
                         <span class="price-currency">$</span>
-                        <span class="price-amount">300</span>
+                        <span class="price-amount">430</span>
                         <span class="price-decimal">.00</span>
                     </div>
-                    <div class="plan-reviews">35 Reviews</div>
-                    <div class="savings-badge">Save $15 (4% OFF)</div>
+                    <div class="plan-reviews">50 Reviews</div>
+                    <div class="savings-badge">Save $20 (4% OFF)</div>
                     <ul class="plan-features">
                         <li><span class="check-icon">✓</span> Local + Global Traveler Names</li>
-                        <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
+                        <li><span class="check-icon">✓</span> Customized Content Based On Your Business</li>
+                        <li><span class="check-icon">✓</span> Mix between 4 &amp; 5 Star <span class="ta-info" onclick="openTaInfo()" title="Why mix 4 &amp; 5 star?">i</span></li>
+                        <li><span class="check-icon">✓</span> Safe Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
                         <li><span class="check-icon">✓</span> Detailed Report With Names</li>
+                        <li><span class="check-icon">✓</span> Guaranteed Quality</li>
                         <li><span class="check-icon">✓</span> For 2 Business Links</li>
                     </ul>
                     <a href="javascript:void(0)" onclick="scrollToOrder('growth')" class="btn btn-plan" data-package="growth">ORDER NOW</a>
@@ -1429,23 +2061,25 @@
                     <div class="plan-name">Performance</div>
                     <div class="plan-price">
                         <span class="price-currency">$</span>
-                        <span class="price-amount">400</span>
+                        <span class="price-amount">530</span>
                         <span class="price-decimal">.00</span>
                     </div>
-                    <div class="plan-reviews">50 Reviews</div>
-                    <div class="savings-badge">Save $50 (10% OFF)</div>
+                    <div class="plan-reviews">63 Reviews</div>
+                    <div class="savings-badge">Save $37 (7% OFF)</div>
                     <ul class="plan-features">
                         <li><span class="check-icon">✓</span> Local + Global Traveler Names</li>
-                        <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
+                        <li><span class="check-icon">✓</span> Customized Content Based On Your Business</li>
+                        <li><span class="check-icon">✓</span> Mix between 4 &amp; 5 Star <span class="ta-info" onclick="openTaInfo()" title="Why mix 4 &amp; 5 star?">i</span></li>
+                        <li><span class="check-icon">✓</span> Safe Gradual Posting: 1-3 Reviews Per Week<sup style="color:var(--ta-green-dark);font-weight:800;">*</sup></li>
                         <li><span class="check-icon">✓</span> Detailed Report With Names</li>
+                        <li><span class="check-icon">✓</span> Guaranteed Quality</li>
                         <li><span class="check-icon">✓</span> For 3 Business Links</li>
                     </ul>
                     <a href="javascript:void(0)" onclick="scrollToOrder('performance')" class="btn btn-plan" data-package="performance">ORDER NOW</a>
                 </div>
             </div>
             <p style="max-width:760px; margin:0 auto; text-align:center; font-size:13px; line-height:1.6; color:var(--gray-500);">
-                <span style="color:var(--ta-green-dark); font-weight:800;">*</span> Reviews are posted gradually (1–3 per week) to stay natural and compliant. Each review counts as <strong style="color:var(--gray-700);">delivered the moment it shows up</strong> on your listing (1 review = 1 delivered), and we <strong style="color:var(--gray-700);">replace any review that drops within 7 days, free (one replacement per review)</strong>. Reviews staying live past 7 days are considered final. All packages include this guarantee.
+                <span style="color:var(--ta-green-dark); font-weight:800;">*</span> Reviews are posted gradually (1–3 per week) to stay natural and compliant. Each review is <strong style="color:var(--gray-700);">delivered the moment it shows up</strong> and carries a <strong style="color:var(--gray-700);">free 7-day replacement window</strong>. See our full <a href="#guarantee" style="color:var(--ta-green-dark); font-weight:700;">Replacement Guarantee</a> below.
             </p>
         </div>
     </section>
@@ -1494,32 +2128,27 @@
                         <div class="of-pkg" data-pkg="starter" onclick="selectPkg(this)">
                             <div class="of-pkg-radio"></div>
                             <div class="of-pkg-info">
-                                <div class="of-pkg-name">Starter — 28 Reviews</div>
+                                <div class="of-pkg-name">Starter — 40 Reviews</div>
                             </div>
-                            <div class="of-pkg-price">$250</div>
+                            <div class="of-pkg-price">$360</div>
                         </div>
                         <div class="of-pkg selected" data-pkg="growth" onclick="selectPkg(this)">
                             <div class="of-pkg-radio"></div>
                             <div class="of-pkg-info">
-                                <div class="of-pkg-name">Growth — 35 Reviews <span class="of-pkg-tag">New</span></div>
-                                <div class="of-pkg-detail"><s>$315</s> — Save $15</div>
+                                <div class="of-pkg-name">Growth — 50 Reviews <span class="of-pkg-tag">New</span></div>
+                                <div class="of-pkg-detail"><s>$450</s> — Save $20</div>
                             </div>
-                            <div class="of-pkg-price">$300</div>
+                            <div class="of-pkg-price">$430</div>
                         </div>
                         <div class="of-pkg" data-pkg="performance" onclick="selectPkg(this)">
                             <div class="of-pkg-radio"></div>
                             <div class="of-pkg-info">
-                                <div class="of-pkg-name">Performance — 50 Reviews</div>
-                                <div class="of-pkg-detail"><s>$450</s> — Save $50</div>
+                                <div class="of-pkg-name">Performance — 63 Reviews</div>
+                                <div class="of-pkg-detail"><s>$567</s> — Save $37</div>
                             </div>
-                            <div class="of-pkg-price">$400</div>
+                            <div class="of-pkg-price">$530</div>
                         </div>
                     </div>
-                </div>
-
-                <div class="of-guarantee" style="border:1px solid var(--ta-green); background:#f0fdf9; border-radius:10px; padding:13px 15px; margin-bottom:14px; font-size:13px; line-height:1.6; color:var(--dark);">
-                    <strong style="display:block; margin-bottom:4px; color:var(--ta-green-dark);">✓ Free 7-Day Replacement Guarantee</strong>
-                    You're protected. Each review counts as <strong>delivered the moment it shows up</strong> on your listing (1 review = 1 delivered). If any delivered review drops <strong>within 7 days</strong>, we <strong>replace it free, one time per review</strong> — no questions asked. Reviews staying live past 7 days are considered final. <span style="color:var(--gray-500);">By completing your order you agree to this fair-use policy.</span>
                 </div>
 
                 <button class="of-submit" onclick="submitOrder()">COMPLETE ORDER →</button>
@@ -1589,7 +2218,7 @@
             </div>
             <div class="why-flex">
                 <div class="why-image">
-                    <img src="https://smart-buzzer.com/promo-tripadvisor/x.png" alt="Tripadvisor Review Example" class="clickable-image">
+                    <img src="https://smart-buzzer.com/promo-tripadvisor/Y.png" alt="Tripadvisor Review Example" class="clickable-image">
                 </div>
                 <div class="why-list">
                     <ul class="why-features">
@@ -1729,7 +2358,16 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-a">
-                        Some drops are normal — it's how Tripadvisor's algorithm works. Each review counts as delivered once it shows up on your listing (counted per review). If a delivered review drops <strong>within 7 days</strong> of posting, we <strong>replace it for free (one replacement per review)</strong>. After the 7-day window, that review is considered final and is no longer covered by the replacement guarantee.
+                        Some drops are normal — it's how Tripadvisor's algorithm works. Each review counts as delivered once it shows up on your listing (counted per review). If a delivered review drops <strong>within 7 days</strong> of posting, we <strong>replace it for free (one replacement per review)</strong>. After the 7-day window, that review is considered final &mdash; <strong>if it drops after 7 days, it is not replaced</strong>.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" type="button">
+                        <span>Can my reviews drop or go down over time?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-a">
+                        Yes — it can happen, and it's completely normal. Tripadvisor runs an automated algorithm that constantly re-evaluates reviews, so a small number may drop over time. That's exactly why we post <strong>gradually (1–3 per week)</strong> and mix <strong>4-star and 5-star</strong> ratings — it keeps your profile looking natural and reduces drops. And you're covered: any review that drops <strong>within 7 days</strong> of posting is <strong>replaced free (one replacement per review)</strong>. See our <a href="#guarantee" style="color:var(--ta-green-dark); font-weight:700;">Replacement Guarantee</a> for the full details.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1738,7 +2376,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-a">
-                        Reviews start appearing within the first week of order confirmation. For a 28-review Starter package, expect full delivery in ~3–4 weeks. Larger packages take longer — gradual pacing is what keeps your account safe. You'll track every step live on your dashboard.
+                        Reviews start appearing within the first week of order confirmation. For a 40-review Starter package, expect full delivery in ~4–5 weeks. Larger packages take longer — gradual pacing is what keeps your account safe. You'll track every step live on your dashboard.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -2035,6 +2673,13 @@
         if (hEl) hEl.textContent = pad(h);
         if (mEl) mEl.textContent = pad(m);
         if (sEl) sEl.textContent = pad(s);
+        // Sticky announcement bar countdown
+        var aH = document.getElementById('taCdH');
+        var aM = document.getElementById('taCdM');
+        var aS = document.getElementById('taCdS');
+        if (aH) aH.textContent = pad(h);
+        if (aM) aM.textContent = pad(m);
+        if (aS) aS.textContent = pad(s);
     }
     setInterval(tickCountdown, 1000);
     tickCountdown();
@@ -2171,7 +2816,51 @@
             });
         });
     });
+
+    // ========================================
+    // WHY MIX 4 & 5 STAR — INFO MODAL
+    // ========================================
+    function openTaInfo() {
+        var m = document.getElementById('taMixModal');
+        if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeTaInfo() {
+        var m = document.getElementById('taMixModal');
+        if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeTaInfo();
+    });
+
+    // ========================================
+    // PICK YOUR INDUSTRY — TAB SWITCHER
+    // ========================================
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.ind-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                var key = this.getAttribute('data-ind');
+                document.querySelectorAll('.ind-tab').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                document.querySelectorAll('.ind-panel').forEach(function(p) {
+                    p.classList.toggle('active', p.getAttribute('data-ind') === key);
+                });
+            });
+        });
+    });
     </script>
+
+    <!-- Why Mix 4 & 5 Star Modal -->
+    <div class="ta-modal-overlay" id="taMixModal" onclick="if(event.target===this)closeTaInfo()">
+        <div class="ta-modal" role="dialog" aria-modal="true" aria-labelledby="taMixTitle">
+            <button class="ta-modal-close" type="button" onclick="closeTaInfo()" aria-label="Close">&times;</button>
+            <h3 id="taMixTitle">Why Mix 4-Star and 5-Star?</h3>
+            <p>4-Star reviews are not bad. In fact, they make your profile look more authentic and trustworthy to travelers.</p>
+            <div class="ta-modal-benefit"><span class="tick">&#10003;</span><span class="txt"><b>More Sticky</b> — reviews stay live longer</span></div>
+            <div class="ta-modal-benefit"><span class="tick">&#10003;</span><span class="txt"><b>More Permanent</b> — less likely to be removed</span></div>
+            <div class="ta-modal-benefit"><span class="tick">&#10003;</span><span class="txt"><b>Less Drop</b> — lower chance of review loss</span></div>
+            <div class="ta-modal-warn"><strong>Warning:</strong> If only 5-star reviews are posted to your Tripadvisor listing — even with gradual posting — Tripadvisor may flag your business for suspicious engagement activity. A natural 4 &amp; 5-star mix keeps you safe.</div>
+        </div>
+    </div>
 
     <!-- Floating CTWA Sales Button -->
     <a href="https://wa.me/628979133204?text=Hi%20Smart%20Buzzer!%20I%20saw%20your%20Tripadvisor%20packages%20and%20I'd%20like%20to%20get%20a%20quote%20%26%20check%20my%20listing."

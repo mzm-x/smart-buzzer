@@ -12,6 +12,11 @@
 # ===== Data berisi PII / hasil scraping =====
 outbound/data/
 survey/data/
+tp-outbound/data/
+tp-survey/data/
+qc_data/
+redeem/data/
+redeem/redeem_data.json
 
 # ===== Kredensial / config sensitif =====
 # DB creds, akun Account Manager, password hash, service account

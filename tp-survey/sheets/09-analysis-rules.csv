@@ -1,0 +1,18 @@
+SCORING SEGMENT (otomatis di admin panel — bobot dari framework),,
+,,
+Sinyal,Bobot,Sumber
+Pain intensity,25%,"Q8 ""A lot"" + kekuatan jawaban Q11 (judgment manusia)"
+Budget exists,25%,Q15 paid tool/agency ATAU Q16 Yes
+WTP vs target ($59-129),20%,Q18 >= $30-75
+Buying intent,20%,Q17 Must-have + Q21 Yes
+Engagement,10%,Completion rate per segment (completed / approached)
+,,
+DECISION RULES (setelah ~20 data),,
+#,Rule,
+1,Segment "menang" kalau: pain tinggi + budget EXISTS + WTP >= target + cukup banyak mau call,
+2,Pilih 1 (max 2) segment buat unscalable selling. Jangan nyebar,
+3,Kalau NGGAK ada yang lolos setelah 20 data -> jangan scale. Refine hipotesis lalu ulangi,
+4,Q9/Q10: kalau non-tourist bilang TA nggak penting tapi Google iya -> pivot valid ke produk Google core,
+5,"""Yes to call"" (Q21) = warm list = bahan bakar PMSF",
+,,
+Watch-out mingguan: cek drop-off per question di admin (Overview -> in-progress "Qx drop"). Kalau banyak mati di soal yang sama -> potong / pindahin soal itu.,,

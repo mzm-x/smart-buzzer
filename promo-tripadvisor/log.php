@@ -99,13 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['CONTENT_TYPE']) && 
         
         if (strpos(strtoupper($action), 'TRIPADVISOR_STARTER') !== false) {
             $packageName = 'Starter';
-            $reviewsQty = '30';
+            $reviewsQty = '40';
         } elseif (strpos(strtoupper($action), 'TRIPADVISOR_GROWTH') !== false) {
             $packageName = 'Growth';
-            $reviewsQty = '40';
+            $reviewsQty = '50';
         } elseif (strpos(strtoupper($action), 'TRIPADVISOR_PERFORMANCE') !== false) {
             $packageName = 'Performance';
-            $reviewsQty = '50';
+            $reviewsQty = '63';
         } elseif (strpos(strtoupper($action), 'STARTER') !== false) {
             $packageName = 'Starter';
             $reviewsQty = '55';

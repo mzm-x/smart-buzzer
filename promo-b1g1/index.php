@@ -1,3 +1,4 @@
+<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2141,7 +2142,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="footer-section">
                     <h3>Contact</h3>
                     <ul>
-                        <li>&#128222; WhatsApp: <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Google%20Reviews">+62857-7311-6557</a></li>
+                        <li>&#128222; WhatsApp: <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20ggl%20rvw"><?php echo $SB_WA_DISPLAY; ?></a></li>
                         <li>&#128231; Email: <a href="mailto:contact@smart-buzzer.com">contact@smart-buzzer.com</a></li>
                     </ul>
                 </div>

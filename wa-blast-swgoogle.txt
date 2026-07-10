@@ -1,0 +1,112 @@
+============================================================
+SMART BUZZER — WHATSAPP CROSS-SELL BLAST (Google "Show-Up" Reviews)
+Audience: existing / past Smart Buzzer clients (warm)
+Your CSV only has: Nama (business) · Email · Phone  → NO first name, city, or rating
+From number: 628979133204  |  Tag: -blast7july
+============================================================
+
+⚠️ ABOUT YOUR DATA
+Your list only has business name + email + phone. The name column is messy
+(has "(2 Links)", dates, personal names, multi-line) — so DO NOT auto-merge
+the raw name into the chat, it'll look broken. Two safe options:
+
+  OPTION 1 (recommended) — NO merge at all. Send the exact same warm message
+  to everyone. It reads 1-to-1 because they already know you.
+
+  OPTION 2 — Manually clean the name for your top ~20 clients and drop it in
+  where you see [BUSINESS] below. Skip it for the rest.
+
+WA FORMATTING: *bold*  _italic_
+First line = the notification preview, so it must earn the open.
+No links in Message A (WA flags cold links — send links only after they reply).
+
+------------------------------------------------------------
+📸 WHICH PHOTOS TO USE (biggest conversion lever)
+------------------------------------------------------------
+PHOTO 1 — BEFORE/AFTER → https://smart-buzzer.com/photos/ba2.webp
+   Send FIRST in Message A. 2.5★/15 reviews → 5.0★/120. Shows the outcome instantly.
+
+PHOTO 2 — REAL REVIEWS → https://smart-buzzer.com/wp-content/uploads/2025/04/slide-3.jpg
+   Send in Message B (after they reply). Proves the reviews are real + custom.
+
+RULE: image FIRST, text SECOND. An image stops the scroll; cold text gets ignored.
+
+============================================================
+MESSAGE A — OPENER  (send WITH the before/after image)
+============================================================
+
+Hey! It's *Smart Buzzer* 👋
+
+We just opened something we think you'll want for your Google listing 👇
+
+We get you Google reviews that *actually show up* on your profile — real accounts, natural 4-5★, custom comments, each backed by a *7-day free replacement*.
+
+👆 That's a real client of ours: 2.5★ → 5.0★.
+
+⚠️ We only take a few clients per city each month (so your reviews never compete with a neighbor's) — and this month is filling up fast.
+
+Want me to send the details? Say *interested* to 628979133204 🙂
+
+------------------------------------------------------------
+(OPTION 2 — if you cleaned the business name, swap line 1 for:)
+Hey [BUSINESS]! It's *Smart Buzzer* 👋
+
+============================================================
+MESSAGE B — THE OFFER  (send after they reply, WITH reviews photo)
+============================================================
+
+Awesome 🙌 Here's exactly how the *Show-Up* model works — no fluff:
+
+✅ You buy a *submission volume* — we only count the reviews that show up on your profile
+✅ Based on Google's algorithm ~20-25% typically show up (the extra volume is on us)
+✅ Every show-up = *7-day free replacement* if it drops
+✅ Real accounts · natural 4-5★ mix · custom comments for your services
+
+👆 That's what the actual reviews look like.
+
+*Pick your package:*
+
+🔹 *Starter* — *$360* — submit ~300, est. 60-75 show up
+🔥 *Growth* — *$430* — submit ~400, est. 80-100 show up _(10% off · most popular)_
+🚀 *Performance* — *$530* — submit ~550, est. 110-140 show up _(20% off · best value)_
+
+Straight up: those show-up numbers are *estimates* — actual results depend on Google's algorithm. What we *guarantee* is the show-up + the 7-day replacement, and we never promise they stay forever.
+
+⚠️ We cap 1 client per area so you never compete with a neighbor we also work with — spots are limited this month.
+
+Which one works for you? I can have your first reviews live within days 🚀
+
+============================================================
+MESSAGE C — FOLLOW-UP  (no reply after 24-48h)
+============================================================
+
+Just following up 👀
+
+Every week that passes, competing listings pull a little further ahead on Google — and that's who new customers call first.
+
+Free listing check, zero obligation. Want me to run it for you?
+
+============================================================
+MESSAGE D — OBJECTION HANDLERS (paste as needed)
+============================================================
+
+"Is this safe / will I get banned?"
+→ Fair question. That's why we post *gradually* (3-4/day) with real aged accounts + a natural 4-5★ mix — it looks organic to Google. Safety is the whole reason we pace it slowly.
+
+"Are these real / do they stay?"
+→ Real accounts, custom comments — not bots. Honest answer on staying: Google's algorithm decides long-term, nobody can promise "forever." What we guarantee is they show up + a 7-day free replacement on each.
+
+"Too expensive"
+→ One new customer usually covers it. A stronger rating means more of the people already searching for you pick *you*. Want to start with Starter (72) and scale from there?
+
+"How do I pay?"
+→ Zelle or crypto. I'll walk you through it — takes 2 minutes.
+
+============================================================
+NOTES
+============================================================
+- Warm angle ("since you've worked with us before" / "first access") only works
+  because these are existing clients — do NOT use it on cold leads.
+- 2-3 emojis MAX per message. More = spam flag on WA.
+- No links in Message A. Send links only after they reply.
+- Prices/packages match /sw-google/ LP + the email blast.

@@ -1,0 +1,15 @@
+REWARD COST CALCULATOR — opsi di akhir survey (pod / internal fulfillment),,,,,,,
+"Model buffer: butuh submit lebih banyak dari yang stick. Ubah PARAMETER, total ngitung sendiri.",,,,,,,
+,,,,,,,
+PARAMETER,Nilai,Catatan,,,,,
+Kurs USD ke IDR,18000,ubah sesuai kurs,,,,,
+Cost per TA review submit (IDR),3000,pod,,,,,
+Cost per IG follower submit (IDR),100,pod,,,,,
+,,,,,,,
+Reward,Users,Reward / user,Buffer %,Submits needed / user,Cost / user (IDR),Total Cost (IDR),Total USD
+Tripadvisor reviews,10,10,70%,"=ROUND(C10*(1+D10),0)","=E10*$B$6","=B10*F10","=G10/$B$5"
+Instagram followers,10,1000,30%,"=ROUND(C11*(1+D11),0)","=E11*$B$7","=B11*F11","=G11/$B$5"
+GRAND TOTAL,,,,,,"=G10+G11","=H10+H11"
+,,,,,,,
+"Catatan: dengan asumsi 10 user TA + 10 user followers. Followers (Rp130rb/user) ~2.5x lebih mahal dari TA reviews (Rp51rb/user).",,,,,,,
+"Worst case kalau 20 user semua pilih followers: 20 x submits x Rp100. Kalau semua pilih TA: 20 x submits x Rp3000.",,,,,,,

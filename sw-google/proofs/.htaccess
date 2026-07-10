@@ -1,0 +1,6 @@
+# Deny all public HTTP access to uploaded payment proofs.
+Require all denied
+<IfModule !mod_authz_core.c>
+Order allow,deny
+Deny from all
+</IfModule>

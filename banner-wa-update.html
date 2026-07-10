@@ -1,0 +1,227 @@
+<!-- Smart Buzzer - WhatsApp Number Change Notice (URGENT / RED) -->
+<!-- Insert this code into WordPress HTML Block -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+.sb-alert-banner {
+    background: linear-gradient(135deg, #7F1D1D 0%, #991B1B 50%, #B91C1C 100%);
+    padding: 22px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(127, 29, 29, 0.45);
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 3px solid #EF4444;
+}
+
+.sb-alert-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 25px,
+        rgba(255, 255, 255, 0.04) 25px,
+        rgba(255, 255, 255, 0.04) 50px
+    );
+    pointer-events: none;
+}
+
+.sb-alert-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.sb-alert-badge {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: #FFFFFF;
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    font-family: 'Poppins', sans-serif;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+
+.sb-alert-title {
+    color: #FFFFFF;
+    font-size: 27px;
+    font-weight: 800;
+    margin: 4px 0;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.sb-alert-title span {
+    color: #FCD34D;
+}
+
+.sb-alert-old {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sb-alert-old .old-number {
+    color: #FCA5A5;
+    font-weight: 700;
+    text-decoration: line-through;
+    white-space: nowrap;
+}
+
+.sb-alert-cta-label {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 2px 0 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sb-alert-buttons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sb-alert-number-box {
+    background: #FFFFFF;
+    color: #333;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border: 2px solid #FCA5A5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sb-alert-number-box .number {
+    color: #B91C1C;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.sb-wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #25D366 0%, #1EBE57 100%);
+    color: #FFFFFF;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.45);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    border: none;
+}
+
+.sb-wa-btn:hover {
+    background: linear-gradient(135deg, #2EE676 0%, #25D366 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 211, 102, 0.55);
+    color: #FFFFFF;
+}
+
+.sb-alert-footnote {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 13.5px;
+    font-weight: 600;
+    margin: 8px 0 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sb-icon-left, .sb-icon-right {
+    position: absolute;
+    font-size: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.9;
+}
+
+.sb-icon-left { left: 20px; }
+.sb-icon-right { right: 20px; }
+
+@media (max-width: 768px) {
+    .sb-alert-banner { padding: 18px 16px; }
+    .sb-alert-title { font-size: 21px; }
+    .sb-alert-old { font-size: 13.5px; }
+    .sb-alert-cta-label { font-size: 14px; }
+    .sb-alert-buttons { flex-direction: column; gap: 10px; }
+    .sb-alert-number-box { font-size: 15px; padding: 10px 20px; }
+    .sb-wa-btn { padding: 12px 24px; font-size: 14px; }
+    .sb-icon-left, .sb-icon-right { display: none; }
+}
+
+@media (min-width: 900px) {
+    .sb-alert-banner { padding: 24px 60px; }
+}
+</style>
+
+<div class="sb-alert-banner">
+    <span class="sb-icon-left">&#9888;&#65039;</span>
+    <span class="sb-icon-right">&#9888;&#65039;</span>
+
+    <div class="sb-alert-content">
+        <div class="sb-alert-badge">
+            <span>&#9888;&#65039;</span> Urgent Notice <span>&#9888;&#65039;</span>
+        </div>
+
+        <h2 class="sb-alert-title">Our <span>WhatsApp</span> Number Has Changed</h2>
+
+        <p class="sb-alert-old">
+            Old: <span class="old-number">+62 857-7311-6557</span> &mdash; no longer active.
+        </p>
+
+        <p class="sb-alert-cta-label">Save our new number &#128071;</p>
+
+        <div class="sb-alert-buttons">
+            <div class="sb-alert-number-box">
+                &#128241; <span class="number">+62 897-9133-204</span>
+            </div>
+            <a href="https://wa.me/628979133204" class="sb-wa-btn" target="_blank" rel="noopener">
+                <span>&#128172;</span> <span>Chat on WhatsApp</span>
+            </a>
+        </div>
+
+        <p class="sb-alert-footnote">&#9989; Your campaigns continue as normal.</p>
+    </div>
+</div>
+<!-- End WhatsApp Number Change Notice -->

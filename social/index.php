@@ -1,3 +1,4 @@
+<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
 <!DOCTYPE html>
 <!-- /social/index.php -->
 <html lang="en">
@@ -1569,7 +1570,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                         <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/REV-COLOR-Smart-Buzzer-11.png" alt="Smart Buzzer">
                     </a>
                 </div>
-                <a href="https://wa.me/6285773116557" class="support-link">
+                <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>" class="support-link">
                     <i class="fab fa-whatsapp"></i> Support
                 </a>
             </div>
@@ -2008,7 +2009,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 </div>
                 <div class="footer-contact">
                     <h4>Contact Us</h4>
-                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/6285773116557">+62 857-7311-6557</a></p>
+                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>"><?php echo $SB_WA_DISPLAY; ?></a></p>
                     <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="395a56574d585a4d794a54584b4d145b4c43435c4b175a5654">[email&#160;protected]</a></p>
                 </div>
             </div>
@@ -2795,7 +2796,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         }
     </script>
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/6285773116557?text=Hi!%20I%27m%20interested%20in%20ordering%20from%20your%20Social%20Media%20page.%20Please%20assist%20me%20with%20my%20purchase." class="wa-float-btn" target="_blank" rel="noopener" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'generate_lead',method:'WhatsApp',value:0,currency:'USD'});">
+    <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi!%20I%27m%20interested%20in%20ordering%20from%20your%20Social%20Media%20page.%20Please%20assist%20me%20with%20my%20purchase." class="wa-float-btn" target="_blank" rel="noopener" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'generate_lead',method:'WhatsApp',value:0,currency:'USD'});">
         <i class="fab fa-whatsapp"></i>
         <span class="wa-tooltip">Chat with us</span>
     </a>

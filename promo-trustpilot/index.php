@@ -1,3 +1,4 @@
+<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -666,7 +667,7 @@
                 <p>Join 1,200+ businesses. Start building credibility today.</p>
                 <div class="cta-buttons">
                     <a href="#pricing" class="btn btn-primary btn-lg">Get Started</a>
-                    <a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Trustpilot%20Reviews.%20I%20am%20from%20the%20Trustpilot%20Promo%20page." target="_blank" class="btn btn-secondary btn-lg">Chat WhatsApp</a>
+                    <a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Trustpilot%20Reviews.%20I%20am%20from%20the%20Trustpilot%20Promo%20page." target="_blank" class="btn btn-secondary btn-lg">Chat WhatsApp</a>
                 </div>
             </div>
         </div>
@@ -694,7 +695,7 @@
                 <div>
                     <div class="footer-title">Contact</div>
                     <ul class="footer-links">
-                        <li><a href="https://wa.me/6285773116557?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Trustpilot%20Reviews.%20I%20am%20from%20the%20Trustpilot%20Promo%20page.">WhatsApp: +62857-7311-6557</a></li>
+                        <li><a href="https://wa.me/<?php echo $SB_WA_NUMBER; ?>?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Trustpilot%20Reviews.%20I%20am%20from%20the%20Trustpilot%20Promo%20page.">WhatsApp: <?php echo $SB_WA_DISPLAY; ?></a></li>
                         <li><a href="mailto:contact@smart-buzzer.com">Email: contact@smart-buzzer.com</a></li>
                     </ul>
                 </div>

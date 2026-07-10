@@ -31,9 +31,9 @@ $packages = [
     'industry_growth'      => ['name' => 'Industry Growth',      'reviews' => '88',  'price' => '550.00', 'display' => '$550', 'item_id' => 'pkg_industry_growth_88',       'item_name' => 'Buy Google Reviews - 88 Local (Industry)',  'source_lp' => 'promo-industry'],
     'industry_performance' => ['name' => 'Industry Performance', 'reviews' => '110', 'price' => '650.00', 'display' => '$650', 'item_id' => 'pkg_industry_performance_110', 'item_name' => 'Buy Google Reviews - 110 Local (Industry)', 'source_lp' => 'promo-industry'],
     // LP Tripadvisor packages
-    'tripadvisor_starter'     => ['name' => 'Tripadvisor Starter',     'reviews' => '28', 'price' => '250.00', 'display' => '$250', 'item_id' => 'pkg_tripadvisor_starter_28',     'item_name' => 'Buy Tripadvisor Reviews - 28 Local', 'source_lp' => 'promo-tripadvisor'],
-    'tripadvisor_growth'      => ['name' => 'Tripadvisor Growth',      'reviews' => '35', 'price' => '300.00', 'display' => '$300', 'item_id' => 'pkg_tripadvisor_growth_35',      'item_name' => 'Buy Tripadvisor Reviews - 35 Local', 'source_lp' => 'promo-tripadvisor'],
-    'tripadvisor_performance' => ['name' => 'Tripadvisor Performance', 'reviews' => '50', 'price' => '400.00', 'display' => '$400', 'item_id' => 'pkg_tripadvisor_performance_50', 'item_name' => 'Buy Tripadvisor Reviews - 50 Local', 'source_lp' => 'promo-tripadvisor'],
+    'tripadvisor_starter'     => ['name' => 'Tripadvisor Starter',     'reviews' => '40', 'price' => '360.00', 'display' => '$360', 'item_id' => 'pkg_tripadvisor_starter_40',     'item_name' => 'Buy Tripadvisor Reviews - 40 Local', 'source_lp' => 'promo-tripadvisor'],
+    'tripadvisor_growth'      => ['name' => 'Tripadvisor Growth',      'reviews' => '50', 'price' => '430.00', 'display' => '$430', 'item_id' => 'pkg_tripadvisor_growth_50',      'item_name' => 'Buy Tripadvisor Reviews - 50 Local', 'source_lp' => 'promo-tripadvisor'],
+    'tripadvisor_performance' => ['name' => 'Tripadvisor Performance', 'reviews' => '63', 'price' => '530.00', 'display' => '$530', 'item_id' => 'pkg_tripadvisor_performance_63', 'item_name' => 'Buy Tripadvisor Reviews - 63 Local', 'source_lp' => 'promo-tripadvisor'],
 ];
 
 // ===== FANBASIS REF CODE TO PACKAGE KEY MAPPING =====

@@ -1,0 +1,174 @@
+<!--
+=========================================================================
+  SMART BUZZER — TP SURVEY BLAST EMAIL (reward-forward, 100% honest)
+  Cold outreach ke pemilik bisnis Tripadvisor (restoran/hotel) buat isi survey.
+  Hook = thank-you gift (10 TA reviews / 1,000 IG followers). NO report promise.
+=========================================================================
+
+  MERGE FIELDS — ganti sebelum blast:
+    {{first_name}}            -> nama kontak (kalau ada). Fallback aman: "there"
+    {{business_name}}         -> nama bisnis (dari kolom name di export Apify)
+    {{survey_link}}           -> link survey PER LEAD (URL lengkap https://...).
+                                 Ambil langsung dari kolom Survey_Link di XLS tp-outbound. Contoh:
+                                 https://smart-buzzer.com/tp-survey/?seg=high_high&tier=nontourist&type=restaurant&channel=email
+                                 (seg: low_low/low_high/high_low/high_high | tier: tourist/nontourist | type: restaurant/hotel/things-to-do)
+    {{unsubscribe_url}}       -> link unsubscribe dari tool blast lu
+    {{business_postal_address}} -> WAJIB DIISI alamat fisik kantor (CAN-SPAM).
+
+  SUBJECT LINE (pilih 1, A/B test):
+    A. A free gift for {{business_name}} (5-min survey, no pitch)
+    B. Pick your thank-you: free Tripadvisor reviews or IG followers
+    C. {{first_name}}, 5 minutes for a free gift for your business?
+    D. We'd love your take on Tripadvisor — free gift inside
+
+  CATATAN: kontak pakai email (contact@smart-buzzer.com). Nomor +62 dihapus
+  krn audiens US. JANGAN pakai nomor lama 6285773116557 (banned).
+=========================================================================
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Smart Buzzer — A free gift for 5 minutes of your time</title>
+
+<!-- Preheader (teks preview di inbox, disembunyiin) -->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#eef2f0;opacity:0;">
+  Finish a 5-minute survey and pick a free gift: 10 Tripadvisor reviews or 1,000 Instagram followers. No sales pitch.
+  &#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#eef2f0;margin:0;padding:0;">
+  <tr>
+    <td align="center" style="padding:24px 12px;">
+
+      <!-- CARD -->
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background-color:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e2e8e4;">
+
+        <!-- Accent bar -->
+        <tr><td style="height:5px;background-color:#147a52;line-height:5px;font-size:5px;">&nbsp;</td></tr>
+
+        <!-- Logo -->
+        <tr>
+          <td align="center" style="padding:26px 32px 6px 32px;">
+            <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/REV-COLOR-Smart-Buzzer-11.png" width="150" alt="Smart Buzzer" style="display:block;height:auto;border:0;max-width:150px;">
+          </td>
+        </tr>
+
+        <!-- ===== GIFT HERO ===== -->
+        <tr>
+          <td style="padding:14px 28px 0 28px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#147a52;border-radius:14px;">
+              <tr>
+                <td align="center" style="padding:26px 28px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                  <div style="font-size:40px;line-height:1;">&#127873;</div>
+                  <p style="margin:12px 0 0 0;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a7e8c8;">Our thank-you to you</p>
+                  <h1 style="margin:6px 0 0 0;font-size:26px;line-height:1.25;color:#ffffff;font-weight:800;letter-spacing:-0.3px;">
+                    Finish a 5-min survey,<br>pick a free gift for your business
+                  </h1>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== REWARD CHOICE CARDS ===== -->
+        <tr>
+          <td style="padding:16px 28px 0 28px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <p style="margin:0 0 12px 0;text-align:center;font-size:14px;font-weight:700;color:#3a423d;">Choose one &mdash; on us:</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <!-- Card 1 -->
+                <td width="50%" valign="top" style="padding:0 6px 0 0;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4faf6;border:1px solid #cfe7d9;border-radius:12px;">
+                    <tr>
+                      <td align="center" style="padding:20px 14px;">
+                        <div style="font-size:30px;line-height:1;">&#11088;</div>
+                        <p style="margin:8px 0 0 0;font-size:22px;font-weight:800;color:#12724c;line-height:1.1;">10</p>
+                        <p style="margin:2px 0 0 0;font-size:14px;font-weight:700;color:#1d2621;">Tripadvisor reviews</p>
+                        <p style="margin:6px 0 0 0;font-size:12px;line-height:1.45;color:#6b746f;">Real reviews on your listing</p>
+                        <span style="display:inline-block;margin-top:8px;padding:3px 10px;font-size:11px;font-weight:800;color:#8a6a1a;background-color:#fdf0d0;border-radius:20px;">Worth $90</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <!-- Card 2 -->
+                <td width="50%" valign="top" style="padding:0 0 0 6px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4faf6;border:1px solid #cfe7d9;border-radius:12px;">
+                    <tr>
+                      <td align="center" style="padding:20px 14px;">
+                        <div style="font-size:30px;line-height:1;">&#128241;</div>
+                        <p style="margin:8px 0 0 0;font-size:22px;font-weight:800;color:#12724c;line-height:1.1;">1,000</p>
+                        <p style="margin:2px 0 0 0;font-size:14px;font-weight:700;color:#1d2621;">Instagram followers</p>
+                        <p style="margin:6px 0 0 0;font-size:12px;line-height:1.45;color:#6b746f;">Grow your social proof</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== SHORT BODY (why) ===== -->
+        <tr>
+          <td style="padding:16px 40px 0 40px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#3a423d;border-top:1px solid #eef2f0;">
+            <p style="margin:0 0 14px 0;">Hi {{first_name}},</p>
+            <p style="margin:0 0 14px 0;">
+              We're a small team researching how restaurants and hotels really use <strong>Tripadvisor</strong> and online reviews to win customers &mdash; and we'd love to learn from an owner like you at <strong>{{business_name}}</strong>.
+            </p>
+            <p style="margin:0;">
+              It's just a few quick questions &mdash; about 5 minutes. Your answers stay <strong>confidential</strong> and are used only for this research. We're not selling anything; we just want to learn from people who actually run the business.
+            </p>
+          </td>
+        </tr>
+
+        <!-- ===== SECONDARY CTA ===== -->
+        <tr>
+          <td align="center" style="padding:22px 40px 6px 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" bgcolor="#147a52" style="border-radius:10px;">
+                  <a href="{{survey_link}}" target="_blank" style="display:inline-block;padding:15px 40px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;font-weight:800;color:#ffffff;text-decoration:none;border-radius:10px;background-color:#147a52;">
+                    Start the 5-minute survey
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Fallback link -->
+        <tr>
+          <td align="center" style="padding:12px 40px 4px 40px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.5;color:#9aa39e;">
+            Button not working? Copy this link:<br>
+            <a href="{{survey_link}}" target="_blank" style="color:#147a52;text-decoration:underline;word-break:break-all;">{{survey_link}}</a>
+          </td>
+        </tr>
+
+        <!-- Signature -->
+        <tr>
+          <td style="padding:20px 40px 28px 40px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#3a423d;">
+            <p style="margin:0;">Thanks so much,</p>
+            <p style="margin:2px 0 0 0;"><strong>The Smart Buzzer Team</strong></p>
+          </td>
+        </tr>
+
+      </table>
+
+      <!-- Footer (identity + physical address required for CAN-SPAM) -->
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+        <tr>
+          <td style="padding:18px 40px 8px 40px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#9aa39e;text-align:center;">
+            <strong style="color:#7a837e;">Smart Buzzer</strong><br>
+            {{business_postal_address}}<br>
+            Questions? Email us at contact@smart-buzzer.com<br><br>
+            You're getting this because we found your business listed publicly on Tripadvisor.<br>
+            Not interested? <a href="{{unsubscribe_url}}" style="color:#9aa39e;text-decoration:underline;">Unsubscribe here</a> and we won't email again.
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>
