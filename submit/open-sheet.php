@@ -273,19 +273,12 @@ function populateOrderSheet($sheetsService, $spreadsheetId, $sheetTitle, $order)
         ['Product Type', $order['productType'] ?? ''],
         ['Rating Mix', $order['ratingMix'] ?? ''],
         ['Quantity', $order['quantity'] ?? 'N/A'],
-        ['Gender', (function($o) {
-            $map = ['mix' => 'Mix Gender', 'male' => 'Male Only', 'female' => 'Female Only'];
-            $key = $o['reviewerGender'] ?? ($o['businesses'][0]['reviewerGender'] ?? 'mix');
-            return $map[$key] ?? 'Mix Gender';
-        })($order)],
         ['Number of Businesses', $order['numBusinesses'] ?? '1'],
         ['Current Rating', $order['currentRating'] ?? 'N/A'],
         ['Target Rating Total', $order['targetRatingTotal'] ?? 'N/A'],
         ['Business Link', $order['mapsLink'] ?? ''],
         ['Business Type', $order['businessType'] ?? 'N/A'],
-        ['Review Phase W1', $order['reviewPhaseW1'] ?? 'N/A'],
-        ['Review Phase W2', $order['reviewPhaseW2'] ?? 'N/A'],
-        ['Review Phase W3+', $order['reviewPhaseW3'] ?? 'N/A'],
+        ['Delivery Speed', $order['reviewPhaseW1'] ?? 'N/A'],
         ['Business USP', $order['businessUSP'] ?? 'N/A'],
         ['Review Tone', $order['reviewTone'] ?? 'N/A'],
         ['Review Length', $order['reviewLength'] ?? 'N/A'],
@@ -331,7 +324,7 @@ function formatOrderSheet($sheetsService, $spreadsheetId, $sheetId) {
                 'range' => [
                     'sheetId' => $sheetId,
                     'startRowIndex' => 0,
-                    'endRowIndex' => 32,
+                    'endRowIndex' => 31,
                     'startColumnIndex' => 0,
                     'endColumnIndex' => 1
                 ],
@@ -355,7 +348,7 @@ function formatOrderSheet($sheetsService, $spreadsheetId, $sheetId) {
                 'range' => [
                     'sheetId' => $sheetId,
                     'startRowIndex' => 0,
-                    'endRowIndex' => 32,
+                    'endRowIndex' => 31,
                     'startColumnIndex' => 1,
                     'endColumnIndex' => 2
                 ],

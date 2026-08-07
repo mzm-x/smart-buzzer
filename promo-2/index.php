@@ -2890,71 +2890,74 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="pricing-cards">
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Starter</h3>
+                        <h3>Starter <span class="discount-badge">🔥 SAVE 3%</span></h3>
                     </div>
-                    <div class="pricing-price">$360</div>
-                    <div class="pricing-reviews" style="margin-bottom:8px;">65&ndash;72 Show-Up Reviews</div>
+                    <div class="pricing-price">
+                        $350
+                        <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$360</span>
+                    </div>
+                    <div class="pricing-reviews" style="margin-bottom:8px;">72 Posted Reviews</div>
                     <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">We submit ~300 gradually</div>
                     <ul class="pricing-features">
                         <li>We Submit 4x More <span class="uvp-info-icon" onclick="openUvpModal('buffer')">i</span></li>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
                         <li>Custom Human-Written Comments</li>
                         <li>Replacement 7 Days Per Review</li>
-                        <li>Lowest Price &mdash; $5/Review</li>
+                        <li>Lowest Price &mdash; $4.86/Review</li>
                         <li>Detailed Delivery Report</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="starter" onclick="preSelectPkg('starter')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="starter" onclick="preSelectPkg('starter')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save 3%</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">2</span> left at this price</div>
                 </div>
 
                 <div class="pricing-card popular">
                     <div class="popular-badge">POPULAR</div>
                     <div class="pricing-header">
-                        <h3>Growth <span class="discount-badge">🔥 SAVE $50</span></h3>
+                        <h3>Growth <span class="discount-badge">🔥 SAVE 11%</span></h3>
                     </div>
                     <div class="pricing-price">
-                        $430
+                        $425
                         <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$480</span>
                     </div>
-                    <div class="pricing-reviews" style="margin-bottom:8px;">87&ndash;96 Show-Up Reviews</div>
+                    <div class="pricing-reviews" style="margin-bottom:8px;">96 Posted Reviews</div>
                     <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">We submit ~400 gradually</div>
                     <ul class="pricing-features">
                         <li>We Submit 4x More <span class="uvp-info-icon" onclick="openUvpModal('buffer')">i</span></li>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
                         <li>Custom Human-Written Comments</li>
                         <li>Replacement 7 Days Per Review</li>
-                        <li>Lowest Price &mdash; $4.48/Review</li>
+                        <li>Lowest Price &mdash; $4.43/Review</li>
                         <li>Detailed Delivery Report</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="growth" onclick="preSelectPkg('growth')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $50</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="growth" onclick="preSelectPkg('growth')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save 11%</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">5</span> left at this price</div>
                 </div>
 
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Performance <span class="discount-badge">🔥 SAVE $130</span></h3>
+                        <h3>Performance <span class="discount-badge">🔥 SAVE 20%</span></h3>
                     </div>
                     <div class="pricing-price">
-                        $530
+                        $525
                         <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$660</span>
                     </div>
-                    <div class="pricing-reviews" style="margin-bottom:8px;">120&ndash;132 Show-Up Reviews</div>
+                    <div class="pricing-reviews" style="margin-bottom:8px;">132 Posted Reviews</div>
                     <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">We submit ~550 gradually</div>
                     <ul class="pricing-features">
                         <li>We Submit 4x More <span class="uvp-info-icon" onclick="openUvpModal('buffer')">i</span></li>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
                         <li>Custom Human-Written Comments</li>
                         <li>Replacement 7 Days Per Review</li>
-                        <li>Lowest Price &mdash; $4.01/Review</li>
+                        <li>Lowest Price &mdash; $3.98/Review</li>
                         <li>Detailed Delivery Report</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="performance" onclick="preSelectPkg('performance')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $130</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="performance" onclick="preSelectPkg('performance')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save 20%</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">8</span> left at this price</div>
                 </div>
             </div>
 
             <p style="text-align: center; max-width: 720px; margin: 28px auto 0; font-size: 14px; color: var(--text-secondary); line-height: 1.7;">
-                <strong style="color: var(--text-primary);">The number on each package is what we get live on your listing.</strong> We post gradually so new reviews keep showing up and your profile stays active. Every review comes with a 7-day free replacement if it drops &mdash; and since Google&rsquo;s algorithm decides what stays long-term, we&rsquo;re honest that no one can promise reviews last forever. Payment by <strong>Zelle or Crypto</strong>. All sales final &mdash; refunds issued as store voucher only.
+                <strong style="color: var(--text-primary);">The number on each package is what we get live on your listing.</strong> We post gradually so new reviews keep showing up and your profile stays active. Every review comes with a 7-day free replacement if it drops &mdash; and since Google&rsquo;s algorithm decides what stays long-term, we&rsquo;re honest that no one can promise reviews last forever. Secure checkout by <strong>Credit / Debit Card</strong>. All sales final &mdash; refunds issued as store voucher only.
             </p>
         </div>
     </section>
@@ -3034,31 +3037,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <label class="of-pkg" data-pkg="starter" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="starter" class="of-pkg-radio">
                         <div class="of-pkg-info">
-                            <span class="of-pkg-name">Starter — 72 Show-Up Reviews</span>
+                            <span class="of-pkg-name">Starter — 72 Reviews</span>
+                            <span class="of-pkg-detail"><s>$360</s> — Save 3%</span>
                         </div>
-                        <span class="of-pkg-price">$360</span>
+                        <span class="of-pkg-price">$350</span>
                     </label>
                     <label class="of-pkg selected" data-pkg="growth" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="growth" class="of-pkg-radio" checked>
                         <div class="of-pkg-info">
-                            <span class="of-pkg-name">Growth — 96 Show-Up Reviews <span class="of-pkg-popular">POPULAR</span></span>
-                            <span class="of-pkg-detail"><s>$480</s> — Save $50</span>
+                            <span class="of-pkg-name">Growth — 96 Reviews<span class="of-pkg-popular">POPULAR</span></span>
+                            <span class="of-pkg-detail"><s>$480</s> — Save 11%</span>
                         </div>
-                        <span class="of-pkg-price">$430</span>
+                        <span class="of-pkg-price">$425</span>
                     </label>
                     <label class="of-pkg" data-pkg="performance" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="performance" class="of-pkg-radio">
                         <div class="of-pkg-info">
-                            <span class="of-pkg-name">Performance — 132 Show-Up Reviews</span>
-                            <span class="of-pkg-detail"><s>$660</s> — Save $130</span>
+                            <span class="of-pkg-name">Performance — 132 Reviews</span>
+                            <span class="of-pkg-detail"><s>$660</s> — Save 20%</span>
                         </div>
-                        <span class="of-pkg-price">$530</span>
+                        <span class="of-pkg-price">$525</span>
                     </label>
                 </div>
 
                 <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 12.5px; color: #78350F; line-height: 1.55;">
                     <i class="fa-solid fa-circle-info" style="color: var(--orange-highlight);"></i>
-                    <strong>What you&rsquo;re buying:</strong> reviews that <strong>show up</strong> on your Google listing, each with a 7-day free replacement. Long-term stay depends on Google&rsquo;s algorithm and isn&rsquo;t guaranteed. Payment via Zelle or Crypto &middot; all sales final (refund as store voucher only).
+                    <strong>What you&rsquo;re buying:</strong> reviews that <strong>show up</strong> on your Google listing, each with a 7-day free replacement. Long-term stay depends on Google&rsquo;s algorithm and isn&rsquo;t guaranteed. Secure card checkout &middot; all sales final (refund as store voucher only).
                 </div>
 
                 <button class="of-submit" onclick="submitOrder()">COMPLETE ORDER →</button>
@@ -3071,8 +3075,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div class="trust-strip" style="margin-top: 24px;">
-                <div class="trust-badge"><i class="fa-solid fa-bolt" style="color:#6D1ED4;"></i> Zelle</div>
-                <div class="trust-badge"><i class="fa-brands fa-bitcoin" style="color:#F7931A;"></i> Crypto (USDT / ETH / BTC)</div>
+                <div class="trust-badge"><i class="fa-brands fa-cc-visa" style="color:#1A1F71;"></i> Visa</div>
+                <div class="trust-badge"><i class="fa-brands fa-cc-mastercard" style="color:#EB001B;"></i> Mastercard</div>
                 <div class="trust-badge"><i class="fa-solid fa-lock" style="color:var(--green-success);"></i> Advance Payment</div>
             </div>
 
@@ -3170,7 +3174,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <div class="check-icon">&#10003;</div>
                             <div>
                                 <strong>Lowest Price &mdash; From $4/Review</strong>
-                                <span>Market charges $8&ndash;9 per review. We start at $5 &mdash; down to $4.</span>
+                                <span>Market charges $8&ndash;9 per review. We start at $4.86 &mdash; down to $3.98.</span>
                             </div>
                         </li>
                         <li>
@@ -3329,7 +3333,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" onclick="toggleFaq(this)">How do I pay? Can I get a refund?<span class="faq-arrow">&#9660;</span></button>
-                    <div class="faq-a"><div class="faq-a-inner">We accept <strong>Zelle</strong> and <strong>Crypto</strong> (USDT / ETH / BTC). Advance payment is required before we start your campaign. All sales are final &mdash; there are no cash refunds. If a refund is approved, it is issued as a <strong>store voucher</strong> you can use on any future order.</div></div>
+                    <div class="faq-a"><div class="faq-a-inner">We accept <strong>Credit / Debit Card</strong> through our secure checkout. Advance payment is required before we start your campaign. All sales are final &mdash; there are no cash refunds. If a refund is approved, it is issued as a <strong>store voucher</strong> you can use on any future order.</div></div>
                 </div>
             </div>
             <div style="text-align: center; margin-top: 40px;">
@@ -3641,9 +3645,9 @@ window.addEventListener('scroll', function() {
 
 // === GLOBAL PACKAGE METADATA ===
 var sbPkgMeta = {
-    'starter':     {id: 'pkg_starter_72',      name: 'Buy Google Reviews - 72 Show-Up',  item_category: 'Google Reviews', price: 360.00, reviews: 72},
-    'growth':      {id: 'pkg_growth_96',       name: 'Buy Google Reviews - 96 Show-Up',  item_category: 'Google Reviews', price: 430.00, reviews: 96},
-    'performance': {id: 'pkg_performance_132', name: 'Buy Google Reviews - 132 Show-Up', item_category: 'Google Reviews', price: 530.00, reviews: 132}
+    'starter':     {id: 'pkg_p2_starter_72',   name: 'Buy Google Reviews - 72 Show-Up',  item_category: 'Google Reviews', price: 350.00, reviews: 72},
+    'growth':      {id: 'pkg_p2_growth_96',    name: 'Buy Google Reviews - 96 Show-Up',  item_category: 'Google Reviews', price: 425.00, reviews: 96},
+    'performance': {id: 'pkg_p2_performance_132', name: 'Buy Google Reviews - 132 Show-Up', item_category: 'Google Reviews', price: 525.00, reviews: 132}
 };
 
 // Track last selected package for WhatsApp / floating CTA tracking
@@ -4187,7 +4191,7 @@ function submitOrder() {
         }
     });
 
-    // === LocalStorage bridge: persist user_data for purchase event on payment.php ===
+    // === LocalStorage bridge: persist user_data for purchase event on thankyou/gateway return ===
     localStorage.setItem('sb_user_email', email || '');
     localStorage.setItem('sb_user_phone', wa || '');
     localStorage.setItem('sb_user_fname', firstName || '');
@@ -4241,10 +4245,20 @@ function submitOrder() {
     safeLocalStorage('set', 'sb_form_email', '');
     safeLocalStorage('set', 'sb_form_pkg', '');
 
-    // Redirect to our own Zelle/Crypto payment page (proof-of-payment upload).
-    // No third-party gateway — purchase event fires on payment.php after proof upload.
-    var paymentUrl = 'payment.php?pkg=' + encodeURIComponent(pkgValue) +
-                     '&biz=' + encodeURIComponent(biz);
+    // Commas (ex-Fanbasis) payment links per package — redirect directly to gateway
+    // Commas redirects back to https://smart-buzzer.com/thankyou.php after payment,
+    // which fires the GA4 purchase event. Keep prices in sync with sbPkgMeta above.
+    // promo-2 has its OWN Commas checkout link per package — do NOT reuse the /promo/
+    // links, their prices differ ($360/$430/$530 there vs $350/$425/$525 here).
+    // Each link's ref must be set in the Commas dashboard to LP-PROMO2-72 /
+    // LP-PROMO2-96 / LP-PROMO2-132 so root thankyou.php resolves the p2_ rows.
+    var commasLinks = {
+        'starter':     'https://commas.com/checkout/YVjnMjrTMjcQMS',   // 72 reviews  — $350 (ref LP-PROMO2-72)
+        'growth':      'https://commas.com/checkout/WqNNXik6x17k0Pp',  // 96 reviews  — $425 (ref LP-PROMO2-96)
+        'performance': 'https://commas.com/checkout/4zgonDfBCjnP31B'   // 132 reviews — $525 (ref LP-PROMO2-132)
+    };
+
+    var paymentUrl = commasLinks[pkgValue] || commasLinks['growth'];
     window.location.href = paymentUrl;
 }
 </script>

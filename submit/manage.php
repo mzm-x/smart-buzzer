@@ -845,6 +845,7 @@ function safeJsonEncode($data) {
                     <div><p class="text-gray-500">Quantity</p><p class="font-medium">${esc(order.quantity)}</p></div>
                     <div><p class="text-gray-500">Num Businesses</p><p class="font-medium">${esc(order.numBusinesses || '1')}</p></div>
                     <div><p class="text-gray-500">Current Rating Qty</p><p class="font-medium">${esc(order.currentRating || '-')}</p></div>
+                    <div><p class="text-gray-500">Delivery Speed</p><p class="font-medium">${esc(order.reviewPhaseW1 || '-')}</p></div>
                     <div><p class="text-gray-500">Target Rating Total</p><p class="font-medium font-bold text-green-600">${targetRating > 0 ? targetRating : esc(order.targetRatingTotal || '-')}</p></div>
                     <div class="col-span-2"><p class="text-gray-500">Business Link</p><p class="font-medium break-all">${esc(order.mapsLink)}</p></div>
                     ${order.productType === 'Rating & Review' ? `

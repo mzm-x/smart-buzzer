@@ -1,76 +1,121 @@
 # /redeem — Balance & Voucher Lookup
 
-A **lookup-only** page. Customers enter their email and see the review balance
-(units remaining), the dollar value of that balance, and a deterministic voucher
-code per listing. There is no checkout, no payment, and no data written back —
-`index.php` only reads the pre-built `redeem_data.json` snapshot.
+A **lookup-only** page for customers, plus an **admin page** for the team.
+Customers enter their email and see the review balance (units remaining), the
+dollar value of that balance, and a deterministic voucher code per listing.
+There is no checkout and no payment — `index.php` only reads the pre-built
+`redeem_data.json` snapshot.
 
 ## Files in this folder
 
 | File | Role |
 |------|------|
-| `index.php` | The lookup page (reads `redeem_data.json`). |
+| `index.php` | Customer lookup page (reads `redeem_data.json`). |
+| `submit.php` | **Admin page** — add/update/suppress balances, rebuild the snapshot. |
+| `build_lib.php` | Shared build logic. Used by both `build_data.php` and `submit.php`. |
 | `build_data.php` | CLI build script — turns the CSVs into `redeem_data.json`. |
-| `redeem_data.json` | **Generated.** Do not hand-edit; rebuilt by `build_data.php`. |
-| `data/single.csv` | Source — one-listing clients. |
-| `data/multi.csv` | Source — multi-listing clients. |
+| `redeem_data.json` | **Generated.** Do not hand-edit; rebuilt from the CSVs. |
+| `data/single.csv` | Source — one-listing clients (legacy export). |
+| `data/multi.csv` | Source — multi-listing clients (legacy export). |
+| `data/tracker.csv` | Source — Late Debt Tracker export. |
+| `data/manual.csv` | Source — written by `submit.php`. Never hand-edit while the admin page is open. |
+| `data/.htaccess` | Blocks public HTTP access to the CSVs. **Must stay uploaded.** |
 
 ## Data pipeline
 
 ```
-Google Sheet
-   │  File ▸ Download ▸ Comma-separated values (.csv)
-   ▼
-redeem/data/single.csv   +   redeem/data/multi.csv
-   │  php build_data.php
-   ▼
-redeem/redeem_data.json  ──►  index.php (lookup)
+Google Sheet ──► data/single.csv ─┐
+                data/multi.csv   ─┤
+                data/tracker.csv ─┼──► build ──► redeem_data.json ──► index.php
+submit.php   ──► data/manual.csv ─┘
 ```
 
-1. In the Google Sheet, choose **File ▸ Download ▸ Comma-separated values (.csv)**.
-2. Save the downloaded files as `redeem/data/single.csv` and `redeem/data/multi.csv`.
-3. From the repo root run `php redeem/build_data.php` (or `php build_data.php`
-   from inside `redeem/`). This regenerates `redeem_data.json`.
+Sources are read in that order and **a later source replaces an earlier one**
+for the same `email + label`. So `manual.csv` always wins, and re-exporting the
+tracker never double-counts orders already present in the legacy CSVs.
 
-Both CSVs are optional — the script processes whichever exist and skips the rest.
+Every source is optional — the build processes whichever files exist.
 
-### Expected CSV headers (exact)
+---
 
-**`data/single.csv`** — one listing per client. The order **label = business**.
+## Admin page — `/redeem/submit.php`
+
+Password: `smartbuzzer2025` (session-based).
+
+| Action | What it does |
+|--------|--------------|
+| **Save & rebuild** | Writes/updates a row in `data/manual.csv`, then rebuilds `redeem_data.json` immediately. Live within seconds. |
+| **Suppress from lookup** | Writes an `action=remove` row — that listing stops appearing for the customer even if it's still in a CSV export. |
+| **Delete** | Removes the manual row. The value from the CSV export (if any) applies again. |
+| **Rebuild JSON** | Re-runs the build without changing any data — use after uploading a fresh `tracker.csv`. |
+| **Search** | Shows exactly what a given email/business/voucher code returns on the customer page. |
+
+The admin page never touches `single.csv`, `multi.csv` or `tracker.csv`, so a
+fresh Google Sheet export can't wipe manual corrections.
+
+**Two emails on one order:** enter both in the email field separated by a space,
+comma or semicolon. Each address becomes its own order object, so **either one**
+pulls up that balance. Example: `demariajasob@yahoo.com jasondemaria2123@icloud.con`.
+
+---
+
+## Refreshing from the Google Sheet
+
+### Legacy exports (`single.csv` / `multi.csv`)
+
+1. **File ▸ Download ▸ Comma-separated values (.csv)**
+2. Save as `redeem/data/single.csv` and `redeem/data/multi.csv`.
+3. Run `php redeem/build_data.php`, or click **Rebuild JSON** in `submit.php`.
+
+Expected headers (order-independent, extra columns tolerated):
 
 ```
-business,email,remaining
+data/single.csv   business,email,remaining          (label = business)
+data/multi.csv    business,label,email,remaining
 ```
 
-**`data/multi.csv`** — a client with several listings/links; each row is one listing.
+### Late Debt Tracker (`tracker.csv`)
 
-```
-business,label,email,remaining
-```
+1. Download the **Late Debt Tracker** tab as CSV.
+2. Save as `redeem/data/tracker.csv` — no cleanup needed, the two-row header is
+   handled automatically (the parser scans for the row containing `Mission Names`).
+3. Run `php redeem/build_data.php`, or click **Rebuild JSON**.
 
-Column meanings (both files):
+Columns used, mapped **by header name**:
 
-- `business` — client / display name (for `multi.csv` this is the group name).
-- `label` — the specific listing/link name (`multi.csv` only; single uses `business`).
-- `email` — may be blank, may be `No Email`, or may contain **two emails**
-  separated by a space/comma/semicolon (e.g. `a@x.com b@y.com`). Each valid email
-  produces its own order object, so **either** address can redeem that order.
-- `remaining` — integer units remaining. Rows without a valid non-negative
-  integer here are skipped.
+| Tracker column | Used as |
+|----------------|---------|
+| `Mission Names` | `label` |
+| `Client Name` | `business` |
+| `Email` | `email` (may hold two addresses) |
+| `Units Remaining` | `remaining` |
 
-Column **order and extra columns are tolerant** — the script maps by header name,
-not position. Blanks, `No Email`, and stray notes without an `@` are dropped
-automatically.
+**Rows deliberately skipped** — these clients must not be handed a voucher:
+
+| Skip reason | Trigger |
+|-------------|---------|
+| `zero-or-negative` | `Units Remaining` ≤ 0 (nothing left, or over-delivered) |
+| `refund-executed` | `Executed Refund` = `Yes` |
+| `refund-approved` | `Approval` = `Approved` |
+| `disputed` | `Overall Status (Biz)` contains `Disputed` |
+| `clean-debt` | `Overall Status (Biz)` contains `Clean Debt` |
+| `client-stopped` | `Overall Status (Biz)` or `Notes Biz` contains "request to stop" |
+| `finished` | `Campaign Status` = `Finished` |
+| `no-email` | No `@` anywhere in the email cell (blank, `No Email`, a name, `Crypto`, …) |
+
+The build prints a per-reason count so you can sanity-check every import.
+
+---
 
 ## How values are computed
 
 - **`amount = remaining × $5`** — each remaining unit is worth $5.
 - **`code`** is a deterministic voucher: `SB-` + the first 6 hex chars (uppercased)
   of `md5(email | label | remaining)`. The same `email + label + remaining`
-  **always** yields the same code, so re-running the build never changes a code
-  unless the underlying balance changes.
+  **always** yields the same code, so rebuilding never changes a code unless the
+  underlying balance changes.
 
-Each emitted order object looks like:
+Each emitted order object:
 
 ```json
 {
@@ -87,36 +132,40 @@ And `redeem_data.json` wraps them:
 
 ```json
 {
-  "generated_at": "2026-07-09",
+  "generated_at": "2026-07-20",
   "count": 620,
   "orders": [ ... ]
 }
 ```
 
-## Refreshing when balances change
+### Repeat orders on the same listing
 
-Balances live in the Google Sheet. To publish new numbers:
+A client can buy the same listing twice — the tracker then has two rows with the
+same `Mission Names`. Both are kept as separate vouchers, and the customer sees
+both cards with the totals added up. Only byte-identical rows (same email, label
+**and** remaining) collapse into one.
 
-1. Re-download both tabs as CSV (**File ▸ Download ▸ .csv**).
-2. Overwrite `data/single.csv` and `data/multi.csv`.
-3. Re-run `php build_data.php`.
-
-That's it — `redeem_data.json` is rewritten and `index.php` serves the new
-balances immediately. No database, no deploy step beyond uploading the refreshed
-`redeem_data.json` (and the CSVs, if you keep them on the server).
+---
 
 ## Build output
 
-The script prints a one-line summary, e.g.:
-
 ```
-single.csv: 455 rows -> 470 orders | multi.csv: 89 rows -> 150 orders | skipped 12 (no-email 9, bad-remaining 3) | 620 orders, 540 distinct emails, total $302,150
+single.csv: 455 rows -> 464 orders | multi.csv: 89 rows -> 94 orders | tracker.csv: 812 rows -> 390 orders | manual.csv: 3 rows -> 3 orders | skipped: no-email 10, bad-remaining 0, zero-or-negative 96, ineligible 214 (refund-approved 31, disputed 12, client-stopped 40, finished 131) | 620 orders, 540 distinct emails, total $302,150 | 1 suppressed via manual remove
 ```
-
-- **rows** — data rows read per file (header excluded).
-- **orders** — order objects emitted per file (a two-email row emits two).
-- **skipped** — rows that produced nothing, bucketed by reason
-  (`no-email` = no `@` found, `bad-remaining` = not a non-negative integer).
-- **distinct emails** and **total $** — across everything emitted.
 
 Malformed rows never crash the build — they are skipped and counted.
+
+## Deployment
+
+Upload after any change: `redeem_data.json`, plus whichever CSVs you refreshed.
+On a first deploy also upload `submit.php`, `build_lib.php`, `build_data.php`
+and **`data/.htaccess`** — without that file the CSVs (client emails + balances)
+are publicly downloadable.
+
+## Voucher expiry
+
+A single global expiry is shown on every voucher, set at the top of `index.php`:
+
+```php
+$voucherValidUntil = '1 Sep 2026';
+```

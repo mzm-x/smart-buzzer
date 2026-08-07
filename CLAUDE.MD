@@ -66,39 +66,68 @@
 
 This is the canonical service-delivery knowledge that must be reflected in all customer-facing TNC, onboarding flows (`/submit/data/tnc.json`), landing page copy, support scripts, and dashboard messaging. **Always use this exact framing to avoid miscommunication.**
 
-### 1. Daily Submission Cadence
-**We submit 5-10 reviews daily.** Around 5 will show up and stick (roughly 3 per day). This gradual pace keeps the account safe and looks natural to the algorithm. **We only count reviews that stick** — if a review doesn't stick, it does NOT count toward the order.
+**These 9 points mirror `/submit/tnc.json` verbatim.** That file is the deployed contract text; this section is its readable twin. Edit both or neither.
 
-### 2. Drops Are Normal — Per-Review 7-Day Replacement
-Each review counts as **delivered the moment it shows up** on the listing (1 review = 1 delivered). Every delivered review carries its **own 7-day replacement window starting the day it appears** — NOT after the whole order is complete. If a review drops within those 7 days, **we replace it free, one replacement per review**. Reviews that stay live past 7 days are **final** — **if a review drops after the 7-day window, it is NOT replaced**. If a replacement later drops, it is **not replaced again** (one replacement per review). This is the canonical guarantee model — do NOT describe the guarantee as starting "after the full order completes".
+### 1. You Pay for Reviews That Show Up
+You're paying for reviews that **show up** on the listing — the moment a review appears, it counts as **1 delivered**. To land the package we submit far more than ordered and post gradually at **the delivery speed the customer selects**: about **2-3 show up per day** at the standard pace, or **3-5 show up per day** at the faster pace. Either way it stays within a natural, safe posting pattern. Whether a review stays long-term is decided by Google's algorithm, and **nobody can control that**. You pay for results, not attempts.
+
+### 2. Drops Are Normal — 7-Day Replacement Per Review
+Reviews can drop — that's normal, and it **happens even with organic reviews** because of Google's algorithm. Each review counts as delivered the moment it shows up (1 review = 1 delivered) and carries its **own 7-day replacement window starting the day it appears**. If a review drops within those 7 days, **we replace it free — one replacement per review**. Reviews that stay live past 7 days are **final** — if a review drops after the 7-day window, it is **NOT replaced**. If a replacement later drops, it is not replaced again. **We replace, but we do not guarantee long-term permanence.**
 
 ### 3. Error Names (Asian-Server Accounts)
-Since we use real people to post reviews, occasionally some reviews may come from Asian-server accounts. **These are not counted as valid orders** — we automatically replace them with new reviews until the full order is fulfilled.
+Since we use real people to post reviews, occasionally some reviews may come from Asian-server accounts. **These do not count as a valid show-up** — we automatically replace them with new reviews until the show-up count is filled.
 
 ### 4. Mistaken Reviews
-Incorrect reviews (wrong language/rating) cannot be removed but **will not count toward the order**. We provide free replacements until resolved.
+Incorrect reviews (wrong language/rating) cannot be removed but **will not count toward the show-up count**. We provide free replacements until resolved.
 
 ### 5. Google Wave Updates
-Google rolls out algorithm updates ("waves") a few times a year — usually around mid-year, but timing is unpredictable. When a wave hits, a few reviews may get affected. The account stays safe, and **we replace any affected reviews until the order is complete**. As a seller, we have no advance notice of these waves.
+Google rolls out algorithm updates ("waves") a few times a year — usually around mid-year, but timing is unpredictable and **we get no advance notice**. When a wave hits, some reviews may be affected. **Reviews still inside their 7-day window are covered by the standard per-review replacement; reviews past their 7-day window are final and are not replaced.** The account stays safe.
 
 ### 6. Review Posting Timeline
-Estimated timeline depends on the business, but **full delivery of 55 reviews typically takes around 3 months (default baseline)**. Larger orders take longer. **Once the campaign has started, the order is final and cannot be cancelled or disputed.**
+Because we submit far more and post gradually, the timeline depends on the business, the package size, and **the delivery speed the customer selects at checkout**. **First reviews typically appear within 24 hours of content approval**; larger orders and the standard pace take longer to fully complete. **Once the campaign has started, the order is final and cannot be cancelled or disputed.**
 
 ### 7. Content Guidelines
-Customer may provide input on review content, **but cannot select reviewer names**. All names follow local naming conventions for authenticity.
+Customer may provide input on review content, **but cannot select reviewer names**. Names follow a **natural, worldwide spread (Global Names)** for authenticity.
+
+> ⚠️ **UNRESOLVED CONFLICT — do not propagate blindly.** This point says names are a
+> worldwide spread (Global Names). The UVP tables in this document and the pricing cards
+> on every LP still advertise **"(70%) Local + (30%) Global Names"**, and the `namesModal`
+> on each LP explains that 70/30 split. TNC and marketing copy currently contradict each
+> other. Confirm which is true before editing either side.
+
+### 8. Guarantee & Claim Period
+Our guarantee is **show-up plus a 7-day per-review replacement — not long-term permanence**. Each review's 7-day window starts the day it shows up on the listing. If it drops within those 7 days, we replace it free (one replacement per review). Once a review's 7-day window closes, that review is final and **NO FURTHER CLAIMS WILL BE ACCEPTED** for it — if it drops after the 7-day window, it is **NOT replaced**. How many reviews stay long-term is decided by Google's algorithm, not us. We sell it honestly: it is what it is.
+
+### 9. Refund Policy
+**Advance payment is required** before we start the campaign. **All sales are final — there are no cash refunds.** If a refund is approved, it is issued as a **store voucher** usable on any future order.
 
 ### Source of Truth
-- TNC JSON file: `/submit/data/tnc.json` (8 points total — these 7 + Refund Policy + Guarantee & Claim Period)
-- Onboarding form: `/submit/submit.php` reads from `data/tnc.json`
+- **Live file read by the app: `/submit/data/tnc.json`** — this is what `submit.php:49`
+  (`__DIR__ . '/data/tnc.json'`) actually loads. The `data/` folder is production-only and is
+  not in the repo, same pattern as `outbound/data/`.
+- **Repo working copy: `/submit/tnc.json`** — edit here, then deploy to `/submit/data/tnc.json`
+  on the server. Editing only the repo copy changes NOTHING for customers.
+- 9 points — the 9 above, in this exact order. `submit.php` dedupes by title and the wizard
+  unlock counter uses `count($tncPoints)`, so a duplicate title breaks the form (this caused
+  the historical "9/18 agreed" lock bug).
+- Onboarding form: `/submit/submit.php` renders the points; `/submit/save-tnc.php` writes them
+  from the AM dashboard TNC editor — an edit there **overwrites the server file**, so re-apply
+  changes made only in the repo.
 - DO NOT contradict these points in any landing page copy, modal, or marketing material
-- When updating TNC text, update BOTH `data/tnc.json` AND this section in CLAUDE.md to keep them in sync
+- When updating TNC text, update ALL THREE: `/submit/tnc.json` (repo), `/submit/data/tnc.json`
+  (server), AND this section in CLAUDE.md
 
 ### Phrases to AVOID (compliance / clarity)
 - "Zero account bans" / "0 account bans" / "no account bans" — compliance risk
 - **"Zero drops" / "no drops" / "0 drops" / "zero ban" / "zero bans"** — compliance risk. We promise replacement, not zero drops. Some drops are normal Google behavior. Instead say: "7-day per-review replacement", "if a review drops within 7 days we replace it free (one replacement per review)", "drops within 7 days auto-replaced free".
 - **"guarantee starts after the full order completes" / "7 days from completion" / "after campaign completion you have 7 days"** — outdated guarantee model. Replaced by per-review 7-day window: each review's 7 days starts the day it shows up. One replacement per review.
-- "Reviews are posted 1-3 per week" — outdated, replaced by "5-10 submitted daily, ~3 stick per day"
-- "1-2 months" / "2-3 months" hardcoded timeline — replaced by "around 3 months for 55 reviews (default), varies by business"
+- **"Reviews are posted 1-3 per week" / "1-3 reviews per day max" / "7-10 reviews per week maximum"** — outdated. Delivery pace is now a **customer-selected tier**: `5 submits/day | 2-3 show up/day` (standard) or `10 submits/day | 3-5 show up/day` (fast). Say "2-5 show-ups per day depending on the delivery speed selected".
+- **"campaign completion: 1-2 months"** as a blanket claim — outdated. Completion depends on package size AND the selected tier. Reference points: 100 reviews ≈ 5-7 weeks (standard) / 3-5 weeks (fast); 200 reviews ≈ 2-3 months (standard) / 1-2 months (fast).
+- **"we only count reviews that stick" / "stay reviews" / "guaranteed to stay" / "reviews that stay live count"** — outdated model. We sell **SHOW-UP reviews**: a review counts the moment it shows up on the listing. Say "72 show-up reviews", "counted when it shows up", not "counted when it sticks".
+- **"permanent reviews" / "reviews stay forever" / "lifetime guarantee" / "98% retention after 30 days" / "maximum 10% review loss"** — we explicitly do NOT guarantee long-term permanence (TNC points 2 & 8). Any retention-percentage promise contradicts the contract.
+- **"full refund" / "money-back guarantee" / "100% refund" / "refund if not satisfied"** — refund policy is now **store voucher only, no cash refunds** (TNC point 9). A cash-refund promise is a contract violation.
+- **"we replace affected reviews until the order is complete"** (wave context) — outdated. Wave coverage follows the same per-review 7-day window: inside the window it is replaced, past the window it is final.
+- "1-2 months" / "2-3 months" / "around 3 months for 55 reviews" hardcoded timeline — removed from TNC. Replaced by "first reviews typically appear within 24 hours of content approval; total time depends on business and package size"
 
 ### Mobile section ordering rule (CRITICAL — applies to ALL LPs)
 **On mobile (≤880px), the image/visual ALWAYS appears ABOVE text in any image+text split section.**
@@ -212,14 +241,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 **IMPORTANT: Each LP uses its own `sbPkgMeta`. Do NOT copy /promo/ packages into /promo-b1g1/ or vice versa.**
 
-### /promo/ — Standard Packages
+### /promo/ — Standard Packages (SHOW-UP reviews)
 ```javascript
 var sbPkgMeta = {
-    'starter':     {id: 'pkg_starter_55',     name: 'Buy Google Reviews - 55 Local',  item_category: 'Google Reviews', price: 360.00, reviews: 55},
-    'growth':      {id: 'pkg_growth_88',      name: 'Buy Google Reviews - 88 Local',  item_category: 'Google Reviews', price: 550.00, reviews: 88},
-    'performance': {id: 'pkg_performance_110', name: 'Buy Google Reviews - 110 Local', item_category: 'Google Reviews', price: 660.00, reviews: 110}
+    'starter':     {id: 'pkg_starter_72',      name: 'Buy Google Reviews - 72 Show-Up',  item_category: 'Google Reviews', price: 360.00, reviews: 72},
+    'growth':      {id: 'pkg_growth_96',       name: 'Buy Google Reviews - 96 Show-Up',  item_category: 'Google Reviews', price: 430.00, reviews: 96},
+    'performance': {id: 'pkg_performance_132', name: 'Buy Google Reviews - 132 Show-Up', item_category: 'Google Reviews', price: 530.00, reviews: 132}
 };
 ```
+**These exact values MUST match the `$packages` promo rows in root `thankyou.php`.** A mismatch makes `begin_checkout` and `purchase` report different revenue to GA4/Meta.
 
 ### /promo-b1g1/ — B1G1 Packages
 ```javascript
@@ -231,16 +261,21 @@ var sbPkgMeta = {
 
 ---
 
-## Fanbasis Payment URLs (Per LP)
+## Payment Gateway URLs (Per LP)
 
-### /promo/ — Fanbasis Links
-| Package Key | Reviews | Price | Fanbasis URL |
+**GATEWAY REBRAND:** Fanbasis rebranded to **Commas** (`commas.com`). Same platform, same
+callback param convention (`ref`, `email`, `name`, `phone`, `payment_id`) — only the domain
+and checkout URL format changed. `/promo/` is migrated. Other LPs still point at
+`fanbasis.com` links — verify each before assuming they still resolve.
+
+### /promo/ — Commas Links (migrated)
+| Package Key | Reviews | Price | Commas URL |
 |-------------|---------|-------|-------------|
-| `starter` | 55 | $360.00 | `https://www.fanbasis.com/agency-checkout/smartbuzzer/Rgl3R` |
-| `growth` | 88 | $550 | `https://www.fanbasis.com/agency-checkout/smartbuzzer/Vmv31` |
-| `performance` | 110 | $660 | `https://www.fanbasis.com/agency-checkout/smartbuzzer/WnP3g` |
+| `starter` | 72 | $360.00 | `https://commas.com/checkout/p7jpyGkNIk6xfpo` |
+| `growth` | 96 | $430 | `https://commas.com/checkout/ZvwDEINbU6l8JO` |
+| `performance` | 132 | $530 | `https://commas.com/checkout/p7jWybkR5uYrIkEj` |
 
-### /promo-b1g1/ — Fanbasis Links
+### /promo-b1g1/ — Fanbasis Links (NOT yet migrated to Commas)
 | Package Key | Reviews | Price | Fanbasis URL |
 |-------------|---------|-------|-------------|
 | `booster` | 65 | $380 | `https://www.fanbasis.com/agency-checkout/smartbuzzer/Rgl3R` |
@@ -250,12 +285,15 @@ var sbPkgMeta = {
 
 ## thankyou.php Package Mapping (Per LP)
 
-### /promo/thankyou.php
-| Key | Name | Reviews | Price |
-|-----|------|---------|-------|
-| `starter` | Starter | 55 | 360.00 |
-| `growth` | Growth | 88 | 550.00 |
-| `performance` | Performance | 110 | 660.00 |
+**NOTE:** `/promo/` has NO local `thankyou.php`. It uses the shared root
+`https://smart-buzzer.com/thankyou.php` (`$packages` array). Same for all newer LPs.
+
+### /promo/ rows in root thankyou.php
+| Key | Name | Reviews | Price | item_id |
+|-----|------|---------|-------|---------|
+| `starter` | Promo Starter | 72 | 360.00 | `pkg_starter_72` |
+| `growth` | Promo Growth | 96 | 430.00 | `pkg_growth_96` |
+| `performance` | Promo Performance | 132 | 530.00 | `pkg_performance_132` |
 
 ### /promo-b1g1/thankyou.php
 | Key | Name | Reviews | Price |
@@ -1381,7 +1419,8 @@ Timestamp | Page URL | Action | UTM_Campaign | UTM_Source/Medium | Country | IP
 18. Write user input to TSV without sanitizing tabs/newlines
 19. Remove or modify GTM container code (`GTM-WJ6ZK3MR`)
 20. Remove `dataLayer.push({ecommerce: null})` before ecommerce pushes
-21. Change package metadata IDs — `/promo/`: `pkg_starter_55`, `pkg_growth_88`, `pkg_performance_110` | `/promo-b1g1/`: `pkg_booster_65`, `pkg_dominator_120`
+21. Change package metadata IDs — `/promo/`: `pkg_starter_72`, `pkg_growth_96`, `pkg_performance_132` | `/promo-b1g1/`: `pkg_booster_65`, `pkg_dominator_120`
+21b. Change a package's reviews/price in an LP's `sbPkgMeta` WITHOUT updating the matching rows in root `thankyou.php` `$packages` — that desyncs `begin_checkout` from `purchase` and corrupts GA4 revenue + Meta ROAS. Always edit both together.
 22. Remove `typeof fbq !== 'undefined'` or `typeof ttq !== 'undefined'` guards
 29. Add direct `fbq('init', ...)` Meta Pixel code on new landing pages — GTM already fires FB PageView and all pixel events. Direct init causes **duplicate events**. Only add a comment: `<!-- Meta Pixel: managed via GTM -->`
 23. Log pricing button clicks to customer_data.log
@@ -1639,7 +1678,7 @@ page_url: window.location.pathname  // Just "/promo/"
 |--------------|-----|--------|-------|----------|-------------|----------------|
 | Main Site | / | Active | WordPress | - | - | - |
 | Product Page | /product/google-reviews/ | Active | WordPress | starter/growth/performance | - | - |
-| promo | /promo/ | Active | Blue | starter ($360.00) / growth ($550) / performance ($660) | growth | /promo/thankyou.php |
+| promo | /promo/ | Active | Blue | starter 72r ($360.00) / growth 96r ($430) / performance 132r ($530) — **Commas gateway** | growth | root /thankyou.php |
 | promo-2 | /promo-2/ | Active | Blue | starter ($360.00) / growth ($550) / performance ($660) | growth | /promo-2/thankyou.php |
 | promo-outbound | /promo-outbound/ | Active | Blue (Outbound Email) | starter ($360.00) / growth ($550) / performance ($660) | growth | /promo-outbound/thankyou.php |
 | promo-b1g1 | /promo-b1g1/ | Active | Blue (B1G1) | booster 65r ($380) / dominator 120r ($680) | dominator | /promo-b1g1/thankyou.php |
@@ -1742,20 +1781,20 @@ CONTACT: +6285-7731-16557 (WhatsApp)
 ### Package ID Quick Reference
 | LP | Package Key | Item ID | Reviews | Price |
 |----|-------------|---------|---------|-------|
-| /promo/ | `starter` | `pkg_starter_55` | 55 | $360.00 |
-| /promo/ | `growth` | `pkg_growth_88` | 88 | $550 |
-| /promo/ | `performance` | `pkg_performance_110` | 110 | $660 |
+| /promo/ | `starter` | `pkg_starter_72` | 72 | $360.00 |
+| /promo/ | `growth` | `pkg_growth_96` | 96 | $430 |
+| /promo/ | `performance` | `pkg_performance_132` | 132 | $530 |
 | /promo-b1g1/ | `booster` | `pkg_booster_65` | 65 | $380 |
 | /promo-b1g1/ | `dominator` | `pkg_dominator_120` | 120 | $680 |
 
-### Fanbasis URL Quick Reference
-| LP | Package | Fanbasis URL Slug |
-|----|---------|------------------|
-| /promo/ | starter | `Rgl3R` |
-| /promo/ | growth | `Vmv31` |
-| /promo/ | performance | `WnP3g` |
-| /promo-b1g1/ | booster | `Rgl3R` |
-| /promo-b1g1/ | dominator | `wpk38` |
+### Checkout URL Quick Reference
+| LP | Package | Gateway | Checkout Slug |
+|----|---------|---------|---------------|
+| /promo/ | starter | Commas | `p7jpyGkNIk6xfpo` |
+| /promo/ | growth | Commas | `ZvwDEINbU6l8JO` |
+| /promo/ | performance | Commas | `p7jWybkR5uYrIkEj` |
+| /promo-b1g1/ | booster | Fanbasis | `Rgl3R` |
+| /promo-b1g1/ | dominator | Fanbasis | `wpk38` |
 
 ---
 
@@ -2000,6 +2039,16 @@ After:   seasonal/index-valentine.php  (backup)
 
 ## CHANGELOG
 
+### v4.6 (2026-07-27)
+- **Product model: SHOW-UP reviews, not STAY reviews.** `/submit/tnc.json` rewritten to the canonical 9-point text and the CLAUDE.md Service Delivery section now mirrors it verbatim. A review counts the moment it shows up on the listing; we explicitly do NOT guarantee long-term permanence. Resolves a long-standing contradiction where point 1 said "we only count reviews that stick" while point 2 said "delivered the moment it shows up".
+- **TNC material changes** (all customer-facing): cadence is now "~3-4 show up per day" (was "~5 stick per day"); wave coverage now follows the same per-review 7-day window instead of "replace until the order is complete"; the "~3 months for 55 reviews" timeline baseline is removed in favor of "first reviews within 24 hours of content approval"; **Refund Policy changed from a satisfaction-based full refund to store-voucher-only with no cash refunds**; Guarantee & Claim Period and Refund Policy are now explicit points 8 and 9 (previously the doc claimed "8 points total" while listing 7 — an off-by-one that is now correct at 9).
+- Added to Phrases to AVOID: permanence/retention-percentage claims, cash-refund promises, and the outdated wave-replacement wording — each now contradicts the deployed contract.
+- **Flagged unresolved conflict:** TNC point 7 says reviewer names are a worldwide spread (Global Names), while the UVP tables and every LP pricing card still advertise "(70%) Local + (30%) Global Names". Not auto-propagated — needs a decision.
+- **Gateway rebrand: Fanbasis → Commas (commas.com).** Same platform, same callback params (`ref`, `email`, `name`, `phone`, `payment_id`); only the domain and checkout URL format changed. `/promo/` migrated to Commas checkout links. All other LPs still point at `fanbasis.com` — not yet verified post-rebrand.
+- **Fixed `/promo/` purchase tracking (revenue was over-reported).** Root `thankyou.php` `$packages` still carried the old 55/88/110 @ $360/$550/$660 while `/promo/index.php` `sbPkgMeta` had moved to 72/96/132 @ $360/$430/$530. Result: `begin_checkout` sent $430 and `purchase` sent $550 — a $120/order phantom revenue inflation in GA4 + Meta, with `item_id` mismatch breaking the funnel. Promo rows in `thankyou.php` now synced to the LP. Added rule 21b requiring both files be edited together.
+- Renamed `var fanbasisLinks` → `var commasLinks` in `/promo/index.php`; documented that Commas redirects back to root `thankyou.php`.
+- Corrected docs: `/promo/` has no local `thankyou.php` — it uses the shared root one.
+
 ### v4.5 (2026-04-28)
 - Added `/promo-california/` landing page — California-targeted clone of `/promo/` with UI/UX redesign for the CA market. Same packages/tracking/Fanbasis URLs as `/promo/`. UI changes: new Coastal Blue (#0EA5E9) + Sunset Gold (#F59E0B) palette, inline SVG California state map vector with city dots (Sacramento/SF/SJ/Fresno/LA/SD) replacing dashboard hero image, new Trust Bar section with city pills, new Problem→Solution comparison section, CA-localized testimonials with initial-letter avatars (no photos), 2 new CCPA + CA-reviewer FAQs, sticky mobile CTA bar, CCPA notice on order form. All tracking code (GTM, FB Pixel, TikTok Pixel, dataLayer events, LocalStorage bridge) preserved 100% identical to /promo/. Only `thankyou.php` diff: line 56 fallback URL → `/promo-california/`. New CSS uses `.ca-*` prefix to avoid conflicts. Added `promo-california` (and missing `promo-outbound`) to $DEFAULT_LANDING_PAGES in /analytics/.
 
@@ -2032,6 +2081,6 @@ After:   seasonal/index-valentine.php  (backup)
 
 ---
 
-**Document Version:** 4.5
-**Last Updated:** 2026-04-28
+**Document Version:** 4.6
+**Last Updated:** 2026-07-27
 **Status:** Production Ready

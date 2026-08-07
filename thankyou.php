@@ -3,14 +3,31 @@
 // Handles ALL landing pages: /promo/, /promo-b1g1/, etc.
 // Deploy to: https://smart-buzzer.com/thankyou.php
 // Fires Purchase pixel + dataLayer push on page load
-// Supports Fanbasis callback params AND legacy params
+// Supports Commas (ex-Fanbasis) callback params AND legacy params
+// NOTE: Fanbasis rebranded to Commas (commas.com). Same platform, same callback
+// param convention (ref, email, name, phone, payment_id) — only the domain changed.
 
 // ===== ALL PACKAGES FROM ALL LANDING PAGES =====
 $packages = [
-    // LP Promo packages
-    'starter'     => ['name' => 'Promo Starter',     'reviews' => '55',  'price' => '360.00', 'display' => '$360', 'item_id' => 'pkg_starter_55',     'item_name' => 'Buy Google Reviews - 55 Local',       'source_lp' => 'promo'],
-    'growth'      => ['name' => 'Promo Growth',      'reviews' => '88',  'price' => '550.00', 'display' => '$550', 'item_id' => 'pkg_growth_88',      'item_name' => 'Buy Google Reviews - 88 Local',       'source_lp' => 'promo'],
-    'performance' => ['name' => 'Promo Performance', 'reviews' => '110', 'price' => '660.00', 'display' => '$660', 'item_id' => 'pkg_performance_110', 'item_name' => 'Buy Google Reviews - 110 Local',      'source_lp' => 'promo'],
+    // LP Promo packages — MUST stay in sync with sbPkgMeta in /promo/index.php
+    'starter'     => ['name' => 'Promo Starter',     'reviews' => '72',  'price' => '360.00', 'display' => '$360', 'item_id' => 'pkg_starter_72',      'item_name' => 'Buy Google Reviews - 72 Show-Up',  'source_lp' => 'promo'],
+    'growth'      => ['name' => 'Promo Growth',      'reviews' => '96',  'price' => '430.00', 'display' => '$430', 'item_id' => 'pkg_growth_96',       'item_name' => 'Buy Google Reviews - 96 Show-Up',  'source_lp' => 'promo'],
+    'performance' => ['name' => 'Promo Performance', 'reviews' => '132', 'price' => '530.00', 'display' => '$530', 'item_id' => 'pkg_performance_132', 'item_name' => 'Buy Google Reviews - 132 Show-Up', 'source_lp' => 'promo'],
+    // LP Promo-2 packages — MUST stay in sync with sbPkgMeta in /promo-2/index.php
+    // All three differ from /promo/: $350 / $425 / $525 (vs $360 / $430 / $530).
+    // All three have their own Commas checkout link; set each link's ref in the
+    // Commas dashboard to LP-PROMO2-72 / LP-PROMO2-96 / LP-PROMO2-132 so purchases
+    // resolve here and not to the /promo/ rows above.
+    'p2_starter'     => ['name' => 'Promo-2 Starter',     'reviews' => '72',  'price' => '350.00', 'display' => '$350', 'item_id' => 'pkg_p2_starter_72',      'item_name' => 'Buy Google Reviews - 72 Show-Up',  'source_lp' => 'promo-2'],
+    'p2_growth'      => ['name' => 'Promo-2 Growth',      'reviews' => '96',  'price' => '425.00', 'display' => '$425', 'item_id' => 'pkg_p2_growth_96',       'item_name' => 'Buy Google Reviews - 96 Show-Up',  'source_lp' => 'promo-2'],
+    'p2_performance' => ['name' => 'Promo-2 Performance', 'reviews' => '132', 'price' => '525.00', 'display' => '$525', 'item_id' => 'pkg_p2_performance_132', 'item_name' => 'Buy Google Reviews - 132 Show-Up', 'source_lp' => 'promo-2'],
+    // LP F&B / Restaurant packages — MUST stay in sync with sbPkgMeta in /promo-fnb/index.php
+    // Starter is $350 here vs $360 on /promo/ — that is why these need their own rows.
+    // Each has its own Commas checkout link; set the link's ref in the Commas dashboard
+    // to LP-FNB-72 / LP-FNB-96 / LP-FNB-132 so purchases resolve here, not to /promo/.
+    'fnb_starter'     => ['name' => 'F&B Starter',     'reviews' => '72',  'price' => '350.00', 'display' => '$350', 'item_id' => 'pkg_fnb_starter_72',      'item_name' => 'Buy Google Reviews - 72 Show-Up (Restaurant)',  'source_lp' => 'promo-fnb'],
+    'fnb_growth'      => ['name' => 'F&B Growth',      'reviews' => '96',  'price' => '430.00', 'display' => '$430', 'item_id' => 'pkg_fnb_growth_96',       'item_name' => 'Buy Google Reviews - 96 Show-Up (Restaurant)',  'source_lp' => 'promo-fnb'],
+    'fnb_performance' => ['name' => 'F&B Performance', 'reviews' => '132', 'price' => '530.00', 'display' => '$530', 'item_id' => 'pkg_fnb_performance_132', 'item_name' => 'Buy Google Reviews - 132 Show-Up (Restaurant)', 'source_lp' => 'promo-fnb'],
     // LP B1G1 V2 packages
     'booster'     => ['name' => 'B1G1 Booster',      'reviews' => '65',  'price' => '380.00', 'display' => '$380', 'item_id' => 'pkg_booster_65',     'item_name' => 'Buy Google Reviews - 65 Local (B1G1)',  'source_lp' => 'promo-b1g1'],
     'dominator'   => ['name' => 'B1G1 Dominator',    'reviews' => '120', 'price' => '680.00', 'display' => '$680', 'item_id' => 'pkg_dominator_120',  'item_name' => 'Buy Google Reviews - 120 Local (B1G1)', 'source_lp' => 'promo-b1g1'],
@@ -36,12 +53,30 @@ $packages = [
     'tripadvisor_performance' => ['name' => 'Tripadvisor Performance', 'reviews' => '63', 'price' => '530.00', 'display' => '$530', 'item_id' => 'pkg_tripadvisor_performance_63', 'item_name' => 'Buy Tripadvisor Reviews - 63 Local', 'source_lp' => 'promo-tripadvisor'],
 ];
 
-// ===== FANBASIS REF CODE TO PACKAGE KEY MAPPING =====
+// ===== COMMAS (ex-FANBASIS) REF CODE TO PACKAGE KEY MAPPING =====
+// Ref codes are configured per checkout link in the Commas dashboard.
+// They are arbitrary labels — the review counts in the code names do NOT have to
+// match the package's actual review count. Only the mapping to the package KEY matters.
 $refMap = [
-    // LP Promo
+    // LP Promo — CANONICAL codes (match the actual show-up counts). Use these in Commas.
+    'LP-PROMO-72'  => 'starter',      // 72 show-up  — $360
+    'LP-PROMO-96'  => 'growth',       // 96 show-up  — $430
+    'LP-PROMO-132' => 'performance',  // 132 show-up — $530
+    // LP Promo — legacy codes from the 55/88/110 era, kept so old Commas/Fanbasis
+    // checkout links keep resolving. They now return the SAME packages as above.
     'LP-PROMO-55'  => 'starter',
     'LP-PROMO-88'  => 'growth',
     'LP-PROMO-110' => 'performance',
+    // LP Promo-2 — set these refs on the promo-2 Commas checkout links
+    // ($350 / $425 / $525). Without the ref, thankyou.php falls back to 'growth'
+    // and reports the /promo/ price instead.
+    'LP-PROMO2-72'  => 'p2_starter',
+    'LP-PROMO2-96'  => 'p2_growth',
+    'LP-PROMO2-132' => 'p2_performance',
+    // LP F&B / Restaurant — refs set on the promo-fnb Commas checkout links
+    'LP-FNB-72'  => 'fnb_starter',      // 72 show-up  — $350
+    'LP-FNB-96'  => 'fnb_growth',       // 96 show-up  — $430
+    'LP-FNB-132' => 'fnb_performance',  // 132 show-up — $530
     // LP B1G1 V2
     'LP-B1G1-65'   => 'booster',
     'LP-B1G1-120'  => 'dominator',
@@ -71,7 +106,7 @@ $refMap = [
     'LP-TRIPADVISOR-50' => 'tripadvisor_performance',
 ];
 
-// ===== PARSE FANBASIS PARAMS =====
+// ===== PARSE COMMAS (ex-FANBASIS) PARAMS =====
 $fbRef         = isset($_GET['ref'])          ? htmlspecialchars($_GET['ref'], ENT_QUOTES, 'UTF-8') : '';
 $fbEmail       = isset($_GET['email'])        ? htmlspecialchars(urldecode($_GET['email']), ENT_QUOTES, 'UTF-8') : '';
 $fbName        = isset($_GET['name'])         ? htmlspecialchars(urldecode($_GET['name']), ENT_QUOTES, 'UTF-8') : '';

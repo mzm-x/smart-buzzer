@@ -1,42 +1,42 @@
 {
     "points": [
         {
-            "title": "We submit 5-10 reviews daily",
-            "subtitle": "Around 5 will show up and stick (roughly 3 per day). This gradual pace keeps your account safe and looks natural to the algorithm. We only count reviews that stick \u2014 if a review doesn't stick, we will not count it toward your order."
+            "title": "You Pay for Reviews That Show Up",
+            "subtitle": "You're paying for reviews that show up on your listing — the moment a review appears, it counts as 1 delivered. To land your package we submit far more and post gradually at the delivery speed you choose — about 2-3 show up per day at the standard pace, or 3-5 show up per day at the faster pace — and either way it stays within a natural, safe posting pattern. Whether a review stays long-term is decided by Google's algorithm, and nobody can control that. You pay for results, not attempts."
         },
         {
-            "title": "Drops are normal \u2014 7-day replacement per review",
-            "subtitle": "Each review counts as delivered the moment it shows up on your listing (1 review = 1 delivered). Every delivered review has its own 7-day window that starts the day it appears. If a review drops within those 7 days, we replace it free \u2014 one replacement per review. Reviews that stay live past 7 days are final \u2014 if a review drops after the 7-day window, it is NOT replaced. If a replacement later drops, it is not replaced again."
+            "title": "Drops are normal — 7-day replacement per review",
+            "subtitle": "Reviews can drop — that's normal, and it happens even with organic reviews because of Google's algorithm. Each review counts as delivered the moment it shows up (1 review = 1 delivered) and carries its own 7-day replacement window starting the day it appears. If a review drops within those 7 days, we replace it free — one replacement per review. Reviews that stay live past 7 days are final — if a review drops after the 7-day window, it is NOT replaced. If a replacement later drops, it is not replaced again. We replace, but we do not guarantee long-term permanence."
         },
         {
             "title": "Error Names",
-            "subtitle": "Since we use real people to post reviews, occasionally some reviews may come from Asian-server accounts. These will not be counted as valid orders \u2014 we automatically replace them with new reviews until your full order is fulfilled."
+            "subtitle": "Since we use real people to post reviews, occasionally some reviews may come from Asian-server accounts. These do not count as a valid show-up — we automatically replace them with new reviews until your show-up count is filled."
         },
         {
             "title": "Mistaken Reviews",
-            "subtitle": "Incorrect reviews (wrong language/rating) cannot be removed but will not count toward your order. We provide free replacements until resolved."
+            "subtitle": "Incorrect reviews (wrong language/rating) cannot be removed but will not count toward your show-up count. We provide free replacements until resolved."
         },
         {
             "title": "Google Wave Updates",
-            "subtitle": "Google rolls out algorithm updates (\"waves\") a few times a year \u2014 usually around mid-year, but timing is unpredictable. When a wave hits, a few reviews may get affected. Don't worry \u2014 your account stays safe, and we replace any affected reviews until your order is complete. We can't predict when waves happen."
+            "subtitle": "Google rolls out algorithm updates (\"waves\") a few times a year — usually around mid-year, but timing is unpredictable and we get no advance notice. When a wave hits, some reviews may be affected. Reviews still inside their 7-day window are covered by the standard per-review replacement; reviews past their 7-day window are final and are not replaced. Your account stays safe."
         },
         {
             "title": "Review Posting Timeline",
-            "subtitle": "Estimated timeline depends on your business, but full delivery of 55 reviews typically takes around 3 months (default). Larger orders take longer. Once your campaign has started, the order is final and cannot be cancelled or disputed."
+            "subtitle": "Because we submit far more and post gradually, your timeline depends on your business, your package size, and the delivery speed you select at checkout. First reviews typically appear within 24 hours of content approval, and larger orders take longer to fully complete. Once your campaign has started, the order is final and cannot be cancelled or disputed."
         },
         {
             "title": "Content Guidelines",
-            "subtitle": "You may provide input on review content, but cannot select reviewer names. All names follow local naming conventions for authenticity."
+            "subtitle": "You may provide input on review content, but cannot select reviewer names. Names follow a natural, worldwide spread (Global Names) for authenticity."
         },
         {
             "title": "Guarantee & Claim Period",
-            "subtitle": "The guarantee is counted per review, not after the whole order is complete. Each review carries a 7-day replacement window starting the day it shows up on your listing. If it drops within those 7 days, we replace it free (one replacement per review). Once a review's 7-day window closes, that review is final and NO FURTHER CLAIMS WILL BE ACCEPTED for it - if it drops after the 7-day window, it is NOT replaced. This is final and permanent with no exceptions."
+            "subtitle": "Our guarantee is show-up plus a 7-day per-review replacement — not long-term permanence. Each review's 7-day window starts the day it shows up on your listing. If it drops within those 7 days, we replace it free (one replacement per review). Once a review's 7-day window closes, that review is final and NO FURTHER CLAIMS WILL BE ACCEPTED for it — if it drops after the 7-day window, it is NOT replaced. How many reviews stay long-term is decided by Google's algorithm, not us. We sell it honestly: it is what it is."
         },
         {
             "title": "Refund Policy",
-            "subtitle": "We offer a full refund if you are not satisfied, as long as the order has not progressed beyond 10%."
+            "subtitle": "Advance payment is required before we start your campaign. All sales are final — there are no cash refunds. If a refund is approved, it is issued as a store voucher you can use on any future order."
         }
     ],
-    "lastUpdated": "2026-06-12",
+    "lastUpdated": "2026-08-05",
     "updatedBy": "admin"
 }

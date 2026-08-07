@@ -14,8 +14,8 @@
  */
 
 // Safe fallback defaults (used if wa-config.json is missing/invalid)
-$SB_WA_NUMBER  = '628979133204';
-$SB_WA_DISPLAY = '+62 897-9133-204';
+$SB_WA_NUMBER  = '6285121563813';
+$SB_WA_DISPLAY = '+62 851-2156-3813';
 
 $__sb_wa_json = __DIR__ . '/wa-config.json';
 if (is_readable($__sb_wa_json)) {

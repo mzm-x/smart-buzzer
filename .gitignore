@@ -25,3 +25,26 @@ submit/config.php
 # ===== Dependencies =====
 **/vendor/
 composer.lock
+
+# ===== Kredensial tambahan (ditemukan 2026-08-07, JANGAN dihapus) =====
+# Google service account private key — kunci asli, bukan contoh
+submit/credentials/
+**/service-account.json
+# Backup config berisi DB creds + akun Account Manager (config.php sudah diabaikan di atas)
+**/config.php.backup
+
+# ===== Data runtime /submit/ (orders, auth log, blocked IP = PII + log keamanan) =====
+submit/data/
+
+# ===== Bukti pengerjaan customer (screenshot listing = PII) =====
+**/proofs/
+**/proofs_log.tsv
+
+# ===== Snapshot dependency lama & binary =====
+**/vendor_old_*/
+**/composer.phar
+promo/script/Script Asli.zip
+
+# ===== Data redeem v1 (558 order: nama bisnis + email customer = PII) =====
+redeem/redeemv1/data/
+redeem/redeemv1/redeem_data.json

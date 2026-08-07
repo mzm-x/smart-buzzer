@@ -1,1579 +1,561 @@
+<?php
+/**
+ * ============================================================================
+ * File: /submit/log.php
+ * Smart Buzzer Submission Analytics Dashboard - v1.3
+ * 
+ * v1.3 NEW: Expanded table columns (State, Industry, Platform, Status, Actions),
+ *           detail modal, platform/status filters, review phase fields in CSV
+ * v1.2 NEW: Added Country, State, Business Industry to Business column & CSV export
+ * v1.1 FIX: Unique function names to avoid conflicts
+ * 
+ * Features:
+ * - View all form submissions with expanded columns
+ * - Track referrer sources
+ * - Filter by date, source, device, platform, status
+ * - Stats cards with key metrics
+ * - Detail modal per submission
+ * - Export to CSV
+ * 
+ * Author: Smart Buzzer Development Team
+ * Last Updated: December 2024
+ * ============================================================================
+ */
+
+ini_set('session.gc_maxlifetime', 31536000);
+ini_set('session.cookie_lifetime', 31536000);
+session_start();
+
+// Require authentication
+require_once __DIR__ . '/auth.php';
+requireAuth();
+
+// Load logs
+$logFile = __DIR__ . '/data/submissions_log.json';
+$logs = [];
+if (file_exists($logFile)) {
+    $logs = json_decode(file_get_contents($logFile), true) ?? [];
+}
+
+// Sort by timestamp (newest first)
+usort($logs, function($a, $b) {
+    return strtotime($b['timestamp'] ?? 0) - strtotime($a['timestamp'] ?? 0);
+});
+
+// Calculate stats
+$totalSubmissions = count($logs);
+
+// Source breakdown
+$sources = [];
+foreach ($logs as $log) {
+    $source = $log['source'] ?? 'Unknown';
+    $sources[$source] = ($sources[$source] ?? 0) + 1;
+}
+arsort($sources);
+
+// Device breakdown
+$devices = ['Desktop' => 0, 'Mobile' => 0, 'Tablet' => 0];
+foreach ($logs as $log) {
+    $device = $log['device'] ?? 'Desktop';
+    $devices[$device] = ($devices[$device] ?? 0) + 1;
+}
+
+// Today's submissions
+$today = date('Y-m-d');
+$todayCount = 0;
+foreach ($logs as $log) {
+    if (strpos($log['timestamp'] ?? '', $today) === 0) {
+        $todayCount++;
+    }
+}
+
+// This week's submissions
+$weekStart = date('Y-m-d', strtotime('monday this week'));
+$weekCount = 0;
+foreach ($logs as $log) {
+    $logDate = substr($log['timestamp'] ?? '', 0, 10);
+    if ($logDate >= $weekStart) {
+        $weekCount++;
+    }
+}
+
+// Export CSV
+if (isset($_GET['export']) && $_GET['export'] === 'csv') {
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="submissions_log_' . date('Y-m-d') . '.csv"');
+    
+    $output = fopen('php://output', 'w');
+    fputcsv($output, ['Order ID', 'Timestamp', 'Type', 'Source', 'Referrer', 'Business Name', 'Email', 'Payment Email (Fanbasis/Tazapay)', 'Telegram', 'Country', 'State', 'Industry', 'Quantity', 'Platform', 'Status', 'Review Phase W1', 'Review Phase W2', 'Review Phase W3', 'Device', 'IP']);
+    
+    foreach ($logs as $log) {
+        fputcsv($output, [
+            $log['orderId'] ?? '',
+            $log['timestamp'] ?? '',
+            $log['orderType'] ?? 'Review',
+            $log['source'] ?? '',
+            $log['referrer'] ?? '',
+            $log['businessName'] ?? '',
+            $log['email'] ?? '',
+            $log['paymentEmail'] ?? '',
+            $log['telegram'] ?? '',
+            $log['country'] ?? '',
+            $log['state'] ?? '',
+            $log['businessIndustry'] ?? '',
+            $log['quantity'] ?? '',
+            $log['platform'] ?? '',
+            $log['status'] ?? 'Pending',
+            $log['reviewPhaseW1'] ?? '',
+            $log['reviewPhaseW2'] ?? '',
+            $log['reviewPhaseW3'] ?? '',
+            $log['device'] ?? '',
+            $log['ip'] ?? ''
+        ]);
+    }
+    fclose($output);
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Get authentic Tripadvisor reviews from real local travelers. Trusted by 1,200+ hotels, restaurants & attractions. Starting $357.50 for 55 reviews.">
-    <title>Tripadvisor Reviews - Smart Buzzer | 1,200+ Happy Hospitality Clients</title>
-    
-    <link rel="icon" type="image/x-icon" href="https://smart-buzzer.com/tracker/sb.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Submission Analytics - Smart Buzzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Meta Pixel Code -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '938738044322271');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=938738044322271&ev=PageView&noscript=1"
-    /></noscript>
-    
-    <!-- Analytics Tracking - MUST BE BEFORE ANY OTHER SCRIPTS -->
-    <script>
-    // Safe localStorage wrapper (handles incognito mode)
-    function safeLocalStorage() {
-        try {
-            const test = '__storage_test__';
-            localStorage.setItem(test, test);
-            localStorage.removeItem(test);
-            return localStorage;
-        } catch (e) {
-            return {
-                _data: {},
-                getItem: function(key) { return this._data[key] || null; },
-                setItem: function(key, value) { this._data[key] = value; },
-                removeItem: function(key) { delete this._data[key]; }
-            };
-        }
-    }
-
-    // Generate unique session ID
-    function generateSessionId() {
-        return 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-    }
-
-    // Get or create session ID
-    var sessionId = safeLocalStorage().getItem('sb_session_id');
-    if (!sessionId) {
-        sessionId = generateSessionId();
-        safeLocalStorage().setItem('sb_session_id', sessionId);
-    }
-
-    // Check return visitor
-    function checkReturnVisitor() {
-        var storage = safeLocalStorage();
-        var visitCount = parseInt(storage.getItem('sb_visit_count') || '0');
-        visitCount++;
-        storage.setItem('sb_visit_count', visitCount.toString());
-        
-        if (visitCount > 1) {
-            trackEvent('RETURN_VISITOR', { is_return: true, visit_count: visitCount });
-        }
-    }
-
-    // Track event to analytics.php
-    function trackEvent(eventType, data) {
-        try {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'analytics.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.timeout = 3000;
-            xhr.send(JSON.stringify({
-                event_type: eventType,
-                page_url: window.location.href,
-                data: data || {},
-                session_id: sessionId
-            }));
-        } catch (e) {
-            console.log('Analytics error:', e);
-        }
-    }
-
-    // Track page view immediately
-    trackEvent('PAGE_VIEW', {});
-    checkReturnVisitor();
-    </script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --ta-green: #34E0A1;
-            --ta-green-dark: #2BC68B;
-            --ta-black: #000000;
-            --dark: #0A0A0A;
-            --gray-900: #1A1A1A;
-            --gray-700: #3F3F3F;
-            --gray-500: #737373;
-            --gray-300: #D4D4D4;
-            --gray-200: #E5E5E5;
-            --gray-100: #F5F5F5;
-            --gray-50: #FAFAFA;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.5;
-            color: var(--gray-900);
-            background: #fff;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 72px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            height: 40px;
-            width: auto;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-700);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--ta-green-dark);
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: var(--ta-green);
-            color: var(--dark);
-            box-shadow: 0 1px 2px rgba(52, 224, 161, 0.18);
-        }
-
-        .btn-primary:hover {
-            background: var(--ta-green-dark);
-            box-shadow: 0 4px 12px rgba(52, 224, 161, 0.28);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: var(--dark);
-            color: #fff;
-        }
-
-        .btn-secondary:hover {
-            background: var(--gray-700);
-            transform: translateY(-1px);
-        }
-
-        .btn-lg {
-            padding: 14px 28px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 80px 0 100px;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--gray-100);
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-bottom: 24px;
-        }
-
-        .badge-green {
-            color: var(--ta-green-dark);
-        }
-
-        h1 {
-            font-size: 56px;
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            color: var(--ta-black);
-            margin-bottom: 24px;
-        }
-
-        .text-green {
-            color: var(--ta-green);
-        }
-
-        .hero p {
-            font-size: 20px;
-            line-height: 1.6;
-            color: var(--gray-500);
-            margin-bottom: 36px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 48px;
-        }
-
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .check-icon {
-            width: 20px;
-            height: 20px;
-            background: var(--ta-green);
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        .hero-image {
-            position: relative;
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Section Dividers */
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--gray-300), transparent);
-            margin: 0;
-        }
-
-        /* Stats */
-        .stats {
-            padding: 48px 0;
-            border-top: 1px solid var(--gray-200);
-            border-bottom: 1px solid var(--gray-200);
-            background: var(--gray-50);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 48px;
-            font-weight: 900;
-            color: var(--ta-green);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-500);
-        }
-
-        /* Section Headers */
-        .section {
-            padding: 96px 0;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 640px;
-            margin: 0 auto 64px;
-        }
-
-        .section-badge {
-            display: inline-flex;
-            align-items: center;
-            background: var(--gray-100);
-            color: var(--ta-green-dark);
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-        }
-
-        h2 {
-            font-size: 48px;
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            color: var(--dark);
-            margin-bottom: 16px;
-        }
-
-        .section-desc {
-            font-size: 19px;
-            color: var(--gray-500);
-            line-height: 1.6;
-        }
-
-        /* Pricing */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-bottom: 56px;
-        }
-
-        .price-card {
-            position: relative;
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 16px;
-            padding: 32px;
-            transition: all 0.3s;
-        }
-
-        .price-card:hover {
-            border-color: var(--ta-green);
-            box-shadow: 0 20px 40px -12px rgba(52, 224, 161, 0.22);
-            transform: translateY(-4px);
-        }
-
-        .price-card.featured {
-            border: 2px solid var(--ta-green);
-            box-shadow: 0 10px 30px -8px rgba(52, 224, 161, 0.28);
-        }
-
-        .popular-tag {
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--ta-green);
-            color: var(--dark);
-            padding: 6px 16px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .plan-name {
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--gray-500);
-            margin-bottom: 12px;
-        }
-
-        .plan-price {
-            display: flex;
-            align-items: baseline;
-            margin-bottom: 4px;
-        }
-
-        .price-currency {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--dark);
-        }
-
-        .price-amount {
-            font-size: 56px;
-            font-weight: 900;
-            color: var(--dark);
-            line-height: 1;
-        }
-
-        .price-decimal {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--gray-500);
-        }
-
-        .plan-reviews {
-            font-size: 16px;
-            color: var(--gray-500);
-            margin-bottom: 4px;
-        }
-
-        .plan-per-review {
-            font-size: 14px;
-            color: var(--ta-green-dark);
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .savings-badge {
-            display: inline-block;
-            background: #FF6B35;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
-        }
-
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .lightbox-content img {
-            max-width: 100%;
-            max-height: 85vh;
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            width: 36px;
-            height: 36px;
-            background: #fff;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .lightbox-close:hover {
-            background: var(--ta-green);
-            transform: scale(1.1);
-        }
-
-        .clickable-image {
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .clickable-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .plan-features {
-            list-style: none;
-            margin-bottom: 32px;
-            padding-top: 24px;
-            border-top: 1px solid var(--gray-200);
-        }
-
-        .plan-features li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            font-size: 15px;
-            color: var(--gray-700);
-        }
-
-        .btn-plan {
-            width: 100%;
-            background: var(--ta-black);
-            color: #fff;
-            padding: 14px;
-            font-weight: 700;
-        }
-
-        .btn-plan:hover {
-            background: var(--ta-green);
-            color: var(--ta-black);
-        }
-
-        .price-card.featured .btn-plan {
-            background: var(--ta-green);
-            color: var(--dark);
-        }
-
-        .price-card.featured .btn-plan:hover {
-            background: var(--ta-green-dark);
-        }
-
-        /* Payment Box */
-        .payment-box {
-            background: var(--gray-50);
-            border: 1px solid var(--gray-200);
-            border-radius: 16px;
-            padding: 40px;
-        }
-
-        .payment-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .payment-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .payment-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-        }
-
-        .payment-option {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .payment-option:hover {
-            border-color: var(--ta-green);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        .payment-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-
-        .payment-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        /* Process */
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
-        }
-
-        .process-item {
-            text-align: center;
-            padding: 32px 24px;
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 16px;
-            transition: all 0.2s;
-        }
-
-        .process-item:hover {
-            border-color: var(--ta-green);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
-
-        .process-number {
-            width: 48px;
-            height: 48px;
-            background: var(--ta-green);
-            color: var(--dark);
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 900;
-            margin: 0 auto 20px;
-        }
-
-        .process-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-
-        .process-desc {
-            font-size: 14px;
-            color: var(--gray-500);
-            line-height: 1.6;
-        }
-
-        /* Content Sections */
-        .content-section {
-            padding: 96px 0;
-        }
-
-        .content-flex {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 64px;
-            align-items: center;
-        }
-
-        .content-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Why Section */
-        .why-section {
-            padding: 96px 0;
-            background: var(--gray-50);
-        }
-
-        .why-flex {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 64px;
-            align-items: center;
-        }
-
-        .why-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .why-features {
-            list-style: none;
-        }
-
-        .why-features li {
-            display: flex;
-            gap: 16px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            transition: all 0.2s;
-        }
-
-        .why-features li:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        /* Proof Grid */
-        .proof-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .proof-card {
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .image-zoom-wrapper {
-            overflow: hidden;
-        }
-
-        .image-zoom-wrapper img {
-            width: 100%;
-            height: auto;
-            transition: transform 0.3s;
-        }
-
-        .proof-card:hover .image-zoom-wrapper img {
-            transform: scale(1.02);
-        }
-
-        /* Dashboard Preview */
-        .dashboard-preview {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .dashboard-preview img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--gray-200);
-        }
-
-        /* Clients Grid */
-        .clients-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .client-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
-
-        .client-logo:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transform: translateY(-4px);
-        }
-
-        .client-logo img {
-            width: 100%;
-            height: auto;
-            max-height: 60px;
-            object-fit: contain;
-            filter: grayscale(100%);
-            opacity: 0.6;
-            transition: all 0.2s;
-        }
-
-        .client-logo:hover img {
-            filter: grayscale(0%);
-            opacity: 1;
-        }
-
-        /* CTA */
-        .cta {
-            padding: 96px 0;
-            background: var(--dark);
-        }
-
-        .cta-content {
-            text-align: center;
-            max-width: 640px;
-            margin: 0 auto;
-        }
-
-        .cta h2 {
-            color: #fff;
-            margin-bottom: 16px;
-        }
-
-        .cta p {
-            font-size: 19px;
-            color: var(--gray-300);
-            margin-bottom: 32px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-        }
-
-        /* Footer */
-        .footer {
-            padding: 64px 0 32px;
-            background: var(--gray-50);
-            border-top: 1px solid var(--gray-200);
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 64px;
-            margin-bottom: 48px;
-        }
-
-        .footer-brand img {
-            height: 40px;
-            margin-bottom: 16px;
-        }
-
-        .footer-desc {
-            font-size: 14px;
-            color: var(--gray-500);
-            line-height: 1.6;
-            margin-bottom: 8px;
-        }
-
-        .footer-subsidiary {
-            font-size: 13px;
-            color: var(--gray-500);
-            font-style: italic;
-        }
-
-        .footer-title {
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--dark);
-            margin-bottom: 20px;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            font-size: 14px;
-            color: var(--gray-500);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--ta-green-dark);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 32px;
-            border-top: 1px solid var(--gray-200);
-            font-size: 14px;
-            color: var(--gray-500);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-grid,
-            .pricing-grid,
-            .process-grid,
-            .content-flex,
-            .why-flex {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-grid {
-                gap: 48px;
-            }
-
-            .hero-image {
-                order: -1;
-            }
-
-            h1 {
-                font-size: 44px;
-            }
-
-            h2 {
-                font-size: 36px;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .payment-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .clients-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-        }
-
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 36px;
-            }
-
-            h2 {
-                font-size: 32px;
-            }
-
-            .hero-buttons,
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .btn-lg {
-                width: 100%;
-            }
-
-            .features-list {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid,
-            .payment-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-buttons {
-                display: none;
-            }
-
-            .process-grid {
-                gap: 16px;
-            }
-        }
+        * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .source-badge { padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 500; }
+        .source-promo { background: #DCFCE7; color: #166534; }
+        .source-google { background: #DBEAFE; color: #1E40AF; }
+        .source-direct { background: #F3F4F6; color: #374151; }
+        .source-social { background: #FEF3C7; color: #92400E; }
+        .source-other { background: #E5E7EB; color: #4B5563; }
+        .device-desktop { background: #E0E7FF; color: #3730A3; }
+        .device-mobile { background: #FCE7F3; color: #9D174D; }
+        .device-tablet { background: #CFFAFE; color: #0E7490; }
+        .status-pending { background: #FEF3C7; color: #92400E; }
+        .status-processing { background: #DBEAFE; color: #1E40AF; }
+        .status-completed { background: #DCFCE7; color: #166534; }
+        .status-cancelled { background: #FEE2E2; color: #991B1B; }
+        .status-onhold { background: #F3F4F6; color: #374151; }
+        .platform-google { background: #DBEAFE; color: #1E40AF; }
+        .platform-facebook { background: #E0E7FF; color: #3730A3; }
+        .platform-yelp { background: #FEE2E2; color: #991B1B; }
+        .platform-other { background: #F3F4F6; color: #374151; }
+        .type-review { background: #DCFCE7; color: #166534; }
+        .type-social { background: #F3E8FF; color: #6B21A8; }
+        .sb-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:50; align-items:center; justify-content:center; }
+        .sb-modal-overlay.active { display:flex; }
+        .sb-modal { background:#fff; border-radius:16px; max-width:560px; width:92%; max-height:85vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.15); }
+        .sb-modal-header { padding:20px 24px; border-bottom:1px solid #E5E7EB; display:flex; align-items:center; justify-content:space-between; }
+        .sb-modal-body { padding:24px; }
+        .sb-modal-row { display:flex; padding:10px 0; border-bottom:1px solid #F3F4F6; }
+        .sb-modal-row:last-child { border-bottom:none; }
+        .sb-modal-label { width:140px; flex-shrink:0; font-size:13px; color:#6B7280; font-weight:500; }
+        .sb-modal-value { flex:1; font-size:13px; color:#111827; word-break:break-word; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
     <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <a href="https://smart-buzzer.com/" class="logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/REV-COLOR-Smart-Buzzer-11.png" alt="Smart Buzzer">
-                </a>
-                <div class="nav-links">
-                    <a href="#pricing">Pricing</a>
-                    <a href="#how-it-works">How It Works</a>
-                    <a href="#reviews">Our Reviews</a>
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="manage.php" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    </a>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">📊 Submission Analytics</h1>
+                        <p class="text-sm text-gray-500">Track where your leads come from</p>
+                    </div>
                 </div>
-                <div class="nav-buttons">
-                    <a href="#pricing" class="btn btn-primary">Get Started</a>
+                <div class="flex items-center space-x-3">
+                    <a href="?export=csv" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Export CSV
+                    </a>
+                    <button onclick="location.reload()" class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        Refresh
+                    </button>
                 </div>
-            </nav>
+            </div>
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-grid">
-                <div>
-                    <div class="badge">
-                        <span style="color: var(--ta-green)">★★★★★</span>
-                        <span>1,200+ Happy Hospitality Clients</span>
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-2xl border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Total Submissions</p>
+                        <p class="text-3xl font-bold text-gray-900"><?php echo $totalSubmissions; ?></p>
                     </div>
-                    <h1>Boost Your <span class="text-green">Tripadvisor Rating</span> With Local Traveler Reviews</h1>
-                    <p>Buy genuine Tripadvisor reviews from real local travelers. Safe, natural posting. Trusted by 1,200+ hotels, restaurants & attractions across the USA.</p>
-                    <div class="hero-buttons">
-                        <a href="#pricing" class="btn btn-primary btn-lg">LEARN MORE</a>
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     </div>
                 </div>
-                <div class="hero-image">
-                    <img src="https://smart-buzzer.com/promo-tripadvisor/x.png" alt="Tripadvisor Reviews Dashboard">
-                </div>
             </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Process / How It Works -->
-    <section class="section" id="how-it-works" style="background: var(--gray-50);">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">How It Works</div>
-                <h2>4 Simple Steps</h2>
-            </div>
-            <div class="process-grid">
-                <div class="process-item">
-                    <div class="process-number">1</div>
-                    <div class="process-title">Order & Pay</div>
-                    <div class="process-desc">Choose package and complete payment via crypto, card, Zelle, or wire.</div>
-                </div>
-                <div class="process-item">
-                    <div class="process-number">2</div>
-                    <div class="process-title">Approve Content</div>
-                    <div class="process-desc">Review content within 24 hours or provide your own.</div>
-                </div>
-                <div class="process-item">
-                    <div class="process-number">3</div>
-                    <div class="process-title">We Post</div>
-                    <div class="process-desc">Reviews posted 1-3 per week using aged accounts and unique IPs.</div>
-                </div>
-                <div class="process-item">
-                    <div class="process-number">4</div>
-                    <div class="process-title">Track Live</div>
-                    <div class="process-desc">Monitor progress via real-time dashboard.</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Pricing -->
-    <section class="section" id="pricing">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Pricing</div>
-                <h2>Choose Your Package</h2>
-            </div>
-
-            <div class="pricing-grid">
-                <!-- Starter -->
-                <div class="price-card">
-                    <div class="plan-name">Starter</div>
-                    <div class="plan-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-amount">357</span>
-                        <span class="price-decimal">.50</span>
+            <div class="bg-white p-5 rounded-2xl border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Today</p>
+                        <p class="text-3xl font-bold text-emerald-500"><?php echo $todayCount; ?></p>
                     </div>
-                    <div class="plan-reviews">55 Reviews</div>
-                    <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> 100% Local Names</li>
-                        <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week</li>
-                        <li><span class="check-icon">✓</span> Detailed Report With Names</li>
-                        <li><span class="check-icon">✓</span> For 2 Business Links</li>
-                    </ul>
-                    <a href="https://www.fanbasis.com/agency-checkout/smartbuzzer/P1kLA" class="btn btn-plan" data-package="starter">ORDER NOW</a>
-                </div>
-
-                <!-- Growth -->
-                <div class="price-card featured">
-                    <div class="popular-tag">Most Popular</div>
-                    <div class="plan-name">Growth</div>
-                    <div class="plan-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-amount">550</span>
-                        <span class="price-decimal">.00</span>
+                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     </div>
-                    <div class="plan-reviews">88 Reviews</div>
-                    <div class="savings-badge">Save $22 (4% OFF)</div>
-                    <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> 100% Local Names</li>
-                        <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week</li>
-                        <li><span class="check-icon">✓</span> Detailed Report With Names</li>
-                        <li><span class="check-icon">✓</span> For 3 Business Links</li>
-                    </ul>
-                    <a href="https://www.fanbasis.com/agency-checkout/smartbuzzer/RgmNV" class="btn btn-plan" data-package="growth">ORDER NOW</a>
-                </div>
-
-                <!-- Performance -->
-                <div class="price-card">
-                    <div class="plan-name">Performance</div>
-                    <div class="plan-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-amount">660</span>
-                        <span class="price-decimal">.00</span>
-                    </div>
-                    <div class="plan-reviews">110 Reviews</div>
-                    <div class="savings-badge">Save $55 (8% OFF)</div>
-                    <ul class="plan-features">
-                        <li><span class="check-icon">✓</span> 100% Local Names</li>
-                        <li><span class="check-icon">✓</span> Customized Content</li>
-                        <li><span class="check-icon">✓</span> Gradual Posting: 1-3 Reviews Per Week</li>
-                        <li><span class="check-icon">✓</span> Detailed Report With Names</li>
-                        <li><span class="check-icon">✓</span> For 4 Business Links</li>
-                    </ul>
-                    <a href="https://www.fanbasis.com/agency-checkout/smartbuzzer/WnrVE" class="btn btn-plan" data-package="performance">ORDER NOW</a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Real Local Reviews -->
-    <section class="section" id="reviews">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Proof</div>
-                <h2>REAL LOCAL REVIEWS</h2>
+            <div class="bg-white p-5 rounded-2xl border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">This Week</p>
+                        <p class="text-3xl font-bold text-amber-500"><?php echo $weekCount; ?></p>
+                    </div>
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                </div>
             </div>
-            <div class="proof-grid">
-                <div class="proof-card">
-                    <div class="image-zoom-wrapper">
-                        <img src="https://smart-buzzer.com/promo-tripadvisor/ta.jpg" alt="Tripadvisor Review Example 1" class="clickable-image">
+            <div class="bg-white p-5 rounded-2xl border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Top Source</p>
+                        <p class="text-xl font-bold text-purple-600"><?php echo array_key_first($sources) ?: 'N/A'; ?></p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Choose Your Own Sentences -->
-    <section class="content-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Customization</div>
-                <h2>CHOOSE YOUR OWN SENTENCES</h2>
-            </div>
-            <div class="content-flex">
-                <div class="content-image">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Screenshot-2024-12-19-at-16.30.55-2048x1097.png" alt="Review Sentences" class="clickable-image">
-                </div>
-                <div class="content-text">
-                    <p style="font-size: 18px; color: var(--gray-500); margin-bottom: 24px; line-height: 1.7;">
-                        You choose the content, or let us create comprehensive variety for you. Every review is completely unique with zero repetition.
-                    </p>
-                    <p style="font-size: 16px; color: var(--gray-500); display: flex; align-items: center; gap: 8px;">
-                        <span style="color: var(--ta-green); font-weight: 600;">✓</span> Human-written content tailored to your business
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Why People Use Our Services -->
-    <section class="why-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Benefits</div>
-                <h2>WHY PEOPLE USE OUR SERVICES</h2>
-            </div>
-            <div class="why-flex">
-                <div class="why-image">
-                    <img src="https://smart-buzzer.com/promo-tripadvisor/2.webp" alt="Tripadvisor Review Example" class="clickable-image">
-                </div>
-                <div class="why-list">
-                    <ul class="why-features">
-                        <li style="border-left: 3px solid var(--ta-green);">
-                            <div class="check-icon">✓</div>
-                            <div>
-                                <strong style="display: block; font-size: 16px; color: var(--dark); margin-bottom: 4px;">100% Genuine Local Name Reviews</strong>
-                                <span style="font-size: 14px; color: var(--gray-500);">Every reviewer has authentic local identity</span>
-                            </div>
-                        </li>
-                        <li style="border-left: 3px solid var(--ta-green);">
-                            <div class="check-icon">✓</div>
-                            <div>
-                                <strong style="display: block; font-size: 16px; color: var(--dark); margin-bottom: 4px;">Unique users, IPs, devices, and aged accounts</strong>
-                                <span style="font-size: 14px; color: var(--gray-500);">Complete technical authenticity guaranteed</span>
-                            </div>
-                        </li>
-                        <li style="border-left: 3px solid var(--ta-green);">
-                            <div class="check-icon">✓</div>
-                            <div>
-                                <strong style="display: block; font-size: 16px; color: var(--dark); margin-bottom: 4px;">Tailored reviews for your business</strong>
-                                <span style="font-size: 14px; color: var(--gray-500);">Custom content that matches your services</span>
-                            </div>
-                        </li>
-                        <li style="border-left: 3px solid var(--ta-green);">
-                            <div class="check-icon">✓</div>
-                            <div>
-                                <strong style="display: block; font-size: 16px; color: var(--dark); margin-bottom: 4px;">Gradual posting (1–3 reviews per week)</strong>
-                                <span style="font-size: 14px; color: var(--gray-500);">Natural pacing prevents algorithm detection</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Track Your Order -->
-    <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Transparency</div>
-                <h2>TRACK YOUR ORDER EVERY DAY<br>100% TRANSPARENCY</h2>
-            </div>
-            <div class="dashboard-preview">
-                <img src="https://smart-buzzer.com/wp-content/uploads/2025/08/Screenshot-2025-08-24-at-23.27.11.webp" alt="Campaign Progress Dashboard" class="clickable-image">
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Experience Section -->
-    <section class="why-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Experience</div>
-                <h2>EXPERIENCED IN SERVING OVER 1200+ HOTELS, RESTAURANTS<br>& ATTRACTIONS ACROSS THE USA</h2>
-            </div>
-            <div class="dashboard-preview">
-                <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Untitleddesign1.jpg" alt="Trello Board" class="clickable-image">
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Clients Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Trusted By</div>
-                <h2>OUR CLIENTS</h2>
-            </div>
-            <div class="clients-grid">
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers4.png" alt="Client Logo">
-                </div>
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers7.png" alt="Client Logo">
-                </div>
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers1.png" alt="Client Logo">
-                </div>
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Screenshot-2024-12-11-at-15.43.55.png" alt="Client Logo">
-                </div>
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers8.png" alt="Client Logo">
-                </div>
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers6.png" alt="Client Logo">
-                </div>
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Screenshot-2024-12-11-at-15.44.07.png" alt="Client Logo">
-                </div>
-                <div class="client-logo">
-                    <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers2.png" alt="Client Logo">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- CTA -->
-    <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Boost Your Tripadvisor Rating?</h2>
-                <p>Join 1,200+ hotels, restaurants & attractions. Start building traveler credibility today.</p>
-                <div class="cta-buttons">
-                    <a href="#pricing" class="btn btn-primary btn-lg">Get Started</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <div class="footer-brand">
-                        <img src="https://smart-buzzer.com/wp-content/uploads/2024/12/REV-COLOR-Smart-Buzzer-11.png" alt="Smart Buzzer" height="50">
+        <!-- Source & Device Breakdown -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Source Breakdown -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">📍 Traffic Sources</h3>
+                <div class="space-y-3">
+                    <?php 
+                    $topSources = array_slice($sources, 0, 6, true);
+                    foreach ($topSources as $source => $count): 
+                        $percentage = $totalSubmissions > 0 ? round(($count / $totalSubmissions) * 100) : 0;
+                        $barColor = 'bg-blue-500';
+                        if (strpos($source, 'Promo') !== false) $barColor = 'bg-emerald-500';
+                        elseif (strpos($source, 'Google') !== false) $barColor = 'bg-blue-500';
+                        elseif ($source === 'Direct') $barColor = 'bg-gray-400';
+                        elseif (in_array($source, ['Facebook', 'Instagram', 'LinkedIn', 'Twitter/X'])) $barColor = 'bg-amber-500';
+                    ?>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-medium text-gray-700"><?php echo htmlspecialchars($source); ?></span>
+                            <span class="text-sm text-gray-500"><?php echo $count; ?> (<?php echo $percentage; ?>%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2">
+                            <div class="<?php echo $barColor; ?> h-2 rounded-full transition-all" style="width: <?php echo $percentage; ?>%"></div>
+                        </div>
                     </div>
-                    <div class="footer-desc">Specialized in social media engagement, product reviews, and online reputation services.</div>
-                    <div class="footer-subsidiary"><i>A subsidiary of Pintarnya.</i></div>
-                </div>
-                <div>
-                    <div class="footer-title">Quick Links</div>
-                    <ul class="footer-links">
-                        <li><a href="https://smart-buzzer.com/tracker">Track Campaign</a></li>
-                        <li><a href="https://smart-buzzer.com/report">Report Issue</a></li>
-                        <li><a href="https://smart-buzzer.com/service-tnc">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="footer-title">Contact</div>
-                    <ul class="footer-links">
-                        <li><a href="https://wa.me/6285183081655?text=Hi%20Smart%20Buzzer%2C%20I%20want%20to%20order%20Tripadvisor%20Reviews">📞 WhatsApp: +62851-8308-1655</a></li>
-                        <li><a href="mailto:contact@smart-buzzer.com">📧 Email: contact@smart-buzzer.com</a></li>
-                    </ul>
+                    <?php endforeach; ?>
+                    <?php if (empty($topSources)): ?>
+                    <p class="text-gray-500 text-sm">No data yet</p>
+                    <?php endif; ?>
                 </div>
             </div>
-            <div class="footer-bottom">
-                © 2025 Smart Buzzer. All rights reserved.
+
+            <!-- Device Breakdown -->
+            <div class="bg-white rounded-2xl border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">📱 Devices</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-center p-4 bg-indigo-50 rounded-xl">
+                        <svg class="w-8 h-8 mx-auto mb-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <p class="text-2xl font-bold text-indigo-600"><?php echo $devices['Desktop']; ?></p>
+                        <p class="text-xs text-gray-500">Desktop</p>
+                    </div>
+                    <div class="text-center p-4 bg-pink-50 rounded-xl">
+                        <svg class="w-8 h-8 mx-auto mb-2 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <p class="text-2xl font-bold text-pink-600"><?php echo $devices['Mobile']; ?></p>
+                        <p class="text-xs text-gray-500">Mobile</p>
+                    </div>
+                    <div class="text-center p-4 bg-cyan-50 rounded-xl">
+                        <svg class="w-8 h-8 mx-auto mb-2 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <p class="text-2xl font-bold text-cyan-600"><?php echo $devices['Tablet']; ?></p>
+                        <p class="text-xs text-gray-500">Tablet</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <div class="lightbox-content">
-            <button class="lightbox-close" onclick="closeLightbox()">×</button>
-            <img src="" alt="Preview" id="lightbox-img">
+        <!-- Filters -->
+        <div class="bg-white rounded-2xl border border-gray-200 p-4 mb-6">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex-1 min-w-[200px]">
+                    <input type="text" id="searchInput" placeholder="Search by business, email, order ID..." class="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200">
+                </div>
+                <select id="sourceFilter" class="px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    <option value="">All Sources</option>
+                    <?php foreach (array_keys($sources) as $source): ?>
+                    <option value="<?php echo htmlspecialchars($source); ?>"><?php echo htmlspecialchars($source); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <select id="deviceFilter" class="px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    <option value="">All Devices</option>
+                    <option value="Desktop">Desktop</option>
+                    <option value="Mobile">Mobile</option>
+                    <option value="Tablet">Tablet</option>
+                </select>
+                <select id="platformFilter" class="px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    <option value="">All Platforms</option>
+                    <option value="Google">Google</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Yelp">Yelp</option>
+                    <option value="Trustpilot">Trustpilot</option>
+                </select>
+                <select id="statusFilter" class="px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    <option value="">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="On Hold">On Hold</option>
+                </select>
+                <input type="date" id="dateFilter" class="px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200">
+            </div>
+        </div>
+
+        <!-- Submissions Table -->
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Order ID</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Type</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Date</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Business</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">State</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Industry</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Platform</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Qty</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsTable" class="divide-y divide-gray-100">
+                        <?php if (empty($logs)): ?>
+                        <tr>
+                            <td colspan="10" class="px-4 py-12 text-center text-gray-500">
+                                <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                No submissions yet. Logs will appear here when customers submit orders.
+                            </td>
+                        </tr>
+                        <?php else: ?>
+                        <?php foreach ($logs as $idx => $log): 
+                            $sourceClass = 'source-other';
+                            $source = $log['source'] ?? 'Unknown';
+                            if (strpos($source, 'Promo') !== false || strpos($source, 'Landing') !== false) $sourceClass = 'source-promo';
+                            elseif (strpos($source, 'Google') !== false) $sourceClass = 'source-google';
+                            elseif ($source === 'Direct') $sourceClass = 'source-direct';
+                            elseif (in_array($source, ['Facebook', 'Instagram', 'LinkedIn', 'Twitter/X'])) $sourceClass = 'source-social';
+                            
+                            $deviceClass = 'device-desktop';
+                            $device = $log['device'] ?? 'Desktop';
+                            if ($device === 'Mobile') $deviceClass = 'device-mobile';
+                            elseif ($device === 'Tablet') $deviceClass = 'device-tablet';
+                            
+                            $timestamp = $log['timestamp'] ?? '';
+                            $date = $timestamp ? date('M d', strtotime($timestamp)) : '-';
+                            $time = $timestamp ? date('H:i', strtotime($timestamp)) : '';
+                            $dateISO = $timestamp ? date('Y-m-d', strtotime($timestamp)) : '';
+
+                            $platform = $log['platform'] ?? 'Google';
+                            $platformLower = strtolower($platform);
+                            $platformClass = 'platform-other';
+                            if ($platformLower === 'google') $platformClass = 'platform-google';
+                            elseif ($platformLower === 'facebook') $platformClass = 'platform-facebook';
+                            elseif ($platformLower === 'yelp') $platformClass = 'platform-yelp';
+
+                            $status = $log['status'] ?? 'Pending';
+                            $statusLower = strtolower(str_replace(' ', '', $status));
+                            $statusClass = 'status-pending';
+                            if ($statusLower === 'processing') $statusClass = 'status-processing';
+                            elseif ($statusLower === 'completed') $statusClass = 'status-completed';
+                            elseif ($statusLower === 'cancelled') $statusClass = 'status-cancelled';
+                            elseif ($statusLower === 'onhold') $statusClass = 'status-onhold';
+
+                            $orderType = $log['orderType'] ?? 'Review';
+                            $typeClass = strtolower($orderType) === 'social media' ? 'type-social' : 'type-review';
+                        ?>
+                        <tr class="log-row hover:bg-gray-50" 
+                            data-search="<?php echo htmlspecialchars(strtolower(($log['businessName'] ?? '') . ' ' . ($log['email'] ?? '') . ' ' . ($log['orderId'] ?? '') . ' ' . ($log['country'] ?? '') . ' ' . ($log['state'] ?? '') . ' ' . ($log['businessIndustry'] ?? ''))); ?>"
+                            data-source="<?php echo htmlspecialchars($source); ?>"
+                            data-device="<?php echo htmlspecialchars($device); ?>"
+                            data-platform="<?php echo htmlspecialchars($platform); ?>"
+                            data-status="<?php echo htmlspecialchars($status); ?>"
+                            data-date="<?php echo $dateISO; ?>">
+                            <td class="px-3 py-3">
+                                <span class="text-sm font-mono text-gray-600"><?php echo htmlspecialchars($log['orderId'] ?? '-'); ?></span>
+                            </td>
+                            <td class="px-3 py-3">
+                                <span class="source-badge <?php echo $typeClass; ?>"><?php echo htmlspecialchars($orderType); ?></span>
+                            </td>
+                            <td class="px-3 py-3">
+                                <p class="text-sm font-medium text-gray-900"><?php echo $date; ?></p>
+                                <p class="text-xs text-gray-400"><?php echo $time; ?></p>
+                            </td>
+                            <td class="px-3 py-3">
+                                <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($log['businessName'] ?? '-'); ?></p>
+                                <p class="text-xs text-gray-400"><?php echo htmlspecialchars($log['email'] ?? ''); ?></p>
+                            </td>
+                            <td class="px-3 py-3">
+                                <span class="text-sm text-gray-700"><?php echo htmlspecialchars($log['state'] ?? '-'); ?></span>
+                            </td>
+                            <td class="px-3 py-3">
+                                <span class="text-sm text-gray-700"><?php echo htmlspecialchars($log['businessIndustry'] ?? '-'); ?></span>
+                            </td>
+                            <td class="px-3 py-3">
+                                <span class="source-badge <?php echo $platformClass; ?>"><?php echo htmlspecialchars($platform); ?></span>
+                            </td>
+                            <td class="px-3 py-3">
+                                <span class="text-sm font-semibold text-gray-900"><?php echo htmlspecialchars($log['quantity'] ?? '-'); ?></span>
+                            </td>
+                            <td class="px-3 py-3">
+                                <span class="source-badge <?php echo $statusClass; ?>"><?php echo htmlspecialchars($status); ?></span>
+                            </td>
+                            <td class="px-3 py-3">
+                                <button onclick="openLogDetail(<?php echo $idx; ?>)" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="View Details">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-6 text-center text-sm text-gray-400">
+            Showing <?php echo count($logs); ?> submissions • Last updated: <?php echo date('M d, Y H:i'); ?>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="logDetailModal" class="sb-modal-overlay" onclick="if(event.target===this)closeLogDetail()">
+        <div class="sb-modal">
+            <div class="sb-modal-header">
+                <h3 class="text-lg font-bold text-gray-900" id="modalTitle">Submission Details</h3>
+                <button onclick="closeLogDetail()" class="p-1 text-gray-400 hover:text-gray-600 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="sb-modal-body" id="modalBody"></div>
         </div>
     </div>
 
     <script>
-    // ========================================
-    // LIGHTBOX FUNCTIONS
-    // ========================================
-    function openLightbox(imgSrc) {
-        var lightbox = document.getElementById('lightbox');
-        var lightboxImg = document.getElementById('lightbox-img');
-        lightboxImg.src = imgSrc;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
+    // Log data for modal
+    var logData = <?php echo json_encode(array_values($logs), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
 
-    function closeLightbox() {
-        var lightbox = document.getElementById('lightbox');
-        lightbox.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-
-    // Close lightbox on background click
-    document.getElementById('lightbox').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeLightbox();
+    function openLogDetail(idx) {
+        var d = logData[idx];
+        if (!d) return;
+        document.getElementById('modalTitle').textContent = d.orderId || 'Submission Details';
+        var fields = [
+            ['Order ID', d.orderId || '-'],
+            ['Type', d.orderType || 'Review'],
+            ['Timestamp', d.timestamp || '-'],
+            ['Business', d.businessName || '-'],
+            ['Email', d.email || '-'],
+            ['Payment Email (Fanbasis/Tazapay)', d.paymentEmail || '-'],
+            ['Telegram', d.telegram || '-'],
+            ['Country', d.country || '-'],
+            ['State', d.state || '-'],
+            ['Industry', d.businessIndustry || '-'],
+            ['Platform', d.platform || '-'],
+            ['Quantity', d.quantity || '-'],
+            ['Status', d.status || 'Pending'],
+            ['Source', d.source || '-'],
+            ['Device', d.device || '-'],
+            ['Referrer', d.referrer || 'Direct'],
+            ['Review Phase W1', d.reviewPhaseW1 || '-'],
+            ['Review Phase W2', d.reviewPhaseW2 || '-'],
+            ['Review Phase W3+', d.reviewPhaseW3 || '-'],
+            ['IP', d.ip || '-']
+        ];
+        var html = '';
+        for (var i = 0; i < fields.length; i++) {
+            html += '<div class="sb-modal-row"><div class="sb-modal-label">' + escapeLogHtml(fields[i][0]) + '</div><div class="sb-modal-value">' + escapeLogHtml(fields[i][1]) + '</div></div>';
         }
-    });
+        document.getElementById('modalBody').innerHTML = html;
+        document.getElementById('logDetailModal').classList.add('active');
+    }
 
-    // Close lightbox on ESC key
+    function closeLogDetail() {
+        document.getElementById('logDetailModal').classList.remove('active');
+    }
+
+    function escapeLogHtml(t) {
+        if (t === null || t === undefined) return '-';
+        var s = String(t);
+        var d = document.createElement('div');
+        d.appendChild(document.createTextNode(s));
+        return d.innerHTML;
+    }
+
+    // Close modal on Escape
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeLightbox();
-        }
+        if (e.key === 'Escape') closeLogDetail();
     });
 
-    // Add click event to all clickable images
-    document.querySelectorAll('.clickable-image').forEach(function(img) {
-        img.addEventListener('click', function() {
-            openLightbox(this.src);
-        });
-    });
-    </script>
+    // Filter functionality
+    var searchInput = document.getElementById('searchInput');
+    var sourceFilter = document.getElementById('sourceFilter');
+    var deviceFilter = document.getElementById('deviceFilter');
+    var platformFilter = document.getElementById('platformFilter');
+    var statusFilter = document.getElementById('statusFilter');
+    var dateFilter = document.getElementById('dateFilter');
 
-    <!-- Analytics & Tracking Scripts -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function applyFilters() {
+        var search = searchInput.value.toLowerCase();
+        var source = sourceFilter.value;
+        var device = deviceFilter.value;
+        var platform = platformFilter.value;
+        var status = statusFilter.value;
+        var date = dateFilter.value;
         
-        // ========================================
-        // SCROLL DEPTH TRACKING
-        // ========================================
-        var scrollDepths = { 25: false, 50: false, 75: false, 100: false };
-        
-        function getScrollPercent() {
-            var h = document.documentElement;
-            var b = document.body;
-            var st = 'scrollTop';
-            var sh = 'scrollHeight';
-            return Math.round((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100);
-        }
-        
-        window.addEventListener('scroll', function() {
-            var percent = getScrollPercent();
+        var rows = document.querySelectorAll('.log-row');
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var rowSearch = row.dataset.search || '';
+            var rowSource = row.dataset.source || '';
+            var rowDevice = row.dataset.device || '';
+            var rowPlatform = row.dataset.platform || '';
+            var rowStatus = row.dataset.status || '';
+            var rowDate = row.dataset.date || '';
             
-            if (percent >= 25 && !scrollDepths[25]) {
-                scrollDepths[25] = true;
-                trackEvent('SCROLL_DEPTH_25', { depth: 25 });
-            }
-            if (percent >= 50 && !scrollDepths[50]) {
-                scrollDepths[50] = true;
-                trackEvent('SCROLL_DEPTH_50', { depth: 50 });
-            }
-            if (percent >= 75 && !scrollDepths[75]) {
-                scrollDepths[75] = true;
-                trackEvent('SCROLL_DEPTH_75', { depth: 75 });
-            }
-            if (percent >= 100 && !scrollDepths[100]) {
-                scrollDepths[100] = true;
-                trackEvent('SCROLL_DEPTH_100', { depth: 100 });
-            }
-        });
+            var show = true;
+            if (search && rowSearch.indexOf(search) === -1) show = false;
+            if (source && rowSource !== source) show = false;
+            if (device && rowDevice !== device) show = false;
+            if (platform && rowPlatform !== platform) show = false;
+            if (status && rowStatus !== status) show = false;
+            if (date && rowDate !== date) show = false;
+            
+            row.style.display = show ? '' : 'none';
+        }
+    }
 
-        // ========================================
-        // TIME ON PAGE TRACKING
-        // ========================================
-        var pageStartTime = Date.now();
-        
-        window.addEventListener('beforeunload', function() {
-            var timeSpent = Math.round((Date.now() - pageStartTime) / 1000);
-            trackEvent('TIME_ON_PAGE', { duration: timeSpent });
-            trackEvent('EXIT_PAGE', { exit_url: document.referrer, time_spent: timeSpent });
-        });
-
-        // ========================================
-        // CLICK HEATMAP TRACKING
-        // ========================================
-        document.addEventListener('click', function(e) {
-            var element = e.target.tagName.toLowerCase();
-            if (e.target.className) {
-                element += '.' + e.target.className.split(' ')[0];
-            }
-            trackEvent('CLICK_HEATMAP', {
-                x: e.pageX,
-                y: e.pageY,
-                element: element
-            });
-        });
-
-        // ========================================
-        // PRICING BUTTON CLICK TRACKING (DUAL SYSTEM)
-        // ========================================
-        var pricingButtons = document.querySelectorAll('[data-package]');
-        
-        pricingButtons.forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                var packageName = this.getAttribute('data-package');
-                var packageUpper = packageName.charAt(0).toUpperCase() + packageName.slice(1);
-                
-                // 1. ALWAYS track to analytics (ALL clicks)
-                trackEvent('ORDER_' + packageName.toUpperCase() + '_CLICK', {
-                    package: packageName,
-                    location: 'pricing'
-                });
-                
-                // 2. Track to customer_data.log (UNIQUE per day)
-                var storage = safeLocalStorage();
-                var today = new Date().toISOString().split('T')[0];
-                var lastClickDate = storage.getItem('sb_last_pricing_click');
-                
-                if (lastClickDate !== today) {
-                    // Log unique daily click
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'analytics.php', true);
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    xhr.send(JSON.stringify({
-                        event_type: 'PRICING_CLICK',
-                        page_url: window.location.href,
-                        data: {
-                            package: packageUpper,
-                            unique_daily: true
-                        },
-                        session_id: sessionId
-                    }));
-                    
-                    storage.setItem('sb_last_pricing_click', today);
-                }
-            });
-        });
-
-        // ========================================
-        // EXTERNAL LINK CLICK TRACKING
-        // ========================================
-        document.querySelectorAll('a[href^="http"]').forEach(function(link) {
-            if (!link.href.includes(window.location.hostname)) {
-                link.addEventListener('click', function() {
-                    var location = 'body';
-                    if (this.closest('header')) location = 'header';
-                    if (this.closest('footer')) location = 'footer';
-                    
-                    trackEvent('EXTERNAL_LINK_CLICK', {
-                        location: location,
-                        url: this.href,
-                        text: this.innerText.substring(0, 50)
-                    });
-                });
-            }
-        });
-
-        // ========================================
-        // SMOOTH SCROLL FOR ANCHOR LINKS
-        // ========================================
-        document.querySelectorAll('a[href^="#"]').forEach(function(link) {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                var targetId = this.getAttribute('href');
-                var target = document.querySelector(targetId);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-    });
+    searchInput.addEventListener('input', applyFilters);
+    sourceFilter.addEventListener('change', applyFilters);
+    deviceFilter.addEventListener('change', applyFilters);
+    platformFilter.addEventListener('change', applyFilters);
+    statusFilter.addEventListener('change', applyFilters);
+    dateFilter.addEventListener('change', applyFilters);
     </script>
 </body>
 </html>

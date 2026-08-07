@@ -1183,7 +1183,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                             </div>
                             <div class="flex-1">
                                 <p class="font-medium text-gray-600">Reviews Go Live</p>
-                                <p class="text-xs text-gray-400">1-5 submitted daily, ~50% stick</p>
+                                <p class="text-xs text-gray-400">Posted gradually, counts when it shows up</p>
                             </div>
                         </div>
                     </div>
@@ -1613,29 +1613,20 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         <div class="flex items-start">
                             <svg class="w-6 h-6 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                             <div class="ml-3">
-                                <p class="font-semibold text-gray-900">Remember: 7-day claim window</p>
-                                <p class="text-gray-600">After completion, you have 7 days to report issues</p>
+                                <p class="font-semibold text-gray-900">Remember: 7-day per-review window</p>
+                                <p class="text-gray-600">Each review has its own 7-day window from the day it shows up</p>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- BONUS: Free Marketing Audit CTA (Loyal Client Exclusive) -->
+                    <!-- BONUS: $20 Voucher for Second Purchase (Loyal Client Exclusive) -->
                     <div class="audit-bonus-card rounded-2xl p-6 max-w-md mx-auto mb-8">
                         <div class="flex items-center justify-center mb-3">
-                            <span class="audit-bonus-pill">🎁 BONUS — LOYAL CLIENT EXCLUSIVE</span>
+                            <span class="audit-bonus-pill">&#127873; BONUS &mdash; LOYAL CLIENT EXCLUSIVE</span>
                         </div>
-                        <h3 class="audit-bonus-title">FREE Marketing Audit</h3>
-                        <p class="audit-bonus-worth"><span class="audit-strike">$497</span> &nbsp;FREE for you</p>
-                        <ul class="audit-bonus-list">
-                            <li><span class="audit-check">✓</span> Google &amp; Meta Ads — CPR, CPL, ROAS check</li>
-                            <li><span class="audit-check">✓</span> Website conversion &amp; funnel leak audit</li>
-                            <li><span class="audit-check">✓</span> Per-funnel breakdown (TOFU → MOFU → BOFU)</li>
-                            <li><span class="audit-check">✓</span> Actionable report in 5–7 business days</li>
-                        </ul>
-                        <p class="audit-bonus-trust">View-only access &middot; NDA-protected &middot; No fee</p>
-                        <button type="button" onclick="openAuditModal()" class="audit-bonus-cta">
-                            🎁 &nbsp;CLAIM MY FREE AUDIT&nbsp; →
-                        </button>
+                        <h3 class="audit-bonus-title">FREE $20 Voucher</h3>
+                        <p class="audit-bonus-worth">for your second purchase</p>
+                        <p class="audit-bonus-trust">Your next order gets $20 off &mdash; we'll apply it for you when you reorder.</p>
                     </div>
 
                     <a id="whatsappBtn" href="#" target="_blank" class="sb-btn-primary inline-flex items-center" style="background: #25D366;">
@@ -1882,23 +1873,14 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         </ul>
                     </div>
 
-                    <!-- BONUS: Free Marketing Audit CTA (Loyal Client Exclusive) -->
+                    <!-- BONUS: $20 Voucher for Second Purchase (Loyal Client Exclusive) -->
                     <div class="audit-bonus-card rounded-2xl p-6 mb-6 text-center">
                         <div class="flex items-center justify-center mb-3">
-                            <span class="audit-bonus-pill">🎁 BONUS — LOYAL CLIENT EXCLUSIVE</span>
+                            <span class="audit-bonus-pill">&#127873; BONUS &mdash; LOYAL CLIENT EXCLUSIVE</span>
                         </div>
-                        <h3 class="audit-bonus-title">FREE Marketing Audit</h3>
-                        <p class="audit-bonus-worth"><span class="audit-strike">$497</span> &nbsp;FREE for you</p>
-                        <ul class="audit-bonus-list">
-                            <li><span class="audit-check">✓</span> Google &amp; Meta Ads — CPR, CPL, ROAS check</li>
-                            <li><span class="audit-check">✓</span> Website conversion &amp; funnel leak audit</li>
-                            <li><span class="audit-check">✓</span> Per-funnel breakdown (TOFU → MOFU → BOFU)</li>
-                            <li><span class="audit-check">✓</span> Actionable report in 5–7 business days</li>
-                        </ul>
-                        <p class="audit-bonus-trust">View-only access &middot; NDA-protected &middot; No fee</p>
-                        <button type="button" onclick="openAuditModal()" class="audit-bonus-cta">
-                            🎁 &nbsp;CLAIM MY FREE AUDIT&nbsp; →
-                        </button>
+                        <h3 class="audit-bonus-title">FREE $20 Voucher</h3>
+                        <p class="audit-bonus-worth">for your second purchase</p>
+                        <p class="audit-bonus-trust">Your next order gets $20 off &mdash; we'll apply it for you when you reorder.</p>
                     </div>
 
                     <a id="smWhatsappBtn" href="https://wa.me/6287870707202" target="_blank" class="sb-btn-primary inline-flex items-center" style="background: #25D366;">
@@ -2043,152 +2025,6 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
         </div>
     </div>
     
-    <!-- Audit NDA Modal — 4-Step Wizard (BONUS Free Marketing Audit) -->
-    <div id="auditNdaModal" class="audit-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="auditNdaTitle">
-        <div class="audit-modal-card">
-            <!-- Header (persistent across steps) -->
-            <div class="audit-modal-header">
-                <button type="button" class="audit-modal-close" onclick="closeAuditModal()" aria-label="Close">&times;</button>
-                <div class="text-center">
-                    <div class="audit-bonus-pill" style="margin-bottom: 6px;">🎁 BONUS — LOYAL CLIENT EXCLUSIVE</div>
-                    <h2 id="auditNdaTitle" style="font-size: 20px; font-weight: 800; color: #78350F; margin: 2px 0;">Free Marketing Audit</h2>
-                </div>
-            </div>
-
-            <!-- Step indicator -->
-            <div class="audit-stepper">
-                <div class="audit-stepper-row">
-                    <div class="audit-step-dot active" data-step="1">1</div>
-                    <div class="audit-step-line" data-line="1-2"></div>
-                    <div class="audit-step-dot" data-step="2">2</div>
-                    <div class="audit-step-line" data-line="2-3"></div>
-                    <div class="audit-step-dot" data-step="3">3</div>
-                    <div class="audit-step-line" data-line="3-4"></div>
-                    <div class="audit-step-dot" data-step="4">4</div>
-                </div>
-                <div class="audit-stepper-labels">
-                    <span class="audit-step-label active" data-step="1">Bonus</span>
-                    <span class="audit-step-label" data-step="2">Need</span>
-                    <span class="audit-step-label" data-step="3">NDA</span>
-                    <span class="audit-step-label" data-step="4">Agree</span>
-                </div>
-                <p class="audit-step-counter">Step <span id="auditStepCurrent">1</span> of 4</p>
-            </div>
-
-            <!-- Body — only one step visible at a time -->
-            <div class="audit-modal-body">
-
-                <!-- ============================================ -->
-                <!-- STEP 1 — Your Bonus (HOOK) -->
-                <!-- ============================================ -->
-                <div class="audit-step-content active" data-step="1">
-                    <div class="audit-step-headline">
-                        <div class="audit-step-emoji">🎁</div>
-                        <h3>Your Bonus</h3>
-                        <p>Worth <span class="audit-strike">$497</span> &mdash; yours <strong>FREE</strong> as a loyal client.</p>
-                    </div>
-
-                    <div class="audit-section-box">
-                        <p class="audit-section-title">What you get</p>
-                        <ul class="audit-section-list">
-                            <li><span class="audit-check">✓</span> Google Ads audit — CPR, CPL, ROAS, optimization check</li>
-                            <li><span class="audit-check">✓</span> Meta Ads audit — funnel leak detection &amp; ad fatigue</li>
-                            <li><span class="audit-check">✓</span> Website CRO review — conversion bottlenecks</li>
-                            <li><span class="audit-check">✓</span> Per-funnel breakdown (TOFU → MOFU → BOFU)</li>
-                            <li><span class="audit-check">✓</span> Delivered in 5–7 business days via WhatsApp</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- STEP 2 — What We Need (TRANSPARENCY) -->
-                <!-- ============================================ -->
-                <div class="audit-step-content" data-step="2">
-                    <div class="audit-step-headline">
-                        <div class="audit-step-emoji">🔒</div>
-                        <h3>What We Need</h3>
-                        <p>Read-only access &mdash; that&rsquo;s it. Nothing more.</p>
-                    </div>
-
-                    <div class="audit-section-box" style="background: #EFF6FF; border-color: #BFDBFE;">
-                        <p class="audit-section-title" style="color: #1E40AF;">View-only access to:</p>
-                        <ul class="audit-section-list">
-                            <li><span class="dot" style="color: #2563EB;">•</span> Google Ads / Meta Ads dashboards (read-only)</li>
-                            <li><span class="dot" style="color: #2563EB;">•</span> Google Analytics (Viewer role)</li>
-                            <li><span class="dot" style="color: #2563EB;">•</span> Google Business Profile (insights only)</li>
-                        </ul>
-                    </div>
-
-                    <div class="audit-section-box" style="background: #FEF2F2; border-color: #FECACA;">
-                        <p class="audit-section-title" style="color: #991B1B;">We CANNOT:</p>
-                        <ul class="audit-section-list">
-                            <li><span class="dot" style="color: #DC2626;">✕</span> Edit or change your campaigns</li>
-                            <li><span class="dot" style="color: #DC2626;">✕</span> Withdraw funds or change billing</li>
-                            <li><span class="dot" style="color: #DC2626;">✕</span> Access your payment methods</li>
-                            <li><span class="dot" style="color: #DC2626;">✕</span> Share your data with anyone</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- STEP 3 — NDA Terms (LEGAL) -->
-                <!-- ============================================ -->
-                <div class="audit-step-content" data-step="3">
-                    <div class="audit-step-headline">
-                        <div class="audit-step-emoji">📜</div>
-                        <h3>NDA — 7 Key Points</h3>
-                        <p>Plain English. No legalese.</p>
-                    </div>
-
-                    <ol class="audit-nda-numbered">
-                        <li><strong>Confidentiality.</strong> Smart Buzzer (Portland, OR) keeps your data strictly private &amp; secure.</li>
-                        <li><strong>Sole Purpose.</strong> Data is used ONLY for the audit &mdash; no other use.</li>
-                        <li><strong>No Third Parties.</strong> We never sell, share, or disclose your data.</li>
-                        <li><strong>View-Only Access.</strong> No edits, no changes, no withdrawals.</li>
-                        <li><strong>Term.</strong> 12 months or upon audit completion (whichever first).</li>
-                        <li><strong>Termination.</strong> Either party may end this agreement anytime with notice.</li>
-                        <li><strong>Governing Law.</strong> State of Oregon, USA.</li>
-                    </ol>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- STEP 4 — Final Agreement (COMMITMENT) -->
-                <!-- ============================================ -->
-                <div class="audit-step-content" data-step="4">
-                    <div class="audit-step-headline">
-                        <div class="audit-step-emoji">✅</div>
-                        <h3>Almost There!</h3>
-                        <p>One last confirmation to claim your audit.</p>
-                    </div>
-
-                    <label class="audit-agree-row">
-                        <input type="checkbox" id="auditAgreeCheck" onchange="onAuditAgreeChange()">
-                        <span class="audit-agree-text">
-                            <strong>I AGREE</strong> to the NDA terms and grant Smart Buzzer view-only access to my ad accounts for the free marketing audit.
-                        </span>
-                    </label>
-
-                    <button type="button" id="auditFinalCta" class="audit-final-cta" disabled onclick="confirmAuditAgree()">
-                        ✅ &nbsp;I AGREE — OPEN WHATSAPP&nbsp; →
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- Footer — Back / Next buttons + Maybe Later -->
-            <div class="audit-modal-footer">
-                <button type="button" id="auditBackBtn" class="audit-nav-back" onclick="prevAuditStep()" style="visibility: hidden;">
-                    ← Back
-                </button>
-                <button type="button" id="auditNextBtn" class="audit-nav-next" onclick="nextAuditStep()">
-                    Next →
-                </button>
-            </div>
-
-            <button type="button" class="audit-maybe-later" onclick="closeAuditModal()">Maybe later</button>
-        </div>
-    </div>
-
     <!-- Submit Confirm Modal -->
     <div id="confirmModal" class="modal-overlay">
         <div class="modal-content">
@@ -2215,11 +2051,11 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                     </label>
                     <label class="confirm-item flex items-start p-4 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer">
                         <input type="checkbox" class="confirm-checkbox w-5 h-5 mt-0.5 rounded border-gray-300 text-green-600 focus:ring-green-500">
-                        <span class="ml-3 text-sm text-gray-700">I understand that we submit 1-5 reviews daily, ~50% will stick, and drops are replaced automatically until fulfilled</span>
+                        <span class="ml-3 text-sm text-gray-700">I understand reviews are posted gradually and count when they show up, and each review carries its own 7-day replacement window</span>
                     </label>
                     <label class="confirm-item flex items-start p-4 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer">
                         <input type="checkbox" class="confirm-checkbox w-5 h-5 mt-0.5 rounded border-gray-300 text-green-600 focus:ring-green-500">
-                        <span class="ml-3 text-sm text-gray-700">I understand the 7-day claim window after completion</span>
+                        <span class="ml-3 text-sm text-gray-700">I understand each review has its own 7-day replacement window from the day it shows up</span>
                     </label>
                 </div>
                 
@@ -2273,7 +2109,16 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
     
     const PLATFORMS = ['Google', 'Yelp', 'Facebook', 'Trustpilot', 'Other'];
     const MIN_REVIEWS_PER_BUSINESS = 1;
-    
+
+    // Delivery speed options -> show-up reviews per day (what the client is charged for).
+    // Keys must match the <option value> strings exactly.
+    const DELIVERY_SPEEDS = {
+        '5 submits/day | 2-3 show up/day':  { min: 2, max: 3 },
+        '10 submits/day | 3-5 show up/day': { min: 3, max: 5 }
+    };
+    const DEFAULT_SPEED = { min: 2, max: 3 };   // used when nothing is selected yet
+    const LEAD_TIME_DAYS = 3;                   // content prep + client approval before day 1
+
     // Social Media Settings
     let currentServiceType = 'reviews'; // 'reviews' or 'social_media'
     let smCurrentStep = 1;
@@ -3263,7 +3108,20 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                 businessData[i].reviews = allocation[i] || businessData[i].reviews;
             }
         }
-        
+
+        // Drafts saved in localStorage before the Delivery Speed change hold obsolete pace
+        // strings (e.g. "4-7 reviews/week"). The <select> can't match them, so it renders as
+        // "Select delivery speed..." while the stale value stays in businessData and would be
+        // submitted to the Sheet. Clear anything that isn't a current DELIVERY_SPEEDS key so
+        // the user is forced to re-pick (Task 4 validation).
+        for (let i = 0; i < businessData.length; i++) {
+            if (businessData[i].reviewPhaseW1 && !DELIVERY_SPEEDS[businessData[i].reviewPhaseW1]) {
+                businessData[i].reviewPhaseW1 = '';
+                businessData[i].reviewPhaseW2 = '';
+                businessData[i].reviewPhaseW3 = '';
+            }
+        }
+
         let html = '';
         for (let i = 0; i < numBusinesses; i++) {
             const data = businessData[i];
@@ -3367,30 +3225,26 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                             <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
                                 <div class="flex items-center mb-3">
                                     <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                                    <label class="sb-label" style="margin-bottom:0">Current Review Activity</label>
-                                    <button type="button" class="ml-2 w-5 h-5 rounded-full bg-blue-200 text-blue-700 text-xs font-bold flex items-center justify-center flex-shrink-0 hover:bg-blue-300 transition-colors" onclick="document.getElementById('phaseInfoTip${i}').classList.toggle('hidden')" title="Why we need this">i</button>
+                                    <label class="sb-label" style="margin-bottom:0">Delivery Speed</label>
+                                    <button type="button" class="ml-2 w-5 h-5 rounded-full bg-blue-200 text-blue-700 text-xs font-bold flex items-center justify-center flex-shrink-0 hover:bg-blue-300 transition-colors" onclick="document.getElementById('phaseInfoTip${i}').classList.toggle('hidden')" title="How this works">i</button>
                                 </div>
                                 <div id="phaseInfoTip${i}" class="hidden mb-3 text-xs text-blue-700 bg-blue-100 rounded-lg p-3 leading-relaxed">
-                                    We need this information to match your business's natural review pattern. By aligning our posting pace with your existing review flow, it looks more organic to Google's algorithm and keeps your profile safe.
+                                    We always submit far more reviews than you order, because only a portion of them shows up on the listing. A higher pace means more submits per day and an earlier finish. You are charged per review that shows up &mdash; not per submit.
                                 </div>
-                                <p class="text-xs text-gray-600 mb-4">Tell us your current pace so we can mirror it naturally.</p>
+                                <p class="text-xs text-gray-600 mb-4">Choose how fast you want your reviews delivered.</p>
 
                                 <div>
-                                    <label class="text-sm font-medium text-gray-700 mb-1 block">On average, how many new Google reviews does your business receive per week right now?</label>
+                                    <label class="text-sm font-medium text-gray-700 mb-1 block">How fast do you want your reviews delivered?</label>
                                     <select class="sb-input" id="reviewPhaseW1_${i}" onchange="updateBusinessData(${i}, 'reviewPhaseW1', this.value); mirrorWeeklyPace(${i}, this.value);">
-                                        <option value="" ${!data.reviewPhaseW1 ? 'selected' : ''}>Select...</option>
-                                        <option value="0-1 reviews/week" ${data.reviewPhaseW1 === '0-1 reviews/week' ? 'selected' : ''}>0-1 reviews/week (rarely get reviews)</option>
-                                        <option value="1-3 reviews/week" ${data.reviewPhaseW1 === '1-3 reviews/week' ? 'selected' : ''}>1-3 reviews/week</option>
-                                        <option value="4-7 reviews/week" ${data.reviewPhaseW1 === '4-7 reviews/week' ? 'selected' : ''}>4-7 reviews/week</option>
-                                        <option value="8-15 reviews/week" ${data.reviewPhaseW1 === '8-15 reviews/week' ? 'selected' : ''}>8-15 reviews/week</option>
-                                        <option value="15+ reviews/week" ${data.reviewPhaseW1 === '15+ reviews/week' ? 'selected' : ''}>15+ reviews/week</option>
-                                        <option value="Not sure / Let Smart Buzzer decide" ${data.reviewPhaseW1 === 'Not sure / Let Smart Buzzer decide' ? 'selected' : ''}>Not sure / Let Smart Buzzer decide</option>
+                                        <option value="" ${!data.reviewPhaseW1 ? 'selected' : ''}>Select delivery speed...</option>
+                                        <option value="5 submits/day | 2-3 show up/day" ${data.reviewPhaseW1 === '5 submits/day | 2-3 show up/day' ? 'selected' : ''}>&nbsp;5 submits/day&nbsp;&nbsp;|&nbsp;&nbsp;2-3 show up/day</option>
+                                        <option value="10 submits/day | 3-5 show up/day" ${data.reviewPhaseW1 === '10 submits/day | 3-5 show up/day' ? 'selected' : ''}>10 submits/day&nbsp;&nbsp;|&nbsp;&nbsp;3-5 show up/day</option>
                                     </select>
                                 </div>
 
                                 <div class="mt-4 flex items-start gap-2 text-xs text-green-800 bg-green-50 border border-green-200 rounded-lg p-3 leading-relaxed">
                                     <svg class="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    <span>We'll mirror your existing review pattern so our posting looks natural and keeps your profile safe.</span>
+                                    <span>Reviews are posted gradually and staggered throughout the day, so the pattern stays natural and your profile stays safe.</span>
                                 </div>
                             </div>
                             
@@ -3718,35 +3572,95 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
     // TIMELINE CALCULATION
     // ============================================================================
     
-    function calculateTimeline(quantity, numBusinesses) {
-        const reviewsPerWeek = numBusinesses * 2;
-        const weeksNeeded = Math.ceil(quantity / reviewsPerWeek);
-        
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() + 3);
-        
-        const endDate = new Date(startDate);
-        endDate.setDate(endDate.getDate() + (weeksNeeded * 7));
-        
-        const months = Math.ceil(weeksNeeded / 4);
-        let durationText = '';
-        if (months <= 1) {
-            durationText = `${weeksNeeded} weeks`;
-        } else if (months <= 2) {
-            durationText = '1-2 months';
-        } else if (months <= 3) {
-            durationText = '2-3 months';
-        } else {
-            durationText = `${months} months`;
-        }
-        
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        
+    // Resolve an <option value> string to its show-up-per-day range.
+    function getDeliverySpeed(value) {
+        return DELIVERY_SPEEDS[value] || DEFAULT_SPEED;
+    }
+
+    function formatDateShort(date) {
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    // Days of actual delivery (excludes lead time) for a quantity at a given speed.
+    function calculateSpeedDays(qty, speed) {
+        const n = Math.max(parseInt(qty, 10) || 0, 1);
         return {
-            startDate: startDate.toLocaleDateString('en-US', options),
-            endDate: endDate.toLocaleDateString('en-US', options),
+            fastDays: Math.max(1, Math.ceil(n / speed.max)),
+            slowDays: Math.max(1, Math.ceil(n / speed.min))
+        };
+    }
+
+    // Unit is picked from the slow end so both numbers share one unit. No decimals.
+    function formatDurationRange(fastDays, slowDays) {
+        let unit, lo, hi;
+        if (slowDays < 21) {
+            unit = 'days';
+            lo = fastDays;
+            hi = slowDays;
+        } else if (slowDays < 60) {
+            unit = 'weeks';
+            lo = Math.round(fastDays / 7);
+            hi = Math.round(slowDays / 7);
+        } else {
+            unit = 'months';
+            lo = Math.round(fastDays / 30);
+            hi = Math.round(slowDays / 30);
+        }
+        lo = Math.max(1, lo);
+        hi = Math.max(lo, hi);
+        if (lo === hi) {
+            return `${hi} ${hi === 1 ? unit.slice(0, -1) : unit}`;
+        }
+        return `${lo}-${hi} ${unit}`;
+    }
+
+    function calculateTimeline(quantity, numBusinesses) {
+        // Businesses are delivered in PARALLEL, so the order finishes when the SLOWEST
+        // business finishes -> take the max across businesses, not the sum.
+        let fastDays = 0;
+        let slowDays = 0;
+
+        const rows = Array.isArray(businessData) ? businessData : [];
+        const active = rows.filter(b => (parseInt(b && b.reviews, 10) || 0) > 0);
+
+        if (active.length > 0) {
+            active.forEach(b => {
+                const d = calculateSpeedDays(parseInt(b.reviews, 10) || 0, getDeliverySpeed(b.reviewPhaseW1));
+                if (d.fastDays > fastDays) fastDays = d.fastDays;
+                if (d.slowDays > slowDays) slowDays = d.slowDays;
+            });
+        } else {
+            // Fallback: no per-business data yet — split the order evenly at the default speed.
+            const perBusiness = Math.max(
+                Math.ceil((parseInt(quantity, 10) || 0) / (numBusinesses || 1)),
+                1
+            );
+            const d = calculateSpeedDays(perBusiness, DEFAULT_SPEED);
+            fastDays = d.fastDays;
+            slowDays = d.slowDays;
+        }
+
+        // durationText must equal END MINUS START, so it is formatted from the delivery-only
+        // day counts. Adding the lead time here would make the quoted duration 3 days longer
+        // than the gap between the Start and Completion dates displayed beside it.
+        const durationText = formatDurationRange(fastDays, slowDays);
+
+        fastDays += LEAD_TIME_DAYS;
+        slowDays += LEAD_TIME_DAYS;
+
+        const today = new Date();
+
+        const startDate = new Date(today);
+        startDate.setDate(startDate.getDate() + LEAD_TIME_DAYS);
+
+        const endDate = new Date(today);
+        endDate.setDate(endDate.getDate() + slowDays);
+
+        return {
+            startDate: formatDateShort(startDate),
+            endDate: formatDateShort(endDate),
             durationText: durationText,
-            weeksNeeded: weeksNeeded
+            weeksNeeded: Math.max(1, Math.ceil(slowDays / 7))
         };
     }
     
@@ -3774,6 +3688,13 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
             
             if (!b.businessLink) {
                 alert(`Please enter business link for Business ${i + 1}`);
+                return;
+            }
+
+            // Delivery speed drives the quoted timeline, so it must be an explicit choice.
+            if (!DELIVERY_SPEEDS[b.reviewPhaseW1]) {
+                alert(`Please choose a delivery speed for Business ${i + 1}`);
+                document.getElementById('reviewPhaseW1_' + i)?.focus();
                 return;
             }
 
@@ -3935,7 +3856,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         </div>
                         ${b.reviewPhaseW1 ? `
                         <div class="mb-4 bg-blue-50 rounded-lg p-3">
-                            <p class="text-xs text-blue-500">Current Weekly Review Pace</p>
+                            <p class="text-xs text-blue-500">Delivery Speed</p>
                             <p class="text-sm font-medium text-blue-900">${escapeHtml(b.reviewPhaseW1)}</p>
                         </div>
                         ` : ''}
@@ -3971,10 +3892,6 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
         document.querySelectorAll('.confirm-checkbox').forEach(cb => cb.checked = false);
         updateConfirmButton();
         
-        // Update dynamic timeline text
-        const totalReviews = businessData.reduce((sum, b) => sum + (b.reviews || 0), 0);
-        const numBusinesses = businessData.length || 1;
-        const timeline = calculateTimeline(totalReviews, numBusinesses);
         document.getElementById('confirmModal').classList.add('show');
     }
     
@@ -4327,189 +4244,6 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
         }, 3000);
     }
     
-    // ============================================================================
-    // BONUS — FREE MARKETING AUDIT (NDA Modal + WhatsApp + Backend Log)
-    // ============================================================================
-    const SB_AUDIT_WA_NUMBER   = '<?php echo $SB_WA_NUMBER; ?>'; // wa.me/<number> — from central wa-config.php
-    const SB_AUDIT_NDA_VERSION = '1.0';
-    const SB_AUDIT_TOTAL_STEPS = 4;
-    let   sbAuditCurrentStep   = 1;
-
-    function openAuditModal() {
-        const modal = document.getElementById('auditNdaModal');
-        if (!modal) return;
-        // Reset all state every time modal opens
-        const check = document.getElementById('auditAgreeCheck');
-        const cta   = document.getElementById('auditFinalCta');
-        if (check) check.checked = false;
-        if (cta)   { cta.classList.remove('enabled'); cta.disabled = true; cta.textContent = '✅  I AGREE — OPEN WHATSAPP  →'; }
-        goToAuditStep(1);
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeAuditModal() {
-        const modal = document.getElementById('auditNdaModal');
-        if (!modal) return;
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    function goToAuditStep(n) {
-        if (n < 1) n = 1;
-        if (n > SB_AUDIT_TOTAL_STEPS) n = SB_AUDIT_TOTAL_STEPS;
-        sbAuditCurrentStep = n;
-
-        // Toggle step content
-        document.querySelectorAll('.audit-step-content').forEach(function(el){
-            el.classList.toggle('active', parseInt(el.getAttribute('data-step'), 10) === n);
-        });
-
-        // Update step dots
-        document.querySelectorAll('.audit-step-dot').forEach(function(el){
-            const s = parseInt(el.getAttribute('data-step'), 10);
-            el.classList.remove('active', 'done');
-            if (s < n) el.classList.add('done');
-            else if (s === n) el.classList.add('active');
-        });
-
-        // Update step labels
-        document.querySelectorAll('.audit-step-label').forEach(function(el){
-            const s = parseInt(el.getAttribute('data-step'), 10);
-            el.classList.remove('active', 'done');
-            if (s < n) el.classList.add('done');
-            else if (s === n) el.classList.add('active');
-        });
-
-        // Update connecting lines
-        document.querySelectorAll('.audit-step-line').forEach(function(el){
-            const range = el.getAttribute('data-line').split('-');
-            const from  = parseInt(range[0], 10);
-            el.classList.toggle('done', from < n);
-        });
-
-        // Update counter
-        const counterEl = document.getElementById('auditStepCurrent');
-        if (counterEl) counterEl.textContent = String(n);
-
-        // Update footer state (first/last)
-        const footer = document.querySelector('.audit-modal-footer');
-        if (footer) {
-            footer.classList.toggle('is-first', n === 1);
-            footer.classList.toggle('is-last',  n === SB_AUDIT_TOTAL_STEPS);
-        }
-        const backBtn = document.getElementById('auditBackBtn');
-        if (backBtn) backBtn.style.visibility = (n === 1) ? 'hidden' : 'visible';
-
-        // Scroll modal body to top on step change
-        const body = document.querySelector('.audit-modal-card');
-        if (body) body.scrollTop = 0;
-    }
-
-    function nextAuditStep() {
-        if (sbAuditCurrentStep < SB_AUDIT_TOTAL_STEPS) {
-            goToAuditStep(sbAuditCurrentStep + 1);
-        }
-    }
-
-    function prevAuditStep() {
-        if (sbAuditCurrentStep > 1) {
-            goToAuditStep(sbAuditCurrentStep - 1);
-        }
-    }
-
-    function onAuditAgreeChange() {
-        const check = document.getElementById('auditAgreeCheck');
-        const cta   = document.getElementById('auditFinalCta');
-        if (!check || !cta) return;
-        if (check.checked) { cta.classList.add('enabled'); cta.disabled = false; }
-        else               { cta.classList.remove('enabled'); cta.disabled = true; }
-    }
-
-    // Close modal on ESC / backdrop click
-    document.addEventListener('keydown', function(e){
-        if (e.key === 'Escape') closeAuditModal();
-    });
-    document.addEventListener('click', function(e){
-        const overlay = document.getElementById('auditNdaModal');
-        if (overlay && e.target === overlay) closeAuditModal();
-    });
-
-    async function confirmAuditAgree() {
-        const check = document.getElementById('auditAgreeCheck');
-        if (!check || !check.checked) return;
-
-        const ctx = window.sbAuditCtx || {};
-        const orderId      = ctx.orderId || '';
-        const businessName = ctx.businessName || '';
-        const email        = ctx.email || '';
-        const whatsapp     = ctx.whatsapp || '';
-        const orderType    = ctx.orderType || 'reviews';
-
-        // Build prefilled WhatsApp message
-        const lines = [
-            'Hi Smart Buzzer! I want to claim my FREE Marketing Audit bonus.',
-            '',
-            'I AGREE to share view-only access to my ad accounts (Google Ads / Meta Ads / GBP) so your team can audit my funnel — cost, CPR, CPL, ROAS, and optimization status.',
-            '',
-            'Business: ' + (businessName || '-'),
-            'Order ID: ' + (orderId || '-'),
-            '',
-            'I have read & agreed to the NDA terms shown on the page.'
-        ];
-        const waUrl = 'https://wa.me/' + SB_AUDIT_WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
-
-        // Disable CTA to prevent double-click
-        const cta = document.getElementById('auditFinalCta');
-        if (cta) { cta.disabled = true; cta.textContent = '⏳  Logging agreement...'; }
-
-        // Wait briefly for log response then open WhatsApp regardless of result
-        const result = await logAuditRequest({
-            orderId: orderId,
-            businessName: businessName,
-            email: email,
-            whatsapp: whatsapp,
-            orderType: orderType,
-            ndaVersion: SB_AUDIT_NDA_VERSION,
-            agreed: true,
-            csrf_token: '<?php echo $csrfToken; ?>'
-        });
-
-        if (result && result.success) {
-            showToast('✅ Agreement logged. Opening WhatsApp...', 'success');
-        } else {
-            const reason = (result && result.message) ? result.message : 'Network error';
-            showToast('⚠️ Log warning: ' + reason + '. Opening WhatsApp anyway.', 'warning');
-            console.warn('[audit-log]', result);
-        }
-
-        // Always open WhatsApp — UX must not be blocked by log issues
-        setTimeout(function(){
-            window.open(waUrl, '_blank');
-            closeAuditModal();
-            if (cta) { cta.disabled = false; cta.textContent = '✅  I AGREE — OPEN WHATSAPP  →'; }
-        }, 400);
-    }
-
-    async function logAuditRequest(payload) {
-        try {
-            const resp = await fetch('audit-log.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const text = await resp.text();
-            try {
-                return JSON.parse(text);
-            } catch (e) {
-                return { success: false, message: 'Bad server response (HTTP ' + resp.status + ')' };
-            }
-        } catch (err) {
-            console.warn('Audit log fetch error:', err);
-            return { success: false, message: 'Network error' };
-        }
-    }
-
     // ============================================================================
     // END
     // ============================================================================

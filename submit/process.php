@@ -207,9 +207,7 @@ function createOrderSheet($order) {
                 ['Target Rating Total', $order['targetRatingTotal'] ?? 'N/A'],
                 ['Business Link', $order['mapsLink'] ?? ''],
                 ['Business Type', $order['businessType'] ?? 'N/A'],
-                ['Review Phase W1', $order['reviewPhaseW1'] ?? 'N/A'],
-                ['Review Phase W2', $order['reviewPhaseW2'] ?? 'N/A'],
-                ['Review Phase W3+', $order['reviewPhaseW3'] ?? 'N/A'],
+                ['Delivery Speed', $order['reviewPhaseW1'] ?? 'N/A'],
                 ['Business USP', $order['businessUSP'] ?? 'N/A'],
                 ['Review Tone', $order['reviewTone'] ?? 'N/A'],
                 ['Review Length', $order['reviewLength'] ?? 'N/A'],
@@ -263,9 +261,7 @@ function createOrderSheet($order) {
                 $fields[] = ['Target Rating Total', $targetTotal];
                 $fields[] = ['Business Link', $business['businessLink'] ?? ''];
                 $fields[] = ['Business Type', $business['businessType'] ?? 'N/A'];
-                $fields[] = ['Review Phase W1', $business['reviewPhaseW1'] ?? 'N/A'];
-                $fields[] = ['Review Phase W2', $business['reviewPhaseW2'] ?? 'N/A'];
-                $fields[] = ['Review Phase W3+', $business['reviewPhaseW3'] ?? 'N/A'];
+                $fields[] = ['Delivery Speed', $business['reviewPhaseW1'] ?? 'N/A'];
                 $fields[] = ['Business USP', $business['businessUSP'] ?? 'N/A'];
                 $fields[] = ['Review Tone', $business['reviewTone'] ?? 'N/A'];
                 $fields[] = ['Review Length', $business['reviewLength'] ?? 'N/A'];

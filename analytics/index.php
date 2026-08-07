@@ -40,6 +40,7 @@ $DEFAULT_LANDING_PAGES = [
     'promo-tripadvisor',
     'promo-trustpilot',
     'promo-industry',
+    'promo-fnb',
     'seasonal',
     'xmas',
     'blackfriday'

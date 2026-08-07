@@ -99,13 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['CONTENT_TYPE']) && 
         
         if (strpos(strtoupper($action), 'STARTER') !== false) {
             $packageName = 'Starter';
-            $reviewsQty = '72';
+            $reviewsQty = '55';
         } elseif (strpos(strtoupper($action), 'GROWTH') !== false) {
             $packageName = 'Growth';
-            $reviewsQty = '96';
+            $reviewsQty = '88';
         } elseif (strpos(strtoupper($action), 'PERFORMANCE') !== false) {
             $packageName = 'Performance';
-            $reviewsQty = '132';
+            $reviewsQty = '110';
         }
         
         // Sanitize all values: strip tabs/newlines to prevent TSV corruption
@@ -696,41 +696,14 @@ if (file_exists($analyticsFile)) {
     
     foreach ($lines as $line) {
         $parts = explode("\t", $line);
-        $colCount = count($parts);
-        if ($colCount >= 11) {
+        if (count($parts) >= 11) {
             $timestamp = $parts[0];
             $date = substr($timestamp, 0, 10);
-
+            
             // Date filtering
             if ($date >= $startDate && $date <= $endDate) {
                 $eventData = json_decode($parts[3], true) ?: [];
-
-                // Column layout differs by log format version — detect by column count.
-                // 14 cols (current, written by analytics.php):
-                //   0 ts | 1 event | 2 url | 3 data | 4 device | 5 session | 6 campaign
-                //   7 source | 8 medium | 9 utm_content | 10 placement | 11 utm_term | 12 ip | 13 country
-                // 13 cols (legacy): same but no utm_term  -> ip=11, country=12
-                // 11-12 cols (oldest): no utm_content/placement/utm_term -> ip=9, country=10
-                if ($colCount >= 14) {
-                    $utmContent = $parts[9];
-                    $placement  = $parts[10];
-                    $utmTerm    = $parts[11];
-                    $ipVal      = $parts[12];
-                    $countryVal = $parts[13];
-                } elseif ($colCount == 13) {
-                    $utmContent = $parts[9];
-                    $placement  = $parts[10];
-                    $utmTerm    = '-';
-                    $ipVal      = $parts[11];
-                    $countryVal = $parts[12];
-                } else {
-                    $utmContent = '-';
-                    $placement  = '-';
-                    $utmTerm    = '-';
-                    $ipVal      = $parts[9];
-                    $countryVal = isset($parts[10]) ? $parts[10] : '-';
-                }
-
+                
                 $analyticsData[] = [
                     'timestamp' => $parts[0],
                     'event_type' => $parts[1],
@@ -741,11 +714,8 @@ if (file_exists($analyticsFile)) {
                     'campaign' => $parts[6],
                     'source' => $parts[7],
                     'medium' => $parts[8],
-                    'utm_content' => $utmContent,
-                    'placement' => $placement,
-                    'utm_term' => $utmTerm,
-                    'ip' => $ipVal,
-                    'country' => $countryVal
+                    'ip' => $parts[9],
+                    'country' => $parts[10]
                 ];
             }
         }
