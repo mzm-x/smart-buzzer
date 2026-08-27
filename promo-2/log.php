@@ -195,6 +195,58 @@ if (isset($_POST['delete_entries']) && isset($_SESSION['logged_in'])) {
     exit;
 }
 
+// === HANDLE TOGGLE PAID REQUEST ===
+// Paid flag lives in column index 18 (the 19th column) — appended by this dashboard only.
+// The landing page still writes 18 columns; a row without col 18 simply reads as UNPAID.
+// Rows are matched by timestamp + business name, NOT by display index, because the display
+// list is date/search filtered and its indexes do not line up with raw file lines.
+if (isset($_POST['toggle_paid']) && isset($_SESSION['logged_in'])) {
+    header('Content-Type: application/json');
+
+    $file = __DIR__ . '/customer_data.log';
+    $matchTs  = isset($_POST['timestamp']) ? trim($_POST['timestamp']) : '';
+    $matchBiz = isset($_POST['business']) ? trim($_POST['business']) : '';
+
+    if ($matchTs === '' || !file_exists($file)) {
+        echo json_encode(['status' => 'error', 'message' => 'Row not found']);
+        exit;
+    }
+
+    $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $found = false;
+    $paid = false;
+
+    foreach ($lines as $i => $line) {
+        $p = explode("\t", $line);
+        if (count($p) < 16) {
+            continue; // legacy 14-15 col row: column count IS the format signal, do not pad it
+        }
+        if (trim($p[0]) !== $matchTs || trim($p[1]) !== $matchBiz) {
+            continue;
+        }
+
+        // Pad up to index 17 so the paid flag always lands on index 18
+        for ($c = count($p); $c <= 17; $c++) {
+            $p[$c] = '-';
+        }
+
+        $paid = !(isset($p[18]) && trim($p[18]) === 'PAID');
+        $p[18] = $paid ? 'PAID' : '-';
+
+        $lines[$i] = implode("\t", $p);
+        $found = true;
+        break;
+    }
+
+    if ($found) {
+        file_put_contents($file, implode("\n", $lines) . "\n", LOCK_EX);
+        echo json_encode(['status' => 'success', 'paid' => $paid]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Row not found or legacy format']);
+    }
+    exit;
+}
+
 // === HANDLE TOGGLE FOLLOW-UP REQUEST ===
 if (isset($_POST['toggle_followup']) && isset($_SESSION['logged_in'])) {
     header('Content-Type: application/json');
@@ -339,11 +391,12 @@ if (isset($_GET['ajax_search']) && isset($_SESSION['logged_in'])) {
                     'utmCampaign' => $utmCampaign,
                     'utmContent' => $utmContent,
                     'utmTerm' => $utmTerm,
-                    'placement' => $placement
+                    'placement' => $placement,
+                    'paid' => ($numParts >= 19 && trim($parts[18]) === 'PAID')
                 ];
-                
+
                 // Apply filters
-                $matchesSearch = empty($searchQuery) || 
+                $matchesSearch = empty($searchQuery) ||
                     stripos($customer['businessName'], $searchQuery) !== false ||
                     stripos($customer['location'], $searchQuery) !== false ||
                     stripos($customer['businessEmail'], $searchQuery) !== false ||
@@ -503,11 +556,12 @@ if (isset($_GET['export']) && isset($_SESSION['logged_in'])) {
                     'utmCampaign' => $utmCampaign,
                     'utmContent' => $utmContent,
                     'utmTerm' => $utmTerm,
-                    'placement' => $placement
+                    'placement' => $placement,
+                    'paid' => ($numParts >= 19 && trim($parts[18]) === 'PAID')
                 ];
-                
+
                 // Apply filters
-                $matchesSearch = empty($searchQuery) || 
+                $matchesSearch = empty($searchQuery) ||
                     stripos($customer['businessName'], $searchQuery) !== false ||
                     stripos($customer['location'], $searchQuery) !== false ||
                     stripos($customer['businessEmail'], $searchQuery) !== false ||
@@ -530,13 +584,13 @@ if (isset($_GET['export']) && isset($_SESSION['logged_in'])) {
         header('Content-Disposition: attachment; filename="customer_data_' . date('Y-m-d_His') . '.csv"');
         
         $output = fopen('php://output', 'w');
-        fputcsv($output, ['Timestamp', 'Business Name', 'Location', 'Email', 'WhatsApp', 'Package', 'Page URL', 'Reviews Qty', 'UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content (Ad)', 'UTM Term (Adset)', 'Placement', 'State', 'Zip Code', 'Country', 'Type', 'Followed Up']);
-        
+        fputcsv($output, ['Timestamp', 'Business Name', 'Paid', 'Email', 'WhatsApp', 'Package', 'Page URL', 'Reviews Qty', 'UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content (Ad)', 'UTM Term (Adset)', 'Placement', 'State', 'Zip Code', 'Country', 'Type', 'Followed Up']);
+
         foreach ($customers as $customer) {
             fputcsv($output, [
                 $customer['timestamp'],
                 $customer['businessName'],
-                $customer['location'],
+                $customer['paid'] ? 'PAID' : 'UNPAID',
                 $customer['businessEmail'],
                 $customer['whatsapp'],
                 $customer['package'],
@@ -770,6 +824,9 @@ $exitPages = [];
 $uniqueSessions = [];
 $uniqueIPs = [];
 $sessionsWithClicks = [];
+// Session-deduped funnel. Keyed by session_id so lookups stay O(1) on big logs.
+$sessionsWithViews = [];
+$sessionsWithSubmits = [];
 $externalClicks = [];
 $sessionPackageClicks = []; // Track which package each session clicked
 
@@ -799,6 +856,7 @@ foreach ($analyticsData as $event) {
     // Page views
     if ($eventType === 'PAGE_VIEW') {
         $pageViews++;
+        $sessionsWithViews[$sessionId] = true;
         $dailyStats[$date]['views']++;
         if (isset($deviceStats[$device])) {
             $deviceStats[$device]['views']++;
@@ -854,6 +912,7 @@ foreach ($analyticsData as $event) {
     // Form submissions (COMPLETE ORDER click)
     if ($eventType === 'ORDER_SUBMIT') {
         $formSubmits++;
+        $sessionsWithSubmits[$sessionId] = true;
     }
 
     // External link clicks (header/footer)
@@ -919,6 +978,19 @@ $bounceRate = count($uniqueSessions) > 0 ? ($bouncedSessions / count($uniqueSess
 $avgTimeOnPage = !empty($timeOnPageData) ? array_sum($timeOnPageData) / count($timeOnPageData) : 0;
 $conversionRate = $pageViews > 0 ? ($formSubmits / $pageViews) * 100 : 0;
 $clickRate = $pageViews > 0 ? ($pricingClicks / $pageViews) * 100 : 0;
+
+// ===== SESSION-DEDUPED FUNNEL =====
+// One person reloading the page 8 times is 1 visitor, not 8. These are the numbers
+// the funnel displays; the raw event totals above are kept as the small captions.
+$uniqueVisitors   = count($sessionsWithViews);
+$uniqueClickers   = count($sessionsWithClicks);
+$uniqueSubmitters = count($sessionsWithSubmits);
+
+// Step-to-step rates (each stage against the one before it)
+$uClickRate  = $uniqueVisitors > 0 ? ($uniqueClickers / $uniqueVisitors) * 100 : 0;
+$uSubmitRate = $uniqueClickers > 0 ? ($uniqueSubmitters / $uniqueClickers) * 100 : 0;
+// Overall visitor -> submit rate
+$uConversionRate = $uniqueVisitors > 0 ? ($uniqueSubmitters / $uniqueVisitors) * 100 : 0;
 
 // Calculate week-over-week comparison
 $thisWeekStart = date('Y-m-d', strtotime('-6 days'));
@@ -1107,9 +1179,10 @@ if (file_exists($file)) {
                 'utmCampaign' => $utmCampaign,
                 'utmContent' => $utmContent,
                 'utmTerm' => $utmTerm,
-                'placement' => $placement
+                'placement' => $placement,
+                'paid' => ($numParts >= 19 && trim($parts[18]) === 'PAID')
             ];
-            
+
             $customers[] = $customer;
             
             // Use utmCampaign for campaign filter
@@ -2006,6 +2079,68 @@ $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'analytics';
             font-weight: 600;
         }
         
+        /* Paid / Not Paid switch (replaces the old Location column) */
+        .paid-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .paid-switch .track {
+            width: 40px;
+            height: 22px;
+            border-radius: 11px;
+            background: #C1C7D0;
+            position: relative;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .paid-switch .knob {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(9,30,66,0.3);
+            transition: transform 0.2s;
+        }
+
+        .paid-switch .paid-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #5E6C84;
+        }
+
+        .paid-switch.is-paid .track {
+            background: #00875A;
+        }
+
+        .paid-switch.is-paid .knob {
+            transform: translateX(18px);
+        }
+
+        .paid-switch.is-paid .paid-label {
+            color: #00875A;
+        }
+
+        .paid-switch.is-busy {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .biz-cell {
+            max-width: 260px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .utm-cell {
             max-width: 200px;
             overflow: hidden;
@@ -2523,28 +2658,32 @@ $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'analytics';
                     <div class="card-header">
                         <h3 class="card-title">Conversion Funnel</h3>
                     </div>
+                    <div style="font-size: 12px; color: #5E6C84; margin: -6px 0 14px;">
+                        Deduplicated by session &mdash; one visitor counts once no matter how many times they reload or click. Raw event totals in grey.
+                    </div>
                     <div class="funnel">
                         <div class="funnel-step">
-                            <div class="funnel-value"><?php echo number_format($pageViews); ?></div>
-                            <div class="funnel-label">Page Views</div>
+                            <div class="funnel-value"><?php echo number_format($uniqueVisitors); ?></div>
+                            <div class="funnel-label">Unique Visitors</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">100% &middot; <?php echo number_format($pageViews); ?> page views</div>
                         </div>
                         <div class="funnel-arrow">→</div>
                         <div class="funnel-step">
-                            <div class="funnel-value"><?php echo number_format($pricingClicks); ?></div>
-                            <div class="funnel-label">Pricing Clicks</div>
-                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;"><?php echo number_format($clickRate, 1); ?>% CTR</div>
+                            <div class="funnel-value"><?php echo number_format($uniqueClickers); ?></div>
+                            <div class="funnel-label">Unique Pricing Clicks</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;"><?php echo number_format($uClickRate, 1); ?>% of visitors &middot; <?php echo number_format($pricingClicks); ?> clicks</div>
                         </div>
                         <div class="funnel-arrow">→</div>
                         <div class="funnel-step">
-                            <div class="funnel-value"><?php echo number_format($formSubmits); ?></div>
-                            <div class="funnel-label">Form Submits</div>
-                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">COMPLETE ORDER</div>
+                            <div class="funnel-value"><?php echo number_format($uniqueSubmitters); ?></div>
+                            <div class="funnel-label">Unique Submits</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;"><?php echo number_format($uSubmitRate, 1); ?>% of clickers &middot; <?php echo number_format($formSubmits); ?> submits</div>
                         </div>
                         <div class="funnel-arrow">→</div>
                         <div class="funnel-step">
-                            <div class="funnel-value" style="color: #00875A;"><?php echo number_format($conversionRate, 1); ?>%</div>
+                            <div class="funnel-value" style="color: #00875A;"><?php echo number_format($uConversionRate, 1); ?>%</div>
                             <div class="funnel-label">Conversion Rate</div>
-                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">Views → Submits</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">Unique visitors → submits</div>
                         </div>
                     </div>
                 </div>
@@ -2840,7 +2979,7 @@ $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'analytics';
                                 <th><input type="checkbox" id="selectAll"></th>
                                 <th>Timestamp</th>
                                 <th>Business Name</th>
-                                <th>Location</th>
+                                <th>Paid</th>
                                 <th>Email</th>
                                 <th>WhatsApp</th>
                                 <th>Package</th>
@@ -2877,8 +3016,16 @@ $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'analytics';
                                     <tr style="<?php echo $rowStyle; ?>">
                                         <td><input type="checkbox" name="selected[]" value="<?php echo $index; ?>" class="row-checkbox"></td>
                                         <td><?php echo htmlspecialchars($customer['timestamp']); ?></td>
-                                        <td><?php echo htmlspecialchars($customer['businessName']); ?><?php echo $clickBadge; ?></td>
-                                        <td><?php echo htmlspecialchars($customer['location']); ?></td>
+                                        <td><div class="biz-cell" title="<?php echo htmlspecialchars($customer['businessName']); ?>"><?php echo htmlspecialchars($customer['businessName']); ?><?php echo $clickBadge; ?></div></td>
+                                        <td>
+                                            <span class="paid-switch <?php echo $customer['paid'] ? 'is-paid' : ''; ?>"
+                                                onclick="togglePaid(this)"
+                                                data-ts="<?php echo htmlspecialchars($customer['timestamp']); ?>"
+                                                data-biz="<?php echo htmlspecialchars($customer['businessName']); ?>">
+                                                <span class="track"><span class="knob"></span></span>
+                                                <span class="paid-label"><?php echo $customer['paid'] ? 'Paid' : 'Not Paid'; ?></span>
+                                            </span>
+                                        </td>
                                         <td><?php echo htmlspecialchars($customer['businessEmail']); ?></td>
                                         <td><?php echo htmlspecialchars($customer['whatsapp']); ?></td>
                                         <td><?php echo htmlspecialchars($customer['package']); ?></td>
@@ -3528,6 +3675,35 @@ $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'analytics';
             window.open(url, '_blank');
         }
 
+        // ============ PAID / NOT PAID TOGGLE ============
+        function togglePaid(el) {
+            if (el.classList.contains('is-busy')) return;
+            el.classList.add('is-busy');
+
+            var body = new URLSearchParams({
+                toggle_paid: '1',
+                timestamp: el.getAttribute('data-ts') || '',
+                business: el.getAttribute('data-biz') || ''
+            });
+
+            fetch('log.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: body.toString()
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.status === 'success') {
+                    el.classList.toggle('is-paid', data.paid);
+                    el.querySelector('.paid-label').textContent = data.paid ? 'Paid' : 'Not Paid';
+                } else {
+                    alert('Failed to update: ' + (data.message || 'unknown error'));
+                }
+            })
+            .catch(function() { alert('Failed to update paid status.'); })
+            .finally(function() { el.classList.remove('is-busy'); });
+        }
+
         // ============ COPY EMAIL ============
         function copyFollowupEmail(el) {
             var biz = el.getAttribute('data-biz') || '-';
@@ -3658,8 +3834,16 @@ $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'analytics';
                     <tr style="${rowStyle}">
                         <td><input type="checkbox" name="selected[]" value="${index}" class="row-checkbox"></td>
                         <td>${escape(customer.timestamp)}</td>
-                        <td>${escape(customer.businessName)}${clickBadge}</td>
-                        <td>${escape(customer.location)}</td>
+                        <td><div class="biz-cell" title="${escape(customer.businessName)}">${escape(customer.businessName)}${clickBadge}</div></td>
+                        <td>
+                            <span class="paid-switch ${customer.paid ? 'is-paid' : ''}"
+                                onclick="togglePaid(this)"
+                                data-ts="${escape(customer.timestamp)}"
+                                data-biz="${escape(customer.businessName)}">
+                                <span class="track"><span class="knob"></span></span>
+                                <span class="paid-label">${customer.paid ? 'Paid' : 'Not Paid'}</span>
+                            </span>
+                        </td>
                         <td>${escape(customer.businessEmail)}</td>
                         <td>${escape(customer.whatsapp)}</td>
                         <td>${escape(customer.package)}</td>

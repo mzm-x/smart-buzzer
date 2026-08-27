@@ -760,6 +760,9 @@ $exitPages = [];
 $uniqueSessions = [];
 $uniqueIPs = [];
 $sessionsWithClicks = [];
+// Session-deduped funnel. Keyed by session_id so lookups stay O(1) on big logs.
+$sessionsWithViews = [];
+$sessionsWithSubmits = [];
 $externalClicks = [];
 $sessionPackageClicks = []; // Track which package each session clicked
 
@@ -789,6 +792,7 @@ foreach ($analyticsData as $event) {
     // Page views
     if ($eventType === 'PAGE_VIEW') {
         $pageViews++;
+        $sessionsWithViews[$sessionId] = true;
         $dailyStats[$date]['views']++;
         if (isset($deviceStats[$device])) {
             $deviceStats[$device]['views']++;
@@ -844,6 +848,7 @@ foreach ($analyticsData as $event) {
     // Form submissions (COMPLETE ORDER click)
     if ($eventType === 'ORDER_SUBMIT') {
         $formSubmits++;
+        $sessionsWithSubmits[$sessionId] = true;
     }
 
     // External link clicks (header/footer)
@@ -909,6 +914,19 @@ $bounceRate = count($uniqueSessions) > 0 ? ($bouncedSessions / count($uniqueSess
 $avgTimeOnPage = !empty($timeOnPageData) ? array_sum($timeOnPageData) / count($timeOnPageData) : 0;
 $conversionRate = $pageViews > 0 ? ($formSubmits / $pageViews) * 100 : 0;
 $clickRate = $pageViews > 0 ? ($pricingClicks / $pageViews) * 100 : 0;
+
+// ===== SESSION-DEDUPED FUNNEL =====
+// One person reloading the page 8 times is 1 visitor, not 8. These are the numbers
+// the funnel displays; the raw event totals above are kept as the small captions.
+$uniqueVisitors   = count($sessionsWithViews);
+$uniqueClickers   = count($sessionsWithClicks);
+$uniqueSubmitters = count($sessionsWithSubmits);
+
+// Step-to-step rates (each stage against the one before it)
+$uClickRate  = $uniqueVisitors > 0 ? ($uniqueClickers / $uniqueVisitors) * 100 : 0;
+$uSubmitRate = $uniqueClickers > 0 ? ($uniqueSubmitters / $uniqueClickers) * 100 : 0;
+// Overall visitor -> submit rate
+$uConversionRate = $uniqueVisitors > 0 ? ($uniqueSubmitters / $uniqueVisitors) * 100 : 0;
 
 // Calculate week-over-week comparison
 $thisWeekStart = date('Y-m-d', strtotime('-6 days'));
@@ -2539,28 +2557,32 @@ $activeTab = isset($_GET['tab']) ? $_GET['tab'] : 'analytics';
                     <div class="card-header">
                         <h3 class="card-title">Conversion Funnel</h3>
                     </div>
+                    <div style="font-size: 12px; color: #5E6C84; margin: -6px 0 14px;">
+                        Deduplicated by session &mdash; one visitor counts once no matter how many times they reload or click. Raw event totals in grey.
+                    </div>
                     <div class="funnel">
                         <div class="funnel-step">
-                            <div class="funnel-value"><?php echo number_format($pageViews); ?></div>
-                            <div class="funnel-label">Page Views</div>
+                            <div class="funnel-value"><?php echo number_format($uniqueVisitors); ?></div>
+                            <div class="funnel-label">Unique Visitors</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">100% &middot; <?php echo number_format($pageViews); ?> page views</div>
                         </div>
                         <div class="funnel-arrow">→</div>
                         <div class="funnel-step">
-                            <div class="funnel-value"><?php echo number_format($pricingClicks); ?></div>
-                            <div class="funnel-label">Pricing Clicks</div>
-                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;"><?php echo number_format($clickRate, 1); ?>% CTR</div>
+                            <div class="funnel-value"><?php echo number_format($uniqueClickers); ?></div>
+                            <div class="funnel-label">Unique Pricing Clicks</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;"><?php echo number_format($uClickRate, 1); ?>% of visitors &middot; <?php echo number_format($pricingClicks); ?> clicks</div>
                         </div>
                         <div class="funnel-arrow">→</div>
                         <div class="funnel-step">
-                            <div class="funnel-value"><?php echo number_format($formSubmits); ?></div>
-                            <div class="funnel-label">Form Submits</div>
-                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">COMPLETE ORDER</div>
+                            <div class="funnel-value"><?php echo number_format($uniqueSubmitters); ?></div>
+                            <div class="funnel-label">Unique Submits</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;"><?php echo number_format($uSubmitRate, 1); ?>% of clickers &middot; <?php echo number_format($formSubmits); ?> submits</div>
                         </div>
                         <div class="funnel-arrow">→</div>
                         <div class="funnel-step">
-                            <div class="funnel-value" style="color: #00875A;"><?php echo number_format($conversionRate, 1); ?>%</div>
+                            <div class="funnel-value" style="color: #00875A;"><?php echo number_format($uConversionRate, 1); ?>%</div>
                             <div class="funnel-label">Conversion Rate</div>
-                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">Views → Submits</div>
+                            <div style="font-size: 12px; color: #5E6C84; margin-top: 4px;">Unique visitors → submits</div>
                         </div>
                     </div>
                 </div>
