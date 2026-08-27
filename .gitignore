@@ -48,3 +48,4 @@ promo/script/Script Asli.zip
 # ===== Data redeem v1 (558 order: nama bisnis + email customer = PII) =====
 redeem/redeemv1/data/
 redeem/redeemv1/redeem_data.json
+.gstack/

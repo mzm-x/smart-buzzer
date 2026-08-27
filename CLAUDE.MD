@@ -2037,7 +2037,71 @@ After:   seasonal/index-valentine.php  (backup)
 
 ---
 
+## AUTO ORDER-CONFIRMATION EMAIL (/submit/) — v1.0
+
+**Why it exists:** a client disputed a $581 charge two days after paying, because after
+submitting the onboarding form he received nothing in writing — no order ID, no timeline,
+no proof. The form now emails a confirmation automatically the moment an order lands.
+
+### Files
+| File | Role |
+|------|------|
+| `submit/mailer.php` | Self-contained SMTP client (no Composer). `sbQueueOrderConfirmation()`, `sbSendOrderConfirmation()`, `sbSmtpSend()`, `sbMailerConfig()`, `sbMailLog()` |
+| `submit/email-template.php` | `sbRenderOrderConfirmation($order)` → `['subject','html','text']`. Table-based HTML + plain-text alternative |
+| `submit/data/smtp-config.json` | **Credentials — server-only, gitignored.** Copy from `smtp-config.example.json` |
+| `submit/smtp-config.example.json` | Template + host hints (Hostinger 465/ssl, Gmail 587/tls) |
+| `submit/test-email.php` | SMTP self-test behind the AM login: config status, live send, `?preview=1`, last 12 log entries |
+| `submit/data/email_log.json` | Rolling log of the last 500 send attempts (sent / failed / skipped) |
+
+### How it fires
+`process.php` calls `sbQueueOrderConfirmation()` right before `jsonResponse()` — in BOTH
+branches (reviews order ~line 987, social media order ~line 830). The send itself runs in a
+`register_shutdown_function`, after `fastcgi_finish_request()`/`litespeed_finish_request()`
+closes the connection. Verified: response flushes in 3 ms, the 2.4-second SMTP round trip
+happens after the customer already sees the thank-you screen.
+
+### Non-negotiables
+1. **SMTP must never break an order.** Every failure path returns false and logs — no
+   exception escapes to `process.php`. Mail server down = order still succeeds.
+2. **Never move the send before `jsonResponse()`** — that puts a 2-3 second SMTP round trip
+   in front of the customer.
+3. **Credentials live only in `data/smtp-config.json`**, never in `config.php` (which is
+   gitignored but still gets copied around) and never in the repo.
+4. **Idempotency:** `sbAlreadyConfirmed($orderId)` scans `email_log.json` — one confirmation
+   per order ID, even on double submit.
+5. `port 465 → secure "ssl"`, `port 587 → secure "tls"`. Auto-detected when `secure` is blank.
+6. The email content mirrors the thank-you screen. Changing one without the other recreates
+   exactly the confusion that caused the dispute.
+7. **The AM WhatsApp number lives in two places on purpose:** `submit.php` line 7
+   (`$SB_AM_NUMBER`) and `email-template.php` (`SB_MAIL_AM_NUMBER`). Both are hardcoded and
+   must be edited together. Do not "improve" this by wiring it to `wa-config.json` — that
+   file holds the sales line, and post-purchase traffic must reach the Account Manager.
+8. A mail host can take 15-30s to answer after the message body is sent. `SB_Smtp::send()`
+   gives that one read a 45s budget; shortening it back to the command timeout produces
+   phantom "Message rejected" failures on mail that actually delivered.
+
+### Email content (must stay TNC-compliant)
+Order ID + timestamp, order summary, 5-milestone timeline with the current step marked and the 24-hour draft / weekend-delay expectation in an amber callout (the one thing customers get wrong most often),
+one WhatsApp CTA (hardcoded AM number, message pre-filled with order ID), $20
+voucher card, and a footer restating three terms: per-review 7-day replacement window,
+order final once the campaign starts, refunds as store voucher only. That footer is the
+written evidence a card processor asks for in a chargeback — do not remove it.
+
+### Thank-you screen (`submit.php` step 6)
+Order ID pill with copy button (`#tyOrderId`), email-sent notice (`#tyEmail`), WhatsApp
+confirm CTA (`#whatsappBtn`, `.sb-cta-confirm`), 5-step vertical journey timeline
+(`.sb-journey` / `.sb-jstep.is-done` / `.is-now`), then the voucher card. JS fills the order
+ID and email from the `process.php` response.
+
+---
+
 ## CHANGELOG
+
+### v4.7 (2026-08-19)
+- **Auto order-confirmation email for `/submit/`.** New `mailer.php` (self-contained SMTP, no Composer) + `email-template.php`. Fires from `process.php` for both reviews and social-media orders, after the response is flushed, so submission speed is unchanged and SMTP failure can never break an order. Credentials in `data/smtp-config.json` (server-only). Verified live against Hostinger SMTP (465/SSL): message delivered in 2.4 s while the response flushed in 3 ms. Added `test-email.php` self-test behind the AM login.
+- **Thank-you screen rebuilt (`submit.php` step 6).** Added Order ID with copy button, "you'll receive progress by email" notice, a WhatsApp confirm CTA promoted above the voucher, and a 5-step order-journey timeline with a "YOU ARE HERE" marker. Voucher demoted below the timeline — it was outranking the confirm action.
+- **Minimum-order rule was not enforced (`/submit/` step 3).** `MIN_REVIEWS_PER_BUSINESS` in `submit.php` was `1` while the form told customers "Minimum 20 reviews per business" and `config.php` set `MIN_ORDER_QUANTITY = 20` — so a 20-review order split across 5 businesses (4 each) passed straight through. Constant corrected to 20, and Next Step is now **disabled** while the order is under `businesses x 20`, with the shortfall spelled out instead of an alert after the click. Rating Only stays exempt, matching the server's scope. `process.php` also gained a per-business floor: a split order whose total clears the minimum while one business sits under it is now rejected.
+- **Two WhatsApp lines, split by audience.** Landing pages keep the public sales number (`6285121563813`, from `wa-config.json`). Everything post-purchase — all five WhatsApp links in `submit.php` plus the confirmation email — uses the Account Manager line `6287870707202`, **hardcoded** in `submit.php` (line 7) and `email-template.php` (`SB_MAIL_AM_NUMBER`). Same stance as `/promo/`: `/submit/` deliberately does not read `wa-config.json`, so a stale copy on the server can never redirect a paying customer away from their AM. Root `wa-config.json` / `wa-config.php` are untouched — nothing to re-upload there.
 
 ### v4.6 (2026-07-27)
 - **Product model: SHOW-UP reviews, not STAY reviews.** `/submit/tnc.json` rewritten to the canonical 9-point text and the CLAUDE.md Service Delivery section now mirrors it verbatim. A review counts the moment it shows up on the listing; we explicitly do NOT guarantee long-term permanence. Resolves a long-standing contradiction where point 1 said "we only count reviews that stick" while point 2 said "delivered the moment it shows up".
@@ -2081,6 +2145,6 @@ After:   seasonal/index-valentine.php  (backup)
 
 ---
 
-**Document Version:** 4.6
-**Last Updated:** 2026-07-27
+**Document Version:** 4.7
+**Last Updated:** 2026-08-19
 **Status:** Production Ready
