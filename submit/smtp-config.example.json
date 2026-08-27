@@ -1,0 +1,18 @@
+{
+  "_readme": "COPY THIS FILE TO /submit/data/smtp-config.json ON THE SERVER AND FILL IN THE PASSWORD. Never commit the real one — /submit/data/ is gitignored.",
+  "_hostinger_hint": "Hostinger mailbox: host smtp.hostinger.com, port 465, secure ssl",
+  "_gmail_hint": "Google Workspace: host smtp.gmail.com, port 587, secure tls, password = 16-char App Password (not the account password)",
+
+  "enabled": false,
+  "host": "smtp.hostinger.com",
+  "port": 465,
+  "secure": "ssl",
+  "username": "noreply@smart-buzzer.com",
+  "password": "",
+  "from_email": "noreply@smart-buzzer.com",
+  "from_name": "Smart Buzzer",
+  "reply_to": "contact@smart-buzzer.com",
+  "bcc": "",
+  "timeout": 12,
+  "debug": false
+}

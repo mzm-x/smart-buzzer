@@ -1,5 +1,11 @@
 <?php
-$__wa=$_SERVER['DOCUMENT_ROOT'].'/wa-config.php'; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER='628979133204';}
+// Account Manager WhatsApp line — HARDCODED on purpose (same stance as /promo/).
+// /submit/ runs AFTER payment, so every WhatsApp link here must reach the AM, not the
+// public sales line. Deliberately does NOT read wa-config.json: that file carries the
+// sales number, and a stale copy on the server must never silently redirect paying
+// customers away from their Account Manager. To change it, edit these two lines.
+$SB_AM_NUMBER  = '6287870707202';
+$SB_AM_DISPLAY = '+62 878-7070-7202';
 /**
  * ============================================================================
  * File: /submit/submit.php
@@ -450,6 +456,80 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
         @keyframes pulse-border {
             0%, 100% { border-color: #BBF7D0; box-shadow: 0 0 0 0 rgba(46,125,50,0.15); }
             50% { border-color: #2E7D32; box-shadow: 0 0 0 6px rgba(46,125,50,0); }
+        }
+
+        /* Order Journey — post-submit milestone timeline (v4.3) */
+        .sb-journey { max-width: 32rem; margin: 0 auto; text-align: left; }
+        .sb-journey-label {
+            font-size: 11px; font-weight: 800; letter-spacing: 1.4px;
+            color: #64748B; text-transform: uppercase; margin-bottom: 14px; text-align: center;
+        }
+        .sb-jstep { display: flex; align-items: flex-start; gap: 12px; }
+        .sb-jrail { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+        .sb-jdot {
+            width: 26px; height: 26px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; line-height: 1;
+            background: #FFFFFF; border: 2px solid #CBD5E1; color: #94A3B8;
+        }
+        .sb-jline { width: 2px; flex: 1; min-height: 26px; background: #E2E8F0; }
+        .sb-jstep.is-done .sb-jdot { background: #16A34A; border-color: #16A34A; color: #FFFFFF; }
+        .sb-jstep.is-done .sb-jline { background: #86EFAC; }
+        .sb-jstep.is-now .sb-jdot {
+            background: #2563EB; border-color: #2563EB; color: #FFFFFF;
+            box-shadow: 0 0 0 0 rgba(37, 99, 235, .5); animation: sb-jpulse 2.2s ease-out infinite;
+        }
+        @keyframes sb-jpulse {
+            0%   { box-shadow: 0 0 0 0 rgba(37, 99, 235, .45); }
+            70%  { box-shadow: 0 0 0 12px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+        .sb-jbody { padding-bottom: 18px; flex: 1; }
+        .sb-jstep:last-child .sb-jbody { padding-bottom: 0; }
+        .sb-jtitle { font-size: 15px; font-weight: 600; color: #0F172A; line-height: 1.35; }
+        .sb-jstep.is-now .sb-jtitle { color: #1D4ED8; font-weight: 700; }
+        .sb-jstep:not(.is-done):not(.is-now) .sb-jtitle { color: #64748B; }
+        .sb-jdesc { font-size: 13px; color: #64748B; line-height: 1.5; margin-top: 2px; }
+        .sb-jhighlight {
+            background: #FFFBEB; border: 1px solid #FDE68A; border-left: 3px solid #F59E0B;
+            border-radius: 10px; padding: 9px 12px; margin-top: 6px; color: #92400E;
+        }
+        .sb-jhighlight strong { color: #78350F; }
+        .sb-jhere {
+            display: inline-block; margin-left: 6px; vertical-align: middle;
+            background: #DBEAFE; color: #1D4ED8; font-size: 10px; font-weight: 800;
+            letter-spacing: .6px; padding: 2px 8px; border-radius: 999px;
+        }
+        .sb-jdone-tag { margin-left: 6px; font-size: 11px; font-weight: 700; color: #16A34A; }
+        .sb-order-ref {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 999px;
+            padding: 8px 8px 8px 16px; font-size: 14px; color: #0F172A;
+        }
+        .sb-order-ref b { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .3px; }
+        .sb-copy-btn {
+            border: 0; background: #0F172A; color: #FFF; font-size: 12px; font-weight: 700;
+            padding: 6px 12px; border-radius: 999px; cursor: pointer; transition: background .15s;
+        }
+        .sb-copy-btn:hover { background: #1E293B; }
+        .sb-mail-note {
+            display: flex; align-items: flex-start; gap: 12px; text-align: left;
+            background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 14px;
+            padding: 14px 16px; max-width: 32rem; margin: 0 auto;
+        }
+        .sb-cta-confirm {
+            display: block; width: 100%; max-width: 32rem; margin: 0 auto;
+            background: #25D366; color: #FFFFFF; border-radius: 14px;
+            padding: 16px 20px; font-size: 16px; font-weight: 700; text-decoration: none;
+            box-shadow: 0 10px 24px -10px rgba(37, 211, 102, .8);
+            transition: transform .15s, box-shadow .15s;
+        }
+        .sb-cta-confirm:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -10px rgba(37, 211, 102, .9); }
+        .sb-cta-confirm small { display: block; font-size: 12.5px; font-weight: 500; opacity: .92; margin-top: 2px; }
+        @media (max-width: 640px) {
+            .sb-jtitle { font-size: 14.5px; }
+            .sb-order-ref { width: 100%; justify-content: space-between; font-size: 13px; padding-left: 12px; }
+            .sb-order-ref span, .sb-order-ref b { white-space: nowrap; }
         }
 
         /* Bonus Audit CTA — Loyal Client Exclusive */
@@ -1458,8 +1538,8 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         <div>
                             <label class="sb-label">Total Reviews Ordered <span>*</span></label>
                             <p class="text-xs text-gray-500 mb-2">Enter the total number of reviews you've ordered.</p>
-                            <input type="number" id="quantity" name="quantity" class="sb-input" placeholder="1" min="1" required>
-                            <p class="helper-text">Enter total reviews ordered</p>
+                            <input type="number" id="quantity" name="quantity" class="sb-input" placeholder="20" min="20" required>
+                            <p class="helper-text" id="quantityHelper">Minimum 20 reviews</p>
                             <p class="error-text" id="quantityError">Please enter the number of reviews</p>
                         </div>
                         <div>
@@ -1498,11 +1578,12 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         Back
                     </button>
-                    <button type="button" class="sb-btn-primary" onclick="validateStep3()">
+                    <button type="button" id="btnStep3Next" class="sb-btn-primary" onclick="validateStep3()">
                         Next Step
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                 </div>
+                <p id="step3MinWarning" class="text-sm text-amber-600 mt-3 text-center hidden"></p>
             </div>
             
             <!-- ============================================ -->
@@ -1600,43 +1681,92 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         </svg>
                     </div>
                     <h1 class="text-3xl font-bold text-green-800 mb-2">Thank You!</h1>
-                    <p class="text-green-700 text-lg mb-8">Your order has been submitted successfully.</p>
-                    
-                    <div class="bg-white rounded-xl p-6 text-left max-w-md mx-auto mb-8">
-                        <div class="flex items-start mb-4">
-                            <svg class="w-6 h-6 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <div class="ml-3">
-                                <p class="font-semibold text-gray-900">Your reviews will start posting</p>
-                                <p class="text-gray-600">within 1-2 business days after content approval</p>
+                    <p class="text-green-700 text-lg mb-6">Your order has been submitted successfully.</p>
+
+                    <!-- Order reference -->
+                    <div class="mb-5">
+                        <span class="sb-order-ref">
+                            <span class="text-gray-500">Order ID</span>
+                            <b id="tyOrderId">-</b>
+                            <button type="button" class="sb-copy-btn" onclick="copyOrderId(this)">Copy</button>
+                        </span>
+                    </div>
+
+                    <!-- Email confirmation notice -->
+                    <div class="sb-mail-note mb-6">
+                        <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <div>
+                            <p class="font-semibold text-gray-900">You will receive your order progress through your email</p>
+                            <p class="text-gray-600 text-sm">Sent to <span id="tyEmail" class="font-semibold text-gray-800">your email</span> &mdash; it has your order ID and the full timeline. Check spam if you don&rsquo;t see it in a few minutes.</p>
+                        </div>
+                    </div>
+
+                    <!-- Primary CTA: confirm the order -->
+                    <a id="whatsappBtn" href="https://wa.me/<?php echo htmlspecialchars($SB_AM_NUMBER, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener" class="sb-cta-confirm">
+                        <span class="inline-flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Confirm my order on WhatsApp
+                        </span>
+                        <small>Get your slot prioritized &mdash; this is also how we send your review content preview</small>
+                    </a>
+
+                    <!-- Order journey -->
+                    <div class="sb-journey mt-10 mb-8">
+                        <div class="sb-journey-label">Your order journey</div>
+
+                        <div class="sb-jstep is-done">
+                            <div class="sb-jrail"><div class="sb-jdot">&#10003;</div><div class="sb-jline"></div></div>
+                            <div class="sb-jbody">
+                                <div class="sb-jtitle">Order received<span class="sb-jdone-tag">DONE</span></div>
+                                <div class="sb-jdesc">We have your business details and your order is in the queue.</div>
                             </div>
                         </div>
-                        <div class="flex items-start">
-                            <svg class="w-6 h-6 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                            <div class="ml-3">
-                                <p class="font-semibold text-gray-900">Remember: 7-day per-review window</p>
-                                <p class="text-gray-600">Each review has its own 7-day window from the day it shows up</p>
+
+                        <div class="sb-jstep is-now">
+                            <div class="sb-jrail"><div class="sb-jdot">&bull;</div><div class="sb-jline"></div></div>
+                            <div class="sb-jbody">
+                                <div class="sb-jtitle">Our ops team is preparing your campaign<span class="sb-jhere">YOU ARE HERE</span></div>
+                                <div class="sb-jdesc">This is where your order is right now.</div>
+                            </div>
+                        </div>
+
+                        <div class="sb-jstep">
+                            <div class="sb-jrail"><div class="sb-jdot">&nbsp;</div><div class="sb-jline"></div></div>
+                            <div class="sb-jbody">
+                                <div class="sb-jtitle">You&rsquo;ll receive your content draft for approval</div>
+                                <div class="sb-jdesc sb-jhighlight">
+                                    <strong>Within 24 hours.</strong>
+                                    Please note approvals may be delayed over <strong>Saturday and Sunday</strong>, as our team is off on weekends.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sb-jstep">
+                            <div class="sb-jrail"><div class="sb-jdot">&nbsp;</div><div class="sb-jline"></div></div>
+                            <div class="sb-jbody">
+                                <div class="sb-jtitle">Your campaign goes live</div>
+                                <div class="sb-jdesc">Right after you approve the content.</div>
+                            </div>
+                        </div>
+
+                        <div class="sb-jstep">
+                            <div class="sb-jrail"><div class="sb-jdot">&nbsp;</div></div>
+                            <div class="sb-jbody">
+                                <div class="sb-jtitle">Your first review appears</div>
+                                <div class="sb-jdesc">1-2 days after approval, then reviews keep showing up gradually. Each review carries its own 7-day replacement window from the day it shows up.</div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- BONUS: $20 Voucher for Second Purchase (Loyal Client Exclusive) -->
-                    <div class="audit-bonus-card rounded-2xl p-6 max-w-md mx-auto mb-8">
+                    <div class="audit-bonus-card rounded-2xl p-6 max-w-md mx-auto">
                         <div class="flex items-center justify-center mb-3">
                             <span class="audit-bonus-pill">&#127873; BONUS &mdash; LOYAL CLIENT EXCLUSIVE</span>
                         </div>
                         <h3 class="audit-bonus-title">FREE $20 Voucher</h3>
                         <p class="audit-bonus-worth">for your second purchase</p>
-                        <p class="audit-bonus-trust">Your next order gets $20 off &mdash; we'll apply it for you when you reorder.</p>
+                        <p class="audit-bonus-trust">Already attached to your account &mdash; we apply it automatically when you reorder. No code needed.</p>
                     </div>
-
-                    <a id="whatsappBtn" href="#" target="_blank" class="sb-btn-primary inline-flex items-center" style="background: #25D366;">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Contact Us on WhatsApp
-                    </a>
-
-                    <p class="text-sm text-gray-500 mt-6">
-                        Please contact us on WhatsApp so we can send you the review content preview.
-                    </p>
                 </div>
             </div>
             
@@ -1883,7 +2013,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         <p class="audit-bonus-trust">Your next order gets $20 off &mdash; we'll apply it for you when you reorder.</p>
                     </div>
 
-                    <a id="smWhatsappBtn" href="https://wa.me/6287870707202" target="_blank" class="sb-btn-primary inline-flex items-center" style="background: #25D366;">
+                    <a id="smWhatsappBtn" href="https://wa.me/<?php echo htmlspecialchars($SB_AM_NUMBER, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="sb-btn-primary inline-flex items-center" style="background: #25D366;">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         Contact Us on WhatsApp
                     </a>
@@ -1920,7 +2050,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         No, I Need Refund
                     </a>
-                    <a href="https://wa.me/6287870707202" target="_blank" class="w-full sb-btn-secondary flex items-center justify-center">
+                    <a href="https://wa.me/<?php echo htmlspecialchars($SB_AM_NUMBER, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="w-full sb-btn-secondary flex items-center justify-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                         Chat with Admin First
                     </a>
@@ -2012,7 +2142,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                     <p class="text-sm text-red-800 mb-3">
                         <strong>You must contact your Account Manager</strong> on WhatsApp to confirm before proceeding. This is required.
                     </p>
-                    <a href="https://wa.me/6287870707202?text=Hi%2C%20I%27ve%20already%20placed%20my%20order%20but%20I%20need%20more%20time%20to%20complete%20the%20onboarding%20form.%20I%27ll%20fill%20it%20out%20soon.%20Thank%20you!" target="_blank" class="w-full inline-flex items-center justify-center bg-green-500 text-white px-4 py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors">
+                    <a href="https://wa.me/<?php echo htmlspecialchars($SB_AM_NUMBER, ENT_QUOTES, 'UTF-8'); ?>?text=Hi%2C%20I%27ve%20already%20placed%20my%20order%20but%20I%20need%20more%20time%20to%20complete%20the%20onboarding%20form.%20I%27ll%20fill%20it%20out%20soon.%20Thank%20you!" target="_blank" class="w-full inline-flex items-center justify-center bg-green-500 text-white px-4 py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         Contact Account Manager (Required)
                     </a>
@@ -2108,7 +2238,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
     let businessData = [];
     
     const PLATFORMS = ['Google', 'Yelp', 'Facebook', 'Trustpilot', 'Other'];
-    const MIN_REVIEWS_PER_BUSINESS = 1;
+    const MIN_REVIEWS_PER_BUSINESS = 20;   // must match MIN_ORDER_QUANTITY in config.php
 
     // Delivery speed options -> show-up reviews per day (what the client is charged for).
     // Keys must match the <option value> strings exactly.
@@ -2326,6 +2456,7 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
         initEventListeners();
         initCountryStateDropdowns();
         loadFormData();
+        updateStep3Gate();   // gate must be correct on a fresh visit too, not only after a restore
         
         // Re-init state dropdown if country was restored
         const restoredCountry = document.getElementById('sbCountryValue').value || document.getElementById('sbCountry').value;
@@ -2900,8 +3031,58 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
         } else {
             quantityField.setAttribute('required', 'required');
         }
+
+        updateStep3Gate();
     }
     
+    // Single source of truth for "may step 3 continue".
+    // Scope matches the server (MIN_ORDER_QUANTITY in config.php): the floor applies to
+    // Rating & Review orders. Rating Only has no written content, so it is exempt.
+    function getStep3MinTotal() {
+        const productType = document.querySelector('input[name="productType"]:checked')?.value;
+        if (productType !== 'Rating & Review') return 0;
+        const numBusinesses = parseInt(document.querySelector('input[name="numBusinesses"]:checked')?.value) || 1;
+        return numBusinesses * MIN_REVIEWS_PER_BUSINESS;
+    }
+
+    // Blocks Next Step (and says why) while the order is under the minimum, instead of
+    // letting the customer reach step 4 and only then hit an alert.
+    function updateStep3Gate() {
+        const btn = document.getElementById('btnStep3Next');
+        if (!btn) return;
+        const warn = document.getElementById('step3MinWarning');
+        const helper = document.getElementById('quantityHelper');
+
+        const quantity = parseInt(document.getElementById('quantity').value) || 0;
+        const numBusinesses = parseInt(document.querySelector('input[name="numBusinesses"]:checked')?.value) || 1;
+        const minTotal = getStep3MinTotal();
+
+        if (helper) {
+            if (minTotal === 0) {
+                helper.textContent = 'Enter total reviews ordered';
+            } else if (numBusinesses > 1) {
+                helper.textContent = `Minimum ${MIN_REVIEWS_PER_BUSINESS} per business — ${minTotal} total for ${numBusinesses} businesses`;
+            } else {
+                helper.textContent = `Minimum ${MIN_REVIEWS_PER_BUSINESS} reviews`;
+            }
+        }
+
+        const belowMin = minTotal > 0 && quantity < minTotal;
+        btn.disabled = belowMin;
+
+        if (warn) {
+            // Only complain once they have actually typed a number. An empty field on a
+            // fresh page is not an error — the helper text already states the minimum.
+            if (!belowMin || quantity === 0) {
+                warn.classList.add('hidden');
+            } else {
+                const plural = numBusinesses > 1 ? 'businesses need' : 'business needs';
+                warn.textContent = `${quantity} reviews is below the minimum — ${numBusinesses} ${plural} at least ${minTotal} reviews (${MIN_REVIEWS_PER_BUSINESS} per business).`;
+                warn.classList.remove('hidden');
+            }
+        }
+    }
+
     function updateAllocationPreview() {
         const quantity = parseInt(document.getElementById('quantity').value) || 0;
         const numBusinesses = parseInt(document.querySelector('input[name="numBusinesses"]:checked')?.value) || 1;
@@ -2948,6 +3129,8 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
         } else {
             preview.classList.add('hidden');
         }
+
+        updateStep3Gate();
     }
     
     function recalculateAllocation() {
@@ -3036,18 +3219,14 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
             return;
         }
         
-        if (productType === 'Rating & Review') {
-            if (quantity < MIN_REVIEWS_PER_BUSINESS) {
-                alert(`Please enter at least ${MIN_REVIEWS_PER_BUSINESS} reviews`);
-                document.getElementById('quantity').focus();
-                return;
-            }
-            
-            const minRequired = numBusinesses * MIN_REVIEWS_PER_BUSINESS;
-            if (quantity < minRequired) {
-                alert(`You need at least ${minRequired} reviews for ${numBusinesses} businesses (${MIN_REVIEWS_PER_BUSINESS} per business)`);
-                return;
-            }
+        const minRequired = getStep3MinTotal();
+        if (minRequired > 0 && quantity < minRequired) {
+            updateStep3Gate();
+            alert(numBusinesses > 1
+                ? `You need at least ${minRequired} reviews for ${numBusinesses} businesses (${MIN_REVIEWS_PER_BUSINESS} per business)`
+                : `Please enter at least ${MIN_REVIEWS_PER_BUSINESS} reviews`);
+            document.getElementById('quantity').focus();
+            return;
         }
         
         goToStep(4);
@@ -3976,8 +4155,16 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
                 localStorage.removeItem('sbOrderForm');
                 hideConfirmModal();
                 
-                const waMessage = encodeURIComponent(`Hi! I have already filled out the order form.\n\nEmail: ${formData.email}\nBusinesses: ${formData.businessNames}`);
-                document.getElementById('whatsappBtn').href = `https://api.whatsapp.com/send?phone=6287870707202&text=${waMessage}`;
+                const sbOrderId = result.orderId || result.order_id || '';
+
+                // Thank-you screen: order reference + where the confirmation email went
+                const elOrderId = document.getElementById('tyOrderId');
+                if (elOrderId) elOrderId.textContent = sbOrderId || '-';
+                const elEmail = document.getElementById('tyEmail');
+                if (elEmail && formData.email) elEmail.textContent = formData.email;
+
+                const waMessage = encodeURIComponent(`Hi Smart Buzzer, I'd like to confirm my order.\n\nOrder ID: ${sbOrderId}\nBusiness: ${formData.businessNames}\nEmail: ${formData.email}`);
+                document.getElementById('whatsappBtn').href = `https://api.whatsapp.com/send?phone=<?php echo htmlspecialchars($SB_AM_NUMBER, ENT_QUOTES, 'UTF-8'); ?>&text=${waMessage}`;
                 
                 // Save order context for audit modal (used after agree)
                 window.sbAuditCtx = {
@@ -4005,6 +4192,25 @@ if (!empty($tncPoints) && is_array($tncPoints)) {
     // ============================================================================
     // CONFETTI
     // ============================================================================
+    
+    function copyOrderId(btn) {
+        const id = (document.getElementById('tyOrderId') || {}).textContent || '';
+        if (!id || id === '-') return;
+        const done = () => {
+            const original = btn.textContent;
+            btn.textContent = 'Copied';
+            setTimeout(() => { btn.textContent = original; }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(id).then(done).catch(() => {});
+        } else {
+            const t = document.createElement('textarea');
+            t.value = id; t.style.position = 'fixed'; t.style.opacity = '0';
+            document.body.appendChild(t); t.select();
+            try { document.execCommand('copy'); done(); } catch (e) {}
+            document.body.removeChild(t);
+        }
+    }
     
     function fireConfetti() {
         confetti({ particleCount: 100, spread: 70, origin: { x: 0, y: 0.6 } });

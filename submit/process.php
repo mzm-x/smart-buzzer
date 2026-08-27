@@ -27,6 +27,7 @@ header('X-Frame-Options: DENY');
 
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/mailer.php';   // auto order-confirmation email (v3.3)
 
 // ============================================================================
 // CONFIGURATION
@@ -822,6 +823,18 @@ if ($orderType === 'social_media') {
                 updateOrderSheet($result['orderId'], $sheetResult);
             }
             
+            // ============================================
+            // AUTO EMAIL: order confirmation (sent after the response is
+            // flushed — never delays or blocks the customer's submit)
+            // ============================================
+            sbQueueOrderConfirmation(array_merge($orderData, [
+                'orderType'  => 'social_media',
+                'smPlatform' => $data['platform'] ?? '',
+                'smService'  => $data['service'] ?? 'Social Media',
+                'smLink'     => $data['smLink'] ?? ($data['link'] ?? ''),
+            ]));
+            // ============================================
+
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             
             jsonResponse([
@@ -910,6 +923,19 @@ if ($data['productType'] === 'Rating & Review') {
     if (intval($data['quantity']) > 1000) {
         jsonResponse(['success' => false, 'message' => 'Maximum 1000 reviews'], 400);
     }
+
+    // Per-business floor. The wizard blocks this client-side, but a split order can carry a
+    // total that clears $minQuantity while an individual business sits under it.
+    if (isset($data['businesses']) && is_array($data['businesses'])) {
+        foreach ($data['businesses'] as $index => $business) {
+            if (!isset($business['reviews'])) continue;
+            if (intval($business['reviews']) < $minQuantity) {
+                $bizNum = $index + 1;
+                jsonResponse(['success' => false,
+                    'message' => "Business $bizNum has fewer than $minQuantity reviews. Minimum is $minQuantity per business."], 400);
+            }
+        }
+    }
 }
 
 if ($data['finalConsent'] !== true && $data['finalConsent'] !== 'on' && $data['finalConsent'] !== 1) {
@@ -967,6 +993,13 @@ try {
         }
         // ============================================
         
+        // ============================================
+        // AUTO EMAIL: order confirmation (sent after the response is
+        // flushed — never delays or blocks the customer's submit)
+        // ============================================
+        sbQueueOrderConfirmation(array_merge($orderData, ['orderType' => 'reviews']));
+        // ============================================
+
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         
         jsonResponse([
