@@ -3060,9 +3060,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </label>
                 </div>
 
-                <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 12.5px; color: #78350F; line-height: 1.55;">
-                    <i class="fa-solid fa-circle-info" style="color: var(--orange-highlight);"></i>
-                    <strong>What you&rsquo;re buying:</strong> reviews that <strong>show up</strong> on your Google listing, each with a 7-day free replacement. Long-term stay depends on Google&rsquo;s algorithm and isn&rsquo;t guaranteed. Secure card checkout &middot; all sales final (refund as store voucher only).
+                <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #78350F; line-height: 1.6;">
+                    <i class="fa-solid fa-bolt" style="color: var(--orange-highlight);"></i>
+                    <strong>Pay today and we start today.</strong> As soon as your payment lands we begin writing your campaign and send the content over for approval &mdash; your first reviews go live within 24 hours of your OK.
                 </div>
 
                 <button class="of-submit" onclick="submitOrder()">COMPLETE ORDER →</button>

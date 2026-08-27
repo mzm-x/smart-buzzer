@@ -956,35 +956,6 @@ img[data-preview]:hover{opacity:.92}
 }
 @keyframes waPulse{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.55);opacity:0}100%{opacity:0}}
 
-/* ── FLOATING · SOCIAL PROOF TOAST ── */
-.sp-toast{
-  position:fixed;left:22px;bottom:22px;z-index:880;max-width:305px;
-  background:var(--white);border:2px solid var(--text);border-radius:6px;
-  box-shadow:4px 4px 0 var(--red);padding:13px 15px;
-  display:flex;align-items:center;gap:12px;
-  opacity:0;visibility:hidden;transform:translateY(14px);transition:all .35s;
-}
-.sp-toast.visible{opacity:1;visibility:visible;transform:translateY(0)}
-.sp-toast-close{
-  position:absolute;top:5px;right:8px;background:none;border:none;cursor:pointer;
-  font-size:17px;line-height:1;color:var(--text-light);padding:2px;
-}
-.sp-toast-close:hover{color:var(--text)}
-.sp-toast-avatar{
-  width:40px;height:40px;border-radius:50%;color:#fff;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:800;position:relative;
-}
-.sp-verified{
-  position:absolute;right:-2px;bottom:-2px;width:15px;height:15px;border-radius:50%;
-  background:var(--success);border:2px solid var(--white);
-}
-.sp-toast-text{display:flex;flex-direction:column;line-height:1.35;min-width:0}
-.sp-toast-text strong{font-size:13px;color:var(--text)}
-.sp-action{font-size:12px;color:var(--text-mid)}
-.sp-time{font-size:10.5px;color:var(--text-light);margin-top:2px}
-@media(max-width:600px){.sp-toast{left:12px;right:12px;max-width:none;bottom:88px}}
-
 /* ── FLOATING · STICKY BOTTOM CTA ── */
 .sticky-cta{
   position:fixed;left:0;right:0;bottom:0;z-index:870;
@@ -1082,7 +1053,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="hero-sub">Custom reviews crafted around your dishes, your atmosphere, your cuisine &mdash; posted gradually by real people on aged accounts.</p>
 
         <ul class="hero-checks">
-          <li><span class="hc">&#10003;</span> Real diners on aged local accounts &mdash; unique IPs and devices</li>
+          <li><span class="hc">&#10003;</span> Real people on aged local accounts &mdash; unique IPs and devices</li>
           <li><span class="hc">&#10003;</span> Reviews mention your actual dishes by name, not generic praise</li>
           <li><span class="hc">&#10003;</span> 7-day free replacement on every review that shows up</li>
         </ul>
@@ -1127,36 +1098,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="trust-bar">
   <div class="container">
     <div class="trust-bar-inner">
-      <span class="tb-chip"><span class="tbi">&#9733;</span> 100% Real Local Reviewers</span>
+      <span class="tb-chip"><span class="tbi">&#9733;</span> Real Reviewers &middot; 70% Local / 30% Global</span>
       <span class="tb-chip"><span class="tbi">&#127860;</span> Menu-Aware Content</span>
-      <span class="tb-chip"><span class="tbdot"></span> 47 reviews posted in the last 24h</span>
+      <span class="tb-chip"><span class="tbdot"></span> Fresh reviews landing on your listing daily</span>
       <span class="tb-chip"><span class="tbi">&#128260;</span> 7-Day Replacement Per Review</span>
     </div>
   </div>
 </div>
 
-<!-- 04 · CASE STUDY -->
+<!-- 04 · SHOW-UP PROOF -->
 <section class="sec-white fade-up" id="case-study">
   <div class="container">
-    <div class="stag">CASE STUDY</div>
-    <h2 class="stitle">Real Results From Our Restaurant Clients</h2>
-    <p class="shand">From 3.5 stars to 4.9 on their Google Maps listing</p>
+    <div class="stag">LIVE PROOF</div>
+    <h2 class="stitle">Reviews That Show Up &mdash; Check the Timestamps</h2>
+    <p class="shand">&ldquo;A day ago.&rdquo; &ldquo;3 days ago.&rdquo; That is what an active listing looks like</p>
 
     <div class="cs-card">
       <div class="cs-head">
-        <span class="csh-l">New York Diner Co. &middot; Google Maps listing</span>
-        <span class="csh-r">BEFORE &rarr; AFTER</span>
+        <span class="csh-l">Recent reviews landing on live client listings</span>
+        <span class="csh-r">SHOW-UP PROOF</span>
       </div>
       <div class="cs-img">
-        <img src="https://smart-buzzer.com/promo-fnb/Before.jpg" alt="New York Diner Co. Google Maps listing before and after: 3.5 stars with 23 reviews, then 4.9 stars with 145 reviews" data-preview="true">
+        <img src="https://smart-buzzer.com/promo-fnb/active.jpg" alt="Google Maps review tabs on two client listings, each newest review flagged NEW and timestamped a day ago, 3 days ago and 4 days ago" data-preview="true">
       </div>
       <div class="cs-metrics">
-        <div class="cs-metric"><b>3.5 &rarr; 4.9</b><span>Star rating</span></div>
-        <div class="cs-metric"><b>23 &rarr; 145</b><span>Reviews on the listing</span></div>
-        <div class="cs-metric"><b>+122</b><span>Reviews we delivered</span></div>
+        <div class="cs-metric"><b>A day ago</b><span>Newest review on the listing</span></div>
+        <div class="cs-metric"><b>2&ndash;5 / day</b><span>Show-ups at your selected pace</span></div>
+        <div class="cs-metric"><b>7 days</b><span>Free replacement per review</span></div>
       </div>
       <div class="cs-note">
-        Figures taken from the listing screenshots above. Individual results depend on your listing, your competition and the package you choose &mdash; we do not guarantee ranking outcomes.
+        Read the dates, not the totals. You are buying reviews that <strong>show up</strong> on your listing &mdash; each one counts the moment it appears, and each carries its own 7-day free replacement. How long a review stays after that is decided by Google&rsquo;s algorithm, and nobody controls that. We sell it honestly.
       </div>
     </div>
   </div>
@@ -1206,13 +1177,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="sec-cream fade-up" id="guarantee">
   <div class="container">
     <div class="stag">OUR PROMISE</div>
-    <h2 class="stitle">Our Guarantee</h2>
-    <p class="shand">Exactly what we promise &mdash; and what we don't</p>
+    <h2 class="stitle">We Keep Your Listing Active</h2>
+    <p class="shand">Because the customer deciding where to eat is looking at your profile today</p>
 
     <div class="gt-wrap">
       <div class="gt-callout">
-        <strong>We guarantee reviews appear on your listing &mdash; not that they stay forever.</strong>
-        <span>You pay for every review we deliver live onto your Google listing. Whether it stays long-term is decided by Google&rsquo;s algorithm &mdash; no seller on earth controls that, and we don&rsquo;t pretend otherwise. What we <strong>do</strong> guarantee is a 7-day free replacement window on every single review. It is what it is, and we sell it honestly.</span>
+        <strong>Your next customer is reading your Google profile right now.</strong>
+        <span>They are not scrolling back to reviews from two years ago &mdash; they read the top of the list, and they read the dates. Our job is to keep fresh reviews landing on your listing so that whenever someone checks you out, the profile looks alive and worth walking into. What Google&rsquo;s algorithm does after that is not something we &mdash; or anyone else &mdash; controls. So here is exactly what we <strong>do</strong> promise.</span>
       </div>
 
       <div class="gt-steps">
@@ -1228,15 +1199,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="gt-step ok">
           <div class="gtn">3</div>
-          <strong>Drops in 7 days? We replace it</strong>
-          <span>If a review drops inside its 7 days we add a new one free &mdash; one replacement per review.</span>
+          <strong>Anything drops inside 7 days? We replace it</strong>
+          <span>Free, one replacement per review &mdash; nothing for you to chase or argue about.</span>
         </div>
       </div>
 
       <div class="gt-summary">
-        <p><span class="gt-yes">&#10003; If it drops within 7 days of showing up</span> &mdash; we replace it free, one time.</p>
-        <p><span class="gt-no">&mdash; If it stays live past 7 days</span> &mdash; it&rsquo;s final and counts as delivered. If it drops <strong>after</strong> the 7 days, it is <strong>not replaced</strong>.</p>
-        <p><span class="gt-no">&mdash; If a replacement later drops</span> &mdash; that one is not replaced again (one replacement per review).</p>
+        <p><span class="gt-yes">&#10003; Fresh reviews landing continuously</span> &mdash; at the pace you pick, so your profile keeps looking active to whoever checks it today.</p>
+        <p><span class="gt-yes">&#10003; A 7-day replacement window on every review</span> &mdash; free, one replacement per review, starting the day it shows up.</p>
+        <p><span class="gt-no">&mdash; What we can&rsquo;t promise</span> &mdash; how Google&rsquo;s algorithm treats any single review long-term. Nobody controls that, and we would rather tell you than pretend.</p>
       </div>
     </div>
   </div>
@@ -1253,7 +1224,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="pk-card">
         <div class="pk-name">Starter</div>
-        <div class="pk-reviews">72 reviews on your listing</div>
+        <div class="pk-reviews">72 reviews</div>
         <div class="pk-price">$350</div>
         <div class="pk-per">One-time payment</div>
         <p class="pk-note">We submit around 300 reviews gradually so 72 show up on your business listing.</p>
@@ -1270,7 +1241,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="pk-card popular">
         <span class="pk-badge">MOST POPULAR</span>
         <div class="pk-name">Growth</div>
-        <div class="pk-reviews">96 reviews on your listing</div>
+        <div class="pk-reviews">96 reviews</div>
         <div class="pk-price">$430 <span class="pk-was">$480</span></div>
         <div class="pk-per">One-time payment <span class="pk-save">SAVE $50</span></div>
         <p class="pk-note">We submit around 400 reviews gradually so 96 show up on your business listing.</p>
@@ -1286,7 +1257,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="pk-card">
         <div class="pk-name">Performance</div>
-        <div class="pk-reviews">132 reviews on your listing</div>
+        <div class="pk-reviews">132 reviews</div>
         <div class="pk-price">$530 <span class="pk-was">$660</span></div>
         <div class="pk-per">One-time payment <span class="pk-save">SAVE $130</span></div>
         <p class="pk-note">We submit around 550 reviews gradually so 132 show up on your business listing.</p>
@@ -1424,7 +1395,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="of-notice">
           <p class="ofn-urgent">&#9889; <strong>Order now and we start today.</strong> Your content is written and sent for approval &mdash; the first reviews go live on your listing within 24 hours of your OK.</p>
-          <p class="ofn-fine"><strong>What you're buying:</strong> reviews that <strong>show up</strong> on your Google listing, each with a 7-day free replacement (one per review). Long-term stay is decided by Google's algorithm and isn't guaranteed. Secure card checkout &middot; all sales final (refund as store voucher only).</p>
         </div>
 
         <button class="of-submit" onclick="submitOrder()">COMPLETE ORDER &rarr;</button>
@@ -1493,7 +1463,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="sec-white fade-up">
   <div class="container">
     <div class="stag">SCALE</div>
-    <h2 class="stitle">Serving Over 2,000+ Businesses</h2>
+    <h2 class="stitle">1,200+ Campaigns Delivered</h2>
     <p class="shand">Across the USA, Canada and Australia</p>
     <div class="framed-shot">
       <div class="framed-shot-bar"><span></span><span></span><span></span></div>
@@ -1514,7 +1484,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="testi-grid">
       <div class="testi-card-fnb">
         <div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p>&ldquo;The reviews actually mention our patio and the short rib ragu &mdash; not vague &lsquo;great food&rsquo; filler. Weeknight covers are up noticeably since we cracked the top 3.&rdquo;</p>
+        <p>&ldquo;The reviews actually mention our patio and the short rib ragu &mdash; not vague &lsquo;great food&rsquo; filler. That is what we wanted people to read.&rdquo;</p>
         <div class="testi-by">
           <div class="tav" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&amp;q=80')"></div>
           <div class="tmeta"><strong>Anita P.</strong><span>Italian restaurant &middot; Brooklyn, NY</span></div>
@@ -1554,8 +1524,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="client-logo"><img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers8.png" alt="Client logo" loading="lazy"></div>
       <div class="client-logo"><img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers6.png" alt="Client logo" loading="lazy"></div>
       <div class="client-logo"><img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers2.png" alt="Client logo" loading="lazy"></div>
-      <div class="client-logo"><img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers4.png" alt="Client logo" loading="lazy"></div>
-      <div class="client-logo"><img src="https://smart-buzzer.com/wp-content/uploads/2024/12/Customers7.png" alt="Client logo" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -1570,19 +1538,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="faq-list">
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Is this safe for my Google Business Profile?<span class="faq-arrow">&#9660;</span></button>
-        <div class="faq-a"><div class="faq-a-inner">We use gradual posting, aged Google accounts, unique IPs and different devices for each review, with a natural mix of 4 and 5-star ratings. We have served 2,000+ businesses with a method designed to keep your account safe. Your listing is our asset too &mdash; we never compromise account safety to hit a number faster.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">We use gradual posting, aged Google accounts, unique IPs and different devices for each review, with a natural mix of 4 and 5-star ratings. Across 1,200+ campaigns we have refined a method designed to keep your account safe. Your listing is our asset too &mdash; we never compromise account safety to hit a number faster.</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Will the reviews actually mention my dishes?<span class="faq-arrow">&#9660;</span></button>
         <div class="faq-a"><div class="faq-a-inner">Yes &mdash; that&rsquo;s the whole point of the restaurant-type step above. You send us your menu, your signature dishes and anything you want highlighted (patio, brunch service, the pit master, whatever). Every comment is human-written around those specifics. For each review ordered we prepare 8&times; unique sentences so nothing repeats, and you approve all content before we post.</div></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">What does &ldquo;show-up&rdquo; mean? Do the reviews stay?<span class="faq-arrow">&#9660;</span></button>
-        <div class="faq-a"><div class="faq-a-inner">We sell reviews based on <strong>show-up</strong> &mdash; the reviews we deliver live onto your Google listing. The package number (72 / 96 / 132) is how many reviews we make appear on your profile. Whether a review stays long-term is decided entirely by Google&rsquo;s own algorithm, and no seller can guarantee that. What we guarantee is the 7-day per-review replacement below. We sell it honestly: it is what it is.</div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">What if a review gets removed?<span class="faq-arrow">&#9660;</span></button>
-        <div class="faq-a"><div class="faq-a-inner">Each review counts as delivered the moment it shows up on your listing, and gets its own 7-day replacement window starting that day. If it drops within those 7 days we replace it free &mdash; one replacement per review. Reviews that stay live past 7 days are final; if one drops after the window it is not replaced. Some drops are normal and happen even with organic reviews because of Google&rsquo;s algorithm. The same rule applies during Google&rsquo;s periodic algorithm updates: reviews still inside their 7-day window are replaced, reviews past it are final.</div></div>
+        <button class="faq-q" onclick="toggleFaq(this)">What exactly am I buying &mdash; and what if a review disappears?<span class="faq-arrow">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">You are buying reviews that <strong>show up</strong> on your listing. The package number (72 / 96 / 132) is how many reviews we make appear on your profile, and each one counts the moment it appears. Every review then carries its own <strong>7-day replacement window</strong> starting that day &mdash; if it drops inside that window we replace it free, one replacement per review. Past 7 days a review is final. Some movement is normal and happens to organic reviews too, because Google&rsquo;s algorithm decides what it keeps. We can&rsquo;t control that and we won&rsquo;t pretend we can. What we do control is keeping fresh reviews landing on your profile so it stays active for the customer looking at it today.</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How do I pay? Can I get a refund?<span class="faq-arrow">&#9660;</span></button>
@@ -1647,20 +1611,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </button>
 </div>
 
-<!-- FLOATING · SOCIAL PROOF TOAST -->
-<div class="sp-toast" id="spToast">
-  <button class="sp-toast-close" onclick="closeToast()" aria-label="Close">&times;</button>
-  <div class="sp-toast-avatar" id="spToastAvatar" style="background:#D42B2B">
-    M
-    <span class="sp-verified"></span>
-  </div>
-  <div class="sp-toast-text" id="spToastText">
-    <strong>Marco from Brooklyn</strong>
-    <span class="sp-action">just ordered 96 reviews</span>
-    <span class="sp-time">2 hours ago</span>
-  </div>
-</div>
-
 <!-- FLOATING · STICKY BOTTOM CTA -->
 <div class="sticky-cta" id="stickyCta">
   <div class="sticky-cta-inner">
@@ -1709,25 +1659,25 @@ var FACE_D = '1507003211169-0a1dd7228f2d';
 var cuisineMeta = {
   italian:{emoji:'&#127837;',name:'Italian',photo:'1611270629569-8b357cb88da9',
     subtitle:'For trattorias, red-sauce joints and pasta bars. Reviews name the dishes people actually come back for — the ragu, the fresh pasta, the tiramisu.',
-    stats:[{n:'+24%',l:'Avg weeknight covers'},{n:'Top 3',l:'Local pack rank'},{n:'19+',l:'Italian campaigns'}],
+    stats:[{n:'Pasta &amp; wine',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Buried under chain Italian in the map pack','One bad pasta night dragging the average down','Regulars never bother leaving a review','Competitors who bought reviews years ago outrank you'],
     review:'"The cacio e pepe was silky and properly peppery — not a cream sauce shortcut. Fresh pasta makes all the difference. Tiramisu was a perfect ending."',
     author:'Anna F. &middot; Brooklyn local', face:FACE_C,
-    ownerQuote:'"Reviews actually mention our patio and the short rib ragu. Weeknight covers are up noticeably since we hit top 3."',
+    ownerQuote:'"Reviews actually mention our patio and the short rib ragu — that is exactly what we wanted people to read."',
     ownerName:'Anita P., Owner &middot; Brooklyn, NY', ownerFace:FACE_A},
 
   chinese:{emoji:'&#129377;',name:'Chinese',photo:'1585032226651-759b368d7246',
     subtitle:'For dim sum houses, Sichuan kitchens and neighbourhood takeout. Reviews call out wok hei, the dumpling skins, and the dishes off the specials board.',
-    stats:[{n:'+27%',l:'Avg pickup orders'},{n:'Top 3',l:'Local pack rank'},{n:'16+',l:'Chinese campaigns'}],
+    stats:[{n:'Wok &amp; dim sum',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Delivery apps outranking your own listing','Reviews that only say "good food, cheap"','Tourists judging by review count alone','Newer spots with 200+ reviews stealing the search'],
     review:'"The dim sum here is the best in the area. Har gow with translucent skin, siu mai packed with flavour, and the char siu bao was properly fluffy."',
     author:'Linda W. &middot; regular', face:FACE_A,
-    ownerQuote:'"We finally rank above the delivery aggregators for our own name. Pickup orders went up within the first month."',
+    ownerQuote:'"The reviews read like our own customers, not copy-paste. Regulars started quoting them back to us."',
     ownerName:'David C., Owner &middot; San Gabriel, CA', ownerFace:FACE_B},
 
   mexican:{emoji:'&#127790;',name:'Mexican',photo:'1565299585323-38d6b0865b47',
     subtitle:'For taquerias, cantinas and family kitchens. Reviews name the salsas, the tortillas, and whether the al pastor comes off a real trompo.',
-    stats:[{n:'+31%',l:'Avg foot traffic lift'},{n:'Top 3',l:'Local pack rank'},{n:'21+',l:'Mexican campaigns'}],
+    stats:[{n:'Salsa &amp; al pastor',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Fast-casual chains dominating "tacos near me"','Great food, almost no reviews to prove it','One bad night tanking a 4.2 average','Locals who love you but never post'],
     review:'"The al pastor tacos are legit — pineapple-kissed pork on fresh corn tortillas with a serious salsa verde. One of the best taquerias I have found."',
     author:'Carlos G. &middot; neighbourhood regular', face:FACE_B,
@@ -1736,16 +1686,16 @@ var cuisineMeta = {
 
   japanese:{emoji:'&#127843;',name:'Japanese',photo:'1579584425555-c3ce17fd4351',
     subtitle:'For sushi counters, ramen shops and izakaya. Reviews speak to rice temperature, broth depth and the details only a real diner notices.',
-    stats:[{n:'+26%',l:'Avg reservation rate'},{n:'Top 3',l:'Local pack rank'},{n:'14+',l:'Japanese campaigns'}],
+    stats:[{n:'Nigiri &amp; broth',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Grocery-store sushi counters ranking above you','Hard to communicate quality through photos alone','Higher ticket means reviews matter more','Conveyor-belt chains flooding the search'],
     review:'"The omakase was a revelation — each piece of nigiri pristine, rice at the perfect temperature. The toro melted on contact. Worth every dollar."',
-    author:'Alyssa N. &middot; verified diner', face:FACE_C,
+    author:'Alyssa N. &middot; regular', face:FACE_C,
     ownerQuote:'"Reservations picked up almost immediately. The reviews read like our actual customers, which was the whole point for us."',
     ownerName:'Kenji T., Owner &middot; Seattle, WA', ownerFace:FACE_D},
 
   indian:{emoji:'&#127835;',name:'Indian',photo:'1603894584373-5ac82b2ae398',
     subtitle:'For curry houses, tandoor kitchens and South Indian spots. Reviews mention spice level, the naan straight out of the tandoor, and the thali value.',
-    stats:[{n:'+29%',l:'Avg lunch covers'},{n:'Top 3',l:'Local pack rank'},{n:'17+',l:'Indian campaigns'}],
+    stats:[{n:'Spice &amp; thali',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['"Too spicy" reviews from people who ordered wrong','Buffet chains outranking a real kitchen','Lunch crowd never leaves feedback','Competing against ten curry houses on one street'],
     review:'"The butter chicken is rich and properly spiced without being overwhelming, and the garlic naan came out of the tandoor still blistering. Coming back."',
     author:'Sarah M. &middot; local diner', face:FACE_A,
@@ -1754,16 +1704,16 @@ var cuisineMeta = {
 
   steakhouse:{emoji:'&#129385;',name:'Steakhouse',photo:'1600891964092-4316c288032e',
     subtitle:'For chophouses, grills and American classics. Reviews speak to the sear, the temperature accuracy, and whether the sides justify the ticket.',
-    stats:[{n:'+23%',l:'Avg weekend bookings'},{n:'Top 3',l:'Local pack rank'},{n:'12+',l:'Steakhouse campaigns'}],
+    stats:[{n:'Cuts &amp; doneness',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['National chains owning the top of the map pack','High ticket price means every review is scrutinised','One overcooked steak becoming a permanent 1-star','Corporate diners filtering by rating before booking'],
     review:'"The ribeye came out a perfect medium-rare — incredible char, juicy all the way through. Paired it with the truffle mash. Outstanding meal."',
-    author:'Mike T. &middot; verified diner', face:FACE_D,
+    author:'Mike T. &middot; local diner', face:FACE_D,
     ownerQuote:'"We were losing corporate bookings on rating alone. That is no longer the conversation when someone searches us."',
     ownerName:'Frank D., Owner &middot; Dallas, TX', ownerFace:FACE_B},
 
   thai:{emoji:'&#129360;',name:'Thai',photo:'1637806930600-37fa8892069d',
     subtitle:'For Thai kitchens and noodle bars. Reviews mention heat balance, the wok flavour, and whether the curry paste is made in-house.',
-    stats:[{n:'+25%',l:'Avg delivery orders'},{n:'Top 3',l:'Local pack rank'},{n:'13+',l:'Thai campaigns'}],
+    stats:[{n:'Heat &amp; balance',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Every Thai place in town looks identical on Google','Heat-level complaints skewing the average','Delivery apps capturing the search intent','Hard to show authenticity without reviews'],
     review:'"The green curry was perfectly balanced — creamy coconut, fragrant basil, exactly the right heat. Pad see ew had real wok flavour. Authentic."',
     author:'Natalie P. &middot; local diner', face:FACE_C,
@@ -1772,17 +1722,17 @@ var cuisineMeta = {
 
   greek:{emoji:'&#129386;',name:'Greek / Mediterranean',photo:'1606735584785-1848fdcaea57',
     subtitle:'For tavernas, gyro shops and mezze bars. Reviews mention souvlaki, fresh pita, house-made tzatziki and family hospitality.',
-    stats:[{n:'+22%',l:'Avg foot traffic lift'},{n:'Top 3',l:'Local pack rank'},{n:'11+',l:'Greek campaigns'}],
+    stats:[{n:'Grill &amp; mezze',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Buried under fast-casual bowl chains in the map pack','Tourists judging purely by review count','One bad review pulling the whole average down','Regulars who never leave reviews'],
     review:'"The lamb souvlaki was charred perfectly and the tzatziki was clearly house-made. Family run and it shows in every single detail."',
     author:'Marco D. &middot; Brooklyn local', face:FACE_B,
-    ownerQuote:'"Foot traffic is up around 22% since we hit top 3. The reviews mention our gyros by name, which is exactly what we wanted."',
+    ownerQuote:'"The reviews mention our gyros and the mezze by name, which is exactly what we wanted."',
     ownerName:'Yanni K., Owner &middot; Astoria, NY', ownerFace:FACE_D},
 
   cafe:{emoji:'&#9749;',name:'Caf&eacute;',photo:'1593443320739-77f74939d0da',
     subtitle:'For coffee bars, brunch spots and neighbourhood caf&eacute;s. Reviews mention the espresso, the pastry case, wifi and whether it is a good place to work.',
-    stats:[{n:'+28%',l:'Avg morning traffic'},{n:'Top 3',l:'Local pack rank'},{n:'18+',l:'Caf&eacute; campaigns'}],
-    pains:['Starbucks owning "coffee near me" in your postcode','Remote workers choosing by rating and wifi mentions','Great beans, almost no online proof','Brunch queue at a rival with 400 reviews'],
+    stats:[{n:'Beans &amp; bakes',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
+    pains:['Chain coffee owning "coffee near me" in your ZIP code','Remote workers choosing by rating and wifi mentions','Great beans, almost no online proof','Brunch queue at a rival with 400 reviews'],
     review:'"The oat milk latte is perfectly smooth with a great espresso base, not too sweet. Avocado toast with poached eggs is my weekend order."',
     author:'Sophie T. &middot; regular', face:FACE_C,
     ownerQuote:'"Mornings are noticeably busier. People mention the cold brew before they have even ordered it."',
@@ -1790,25 +1740,25 @@ var cuisineMeta = {
 
   pizzeria:{emoji:'&#127829;',name:'Pizzeria',photo:'1513104890138-7c749659a591',
     subtitle:'For slice shops, Neapolitan ovens and family pizzerias. Reviews mention crust texture, the sauce, and how it travels for takeout.',
-    stats:[{n:'+30%',l:'Avg takeout orders'},{n:'Top 3',l:'Local pack rank'},{n:'15+',l:'Pizzeria campaigns'}],
-    pains:['Domino\'s and chains dominating every pizza search','Delivery apps outranking your own listing','Cold-delivery complaints hurting the average','Every new pizzeria launching with paid reviews'],
+    stats:[{n:'Crust &amp; bake',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
+    pains:['Delivery chains dominating every pizza search','Delivery apps outranking your own listing','Cold-delivery complaints hurting the average','Every new pizzeria launching with paid reviews'],
     review:'"Leopard-spotted crust with a proper chew — they know what they are doing with that oven. The margherita is simple and near perfect."',
     author:'Tony B. &middot; local', face:FACE_D,
-    ownerQuote:'"Takeout is up and we finally show above the apps when someone searches our name. That alone paid for the campaign."',
+    ownerQuote:'"The reviews talk about the crust and the bake, not just ‘good pizza’. That is the difference we wanted shown."',
     ownerName:'Gino R., Owner &middot; Newark, NJ', ownerFace:FACE_B},
 
   seafood:{emoji:'&#129424;',name:'Seafood',photo:'1606850780554-b55ea4dd0b70',
     subtitle:'For oyster bars, fish houses and coastal kitchens. Reviews speak to freshness, sourcing and whether the fish was handled properly.',
-    stats:[{n:'+21%',l:'Avg weekend covers'},{n:'Top 3',l:'Local pack rank'},{n:'10+',l:'Seafood campaigns'}],
+    stats:[{n:'Catch &amp; sourcing',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['High ticket means diners research heavily before booking','Freshness doubts from a single old review','Tourist-trap perception in coastal towns','Seasonal swings leaving quiet months with no new reviews'],
     review:'"The scallops were seared hard outside and still translucent in the middle. Chowder is properly briny instead of just cream. Fish is clearly fresh."',
-    author:'Diane F. &middot; verified diner', face:FACE_A,
+    author:'Diane F. &middot; regular', face:FACE_A,
     ownerQuote:'"The reviews talk about our sourcing, which is what we actually compete on. Weekend covers held up through the off season."',
     ownerName:'Tom H., Owner &middot; Portland, ME', ownerFace:FACE_D},
 
   bbq:{emoji:'&#127830;',name:'BBQ / Grill',photo:'1679711246825-1f2bd51b16d0',
     subtitle:'For smokehouses, pits and grill joints. Reviews mention the smoke ring, the bark, the sides, and what time the brisket sells out.',
-    stats:[{n:'+26%',l:'Avg daily walk-ins'},{n:'Top 3',l:'Local pack rank'},{n:'12+',l:'BBQ campaigns'}],
+    stats:[{n:'Smoke &amp; bark',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Franchise BBQ chains ranking above a real pit','"Sold out" reviews reading as a negative','Hard to prove low-and-slow through photos','Weekend-only crowds leaving weekdays quiet'],
     review:'"Brisket had a real smoke ring and the bark was seasoned properly. Burnt ends sold out by 2pm — that is how you know it is the real thing."',
     author:'Wade C. &middot; regular', face:FACE_B,
@@ -1817,16 +1767,16 @@ var cuisineMeta = {
 
   bakery:{emoji:'&#129360;',name:'Bakery',photo:'1608198093002-ad4e005484ec',
     subtitle:'For bakeries, patisseries and bread shops. Reviews mention lamination, crumb, custom cake orders and how early things sell out.',
-    stats:[{n:'+24%',l:'Avg morning sales'},{n:'Top 3',l:'Local pack rank'},{n:'9+',l:'Bakery campaigns'}],
+    stats:[{n:'Crumb &amp; cakes',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Supermarket bakeries ranking for "bakery near me"','Custom cake enquiries going to higher-rated rivals','Early sell-outs read as poor availability','Seasonal spikes with no reviews in between'],
     review:'"Croissants have proper lamination — hundreds of flaky layers and a shattering crust. The sourdough boule has a beautiful open crumb."',
     author:'Claire W. &middot; weekly regular', face:FACE_C,
-    ownerQuote:'"Custom cake enquiries roughly doubled. People find us now instead of defaulting to the supermarket counter."',
+    ownerQuote:'"Custom cake enquiries picked up. People find us instead of defaulting to the supermarket counter."',
     ownerName:'Maria L., Owner &middot; Denver, CO', ownerFace:FACE_A},
 
   korean:{emoji:'&#127833;',name:'Korean',photo:'1632558610168-8377309e34c7',
     subtitle:'For KBBQ houses, stew kitchens and fried chicken spots. Reviews mention banchan generosity, grill service and whether the kimchi is house-fermented.',
-    stats:[{n:'+27%',l:'Avg group bookings'},{n:'Top 3',l:'Local pack rank'},{n:'11+',l:'Korean campaigns'}],
+    stats:[{n:'Grill &amp; banchan',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['KBBQ chains dominating the group-dining search','First-timers intimidated without reviews to guide them','Ventilation and wait-time complaints skewing ratings','Competing on all-you-can-eat pricing instead of quality'],
     review:'"Banchan spread was generous and refilled without asking. The galbi had a proper caramelised char and the kimchi is clearly fermented in-house."',
     author:'Jenny H. &middot; local diner', face:FACE_A,
@@ -1835,7 +1785,7 @@ var cuisineMeta = {
 
   bar:{emoji:'&#127866;',name:'Bar / Pub',photo:'1546622891-02c72c1537b6',
     subtitle:'For neighbourhood bars, cocktail rooms and gastropubs. Reviews mention the drinks programme, the kitchen hours, and whether the vibe is right.',
-    stats:[{n:'+25%',l:'Avg weeknight footfall'},{n:'Top 3',l:'Local pack rank'},{n:'13+',l:'Bar &amp; pub campaigns'}],
+    stats:[{n:'Drinks &amp; kitchen',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['Sports bars and chains owning the search','Noise and wait complaints dominating the review page','Kitchen quality invisible behind the "bar" label','Quiet weeknights with no new reviews landing'],
     review:'"Well-made cocktails without the attitude — the old fashioned was balanced and properly stirred. Kitchen stays open late, which is rare here."',
     author:'Ryan D. &middot; regular', face:FACE_D,
@@ -1844,7 +1794,7 @@ var cuisineMeta = {
 
   other:{emoji:'&#127860;',name:'Your Restaurant',photo:'1517248135467-4c7edcad34c4',
     subtitle:'Do not see your category? We have written for food trucks, buffets, vegan kitchens, halal spots, delis, juice bars and ghost kitchens. If it has a Google listing, we can write for it.',
-    stats:[{n:'1,200+',l:'Campaigns delivered'},{n:'Top 3',l:'Local pack rank'},{n:'16+',l:'Food categories covered'}],
+    stats:[{n:'Your concept',l:'What your reviews name'},{n:'2&ndash;5 / day',l:'Show-ups at your pace'},{n:'7 days',l:'Free replacement per review'}],
     pains:['A niche concept nobody searches by category name','Great food with almost no online proof','Bigger competitors with a decade head start','Regulars who love you but never post a review'],
     review:'"Everything came out fresh and clearly made to order. Staff were welcoming without hovering, and the portions were honest for the price."',
     author:'Alex R. &middot; local diner', face:FACE_B,
@@ -2393,17 +2343,35 @@ function submitOrder() {
     });
 
     // Log customer data to customer_data.log via log.php (FORM SUBMISSIONS ONLY)
-    fetch('log.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            businessName: biz,
-            whatsapp: wa,
-            businessEmail: email,
-            action: pkgValue.toUpperCase(),
-            pageUrl: window.location.href
-        })
-    }).catch(function(err) { console.log('Customer log error:', err); });
+    // MUST survive the redirect to the payment gateway on the next line. A plain
+    // fetch() gets cancelled by the navigation before the request leaves the
+    // browser (log.php is a cold endpoint — no warm connection yet), which is why
+    // ORDER_SUBMIT landed in page_analytics.log while customer_data.log stayed empty.
+    // sendBeacon is queued by the browser and delivered regardless of unload;
+    // fetch + keepalive is the fallback for browsers without sendBeacon.
+    var customerPayload = JSON.stringify({
+        businessName: biz,
+        whatsapp: wa,
+        businessEmail: email,
+        action: pkgValue.toUpperCase(),
+        pageUrl: window.location.href
+    });
+    var customerLogSent = false;
+    if (navigator.sendBeacon) {
+        try {
+            customerLogSent = navigator.sendBeacon('log.php', new Blob([customerPayload], {type: 'application/json'}));
+        } catch (e) {
+            customerLogSent = false;
+        }
+    }
+    if (!customerLogSent) {
+        fetch('log.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: customerPayload,
+            keepalive: true
+        }).catch(function(err) { console.log('Customer log error:', err); });
+    }
 
     // Clear saved form data
     safeLocalStorage('set', 'sb_form_biz', '');
@@ -2414,10 +2382,11 @@ function submitOrder() {
     // Commas (ex-Fanbasis) payment links per package — redirect directly to gateway.
     // Commas redirects back to https://smart-buzzer.com/thankyou.php after payment,
     // which fires the GA4 purchase event. Keep prices in sync with sbPkgMeta above.
+    // Dedicated F&B checkout links — see CLAUDE.md for the ref mapping.
     var commasLinks = {
-        'starter':     'https://commas.com/checkout/p7jpyGkNIk6xfpo',  // 72 reviews — $350  ⚠ gateway link still priced $360
-        'growth':      'https://commas.com/checkout/ZvwDEINbU6l8JO',   // 96 reviews — $430
-        'performance': 'https://commas.com/checkout/p7jWybkR5uYrIkEj'  // 132 reviews — $530
+        'starter':     'https://commas.com/checkout/vL1JghdO6MNYaLag',  // 72 reviews  — $350 — ref LP-FNB-72
+        'growth':      'https://commas.com/checkout/zYkl7IVUi3pbK',     // 96 reviews  — $430 — ref LP-FNB-96
+        'performance': 'https://commas.com/checkout/EWwQKH6y5Yxbdcwu'   // 132 reviews — $530 — ref LP-FNB-132
     };
 
     var paymentUrl = commasLinks[pkgValue] || commasLinks['growth'];
@@ -2510,56 +2479,6 @@ window.closeOnboarding = function() {
             box.classList.remove('active');
         }
     });
-})();
-
-/* ===================================================================
-   SOCIAL PROOF TOAST
-   =================================================================== */
-(function() {
-    var toastData = [
-        {name: 'Marco from Brooklyn',   action: 'ordered 96 reviews',  time: '2 hours ago',  color: '#D42B2B'},
-        {name: 'Rosa from Phoenix',     action: 'ordered 132 reviews', time: '4 hours ago',  color: '#B22222'},
-        {name: 'Kenji from Seattle',    action: 'ordered 72 reviews',  time: '5 hours ago',  color: '#2D8A4E'},
-        {name: 'Anita from New York',   action: 'ordered 96 reviews',  time: '7 hours ago',  color: '#D42B2B'},
-        {name: 'Gino from Newark',      action: 'ordered 132 reviews', time: '9 hours ago',  color: '#B22222'},
-        {name: 'Mike from Austin',      action: 'ordered 96 reviews',  time: '12 hours ago', color: '#2D8A4E'},
-        {name: 'Kira from Portland',    action: 'ordered 72 reviews',  time: '1 day ago',    color: '#D42B2B'},
-        {name: 'Maria from Denver',     action: 'ordered 132 reviews', time: '1 day ago',    color: '#B22222'}
-    ];
-    var toastEl = document.getElementById('spToast');
-    var textEl = document.getElementById('spToastText');
-    var avatarEl = document.getElementById('spToastAvatar');
-    if (!toastEl || !textEl) return;
-
-    var idx = 0;
-    var closed = false;
-
-    function showToast() {
-        if (closed) return;
-        var d = toastData[idx % toastData.length];
-        textEl.innerHTML = '<strong>' + d.name + '</strong>' +
-                           '<span class="sp-action">just ' + d.action + '</span>' +
-                           '<span class="sp-time">' + d.time + '</span>';
-        if (avatarEl) {
-            avatarEl.style.background = d.color;
-            avatarEl.childNodes[0].textContent = d.name.charAt(0);
-        }
-        toastEl.classList.add('visible');
-        setTimeout(function() {
-            toastEl.classList.remove('visible');
-            idx++;
-        }, 5000);
-    }
-
-    window.closeToast = function() {
-        closed = true;
-        toastEl.classList.remove('visible');
-    };
-
-    setTimeout(function() {
-        showToast();
-        setInterval(showToast, 25000);
-    }, 8000);
 })();
 
 /* ===================================================================

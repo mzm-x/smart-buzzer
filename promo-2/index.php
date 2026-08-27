@@ -1,4 +1,8 @@
-<?php $__wa=$_SERVER["DOCUMENT_ROOT"]."/wa-config.php"; if(is_readable($__wa)){include $__wa;} if(empty($SB_WA_NUMBER)){$SB_WA_NUMBER="628979133204";} if(empty($SB_WA_DISPLAY)){$SB_WA_DISPLAY="+62 897-9133-204";} ?>
+<?php // WhatsApp number is HARDCODED for this LP on purpose — it deliberately does NOT
+// read /wa-config.php, so /wa-config.json and the /analytics/ dashboard cannot
+// override it. If the number changes, edit it right here.
+$SB_WA_NUMBER  = "6285121563813";
+$SB_WA_DISPLAY = "+62 851-2156-3813"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -912,6 +916,360 @@ checkReturnVisitor();
             max-width: 240px;
             margin: 0 auto;
         }
+
+        /* ===== PAINPOINT SECTION (promo-2 only) ===== */
+        .p2-pain {
+            background: var(--card-bg);
+        }
+
+        .p2-pain-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--orange-light);
+            border: 1px solid #FDE68A;
+            color: var(--red-warning);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 7px 16px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+
+        .p2-vs {
+            display: grid;
+            grid-template-columns: 1fr 56px 1fr;
+            align-items: center;
+            max-width: 880px;
+            margin: 0 auto 16px;
+        }
+
+        /* Google Maps style listing card */
+        .p2-gm-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .p2-gm-photo {
+            position: relative;
+            height: 190px;
+            background: var(--bg-light);
+        }
+
+        .p2-gm-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .p2-gm-search {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            right: 14px;
+            background: #fff;
+            border-radius: 999px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.22);
+            padding: 9px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #202124;
+        }
+
+        .p2-gm-search i {
+            color: #5F6368;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .p2-gm-q {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+
+        .p2-gm-info {
+            padding: 16px 20px 14px;
+        }
+
+        .p2-gm-name {
+            font-size: 19px;
+            font-weight: 700;
+            color: #202124;
+            line-height: 1.25;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .p2-gm-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #70757A;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .p2-gm-score {
+            color: #202124;
+            font-weight: 500;
+        }
+
+        .p2-gm-stars {
+            color: #E7711B;
+            font-size: 12px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .p2-gm-cat {
+            font-size: 14px;
+            color: #70757A;
+        }
+
+        .p2-gm-foot {
+            padding: 12px 20px 14px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .p2-gm-card.is-you .p2-gm-foot {
+            background: #FEF2F2;
+            border-top-color: #FCA5A5;
+        }
+
+        .p2-gm-card.is-them .p2-gm-foot {
+            background: var(--green-light);
+            border-top-color: #6EE7B7;
+        }
+
+        .p2-gm-last {
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .p2-gm-last strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .p2-gm-status {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .p2-gm-card.is-you .p2-gm-status {
+            color: var(--red-warning);
+        }
+
+        .p2-gm-card.is-them .p2-gm-status {
+            color: var(--green-success);
+        }
+
+        .p2-gm-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        .p2-vs-mid {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .p2-vs-caption {
+            text-align: center;
+            font-size: 15px;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 56px;
+        }
+
+        .p2-divider {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            max-width: 560px;
+            margin: 0 auto 36px;
+            color: var(--text-secondary);
+            font-size: 17px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .p2-divider::before,
+        .p2-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .p2-pain-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        .p2-pain-cta {
+            text-align: center;
+            margin-top: 34px;
+        }
+
+        .p2-pain-cta .btn {
+            min-width: 260px;
+        }
+
+        .p2-pain-cta i {
+            margin-left: 8px;
+            font-size: 14px;
+            transition: transform .2s ease;
+        }
+
+        .p2-pain-cta .btn:hover i {
+            transform: translateX(4px);
+        }
+
+        .p2-pain-cta-note {
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--text-muted, #6B7280);
+        }
+
+        .p2-pain-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--red-warning);
+            border-radius: var(--radius-sm);
+            padding: 24px 22px;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow .2s ease, transform .2s ease;
+        }
+
+        .p2-pain-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .p2-pain-card i {
+            font-size: 22px;
+            color: var(--red-warning);
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .p2-pain-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .p2-pain-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .p2-pain-pill {
+                font-size: 11px;
+                padding: 6px 13px;
+                letter-spacing: .6px;
+            }
+
+            .p2-vs {
+                grid-template-columns: 1fr;
+            }
+
+            .p2-vs-mid {
+                padding: 12px 0;
+            }
+
+            .p2-gm-photo {
+                height: 160px;
+            }
+
+            .p2-gm-search {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 12px;
+                gap: 10px;
+            }
+
+            .p2-gm-info {
+                padding: 14px 16px 12px;
+            }
+
+            .p2-gm-name {
+                font-size: 17px;
+            }
+
+            .p2-gm-foot {
+                padding: 11px 16px 13px;
+            }
+
+            .p2-vs-caption {
+                font-size: 14px;
+                margin-bottom: 40px;
+            }
+
+            .p2-divider {
+                font-size: 15px;
+                gap: 12px;
+                margin-bottom: 26px;
+            }
+
+            .p2-pain-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .p2-pain-card {
+                padding: 18px;
+            }
+
+            .p2-pain-cta {
+                margin-top: 24px;
+            }
+
+            .p2-pain-cta .btn {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .p2-pain-card h3 {
+                font-size: 15px;
+            }
+        }
+        /* ===== END PAINPOINT SECTION ===== */
 
         /* Pricing Section */
         .pricing {
@@ -2825,6 +3183,96 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </section>
 
+    <!-- ===== PAINPOINT SECTION (promo-2 only) ===== -->
+    <section class="p2-pain">
+        <div class="container">
+            <div class="section-header">
+                <span class="p2-pain-pill"><i class="fa-solid fa-triangle-exclamation"></i> The part nobody tells you</span>
+                <h2>While You Read This, Your Competitor <span class="accent">Just Got Another Review.</span></h2>
+                <p>Every day you stay quiet the gap gets wider &mdash; and it never closes on its own.</p>
+            </div>
+
+            <div class="p2-vs">
+                <div class="p2-gm-card is-you">
+                    <div class="p2-gm-photo">
+                        <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=760&h=460&fit=crop" alt="Local business listing example" loading="lazy">
+                        <div class="p2-gm-search">
+                            <i class="fa-solid fa-bars"></i>
+                            <span class="p2-gm-q">Your Business</span>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                    </div>
+                    <div class="p2-gm-info">
+                        <div class="p2-gm-name">Your Business</div>
+                        <div class="p2-gm-rating">
+                            <span class="p2-gm-score">4.6</span>
+                            <span class="p2-gm-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span>
+                            <span>(32)</span>
+                        </div>
+                        <div class="p2-gm-cat">Painter &middot; Your listing</div>
+                    </div>
+                    <div class="p2-gm-foot">
+                        <div class="p2-gm-last"><span>Last review</span><strong>8 months ago</strong></div>
+                        <div class="p2-gm-status"><span class="p2-gm-dot"></span> Looks inactive</div>
+                    </div>
+                </div>
+                <div class="p2-vs-mid">VS</div>
+                <div class="p2-gm-card is-them">
+                    <div class="p2-gm-photo">
+                        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=760&h=460&fit=crop" alt="Competitor business listing example" loading="lazy">
+                        <div class="p2-gm-search">
+                            <i class="fa-solid fa-bars"></i>
+                            <span class="p2-gm-q">Your Competitor</span>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                    </div>
+                    <div class="p2-gm-info">
+                        <div class="p2-gm-name">Your Competitor</div>
+                        <div class="p2-gm-rating">
+                            <span class="p2-gm-score">4.8</span>
+                            <span class="p2-gm-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+                            <span>(418)</span>
+                        </div>
+                        <div class="p2-gm-cat">Painter &middot; Their listing</div>
+                    </div>
+                    <div class="p2-gm-foot">
+                        <div class="p2-gm-last"><span>Last review</span><strong>2 days ago</strong></div>
+                        <div class="p2-gm-status"><span class="p2-gm-dot"></span> Active this week</div>
+                    </div>
+                </div>
+            </div>
+            <p class="p2-vs-caption">Same service. Same price. They get the call.</p>
+
+            <div class="p2-divider">Sound familiar?</div>
+
+            <div class="p2-pain-grid">
+                <div class="p2-pain-card">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                    <h3>Buried below the top 3</h3>
+                    <p>Customers call the first business they see. If you are not up there, you are not even in the conversation &mdash; they never knew you existed.</p>
+                </div>
+                <div class="p2-pain-card">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>They have 418. You have 32.</h3>
+                    <p>Same service, same price, same city. The review count makes the decision before anyone ever picks up the phone.</p>
+                </div>
+                <div class="p2-pain-card">
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <h3>One bad review does all the talking</h3>
+                    <p>A single angry 1-star sits near the top of your listing. You cannot delete it &mdash; the only way past it is enough fresh reviews to bury it.</p>
+                </div>
+            </div>
+
+            <div class="p2-pain-cta">
+                <a href="#pricing" class="btn btn-lg btn-primary">See The Price <i class="fa-solid fa-arrow-right"></i></a>
+                <p class="p2-pain-cta-note">Packages start at $360 &mdash; pick one and we start this week.</p>
+            </div>
+        </div>
+    </section>
+    <!-- ===== END PAINPOINT SECTION ===== -->
+
     <section class="ba-section">
         <div class="container">
             <div class="section-header">
@@ -2890,12 +3338,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="pricing-cards">
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Starter <span class="discount-badge">🔥 SAVE 3%</span></h3>
+                        <h3>Starter</h3>
                     </div>
-                    <div class="pricing-price">
-                        $350
-                        <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$360</span>
-                    </div>
+                    <div class="pricing-price">$360</div>
                     <div class="pricing-reviews" style="margin-bottom:8px;">72 Posted Reviews</div>
                     <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">We submit ~300 gradually</div>
                     <ul class="pricing-features">
@@ -2903,20 +3348,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
                         <li>Custom Human-Written Comments</li>
                         <li>Replacement 7 Days Per Review</li>
-                        <li>Lowest Price &mdash; $4.86/Review</li>
+                        <li>Lowest Price &mdash; $5/Review</li>
                         <li>Detailed Delivery Report</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="starter" onclick="preSelectPkg('starter')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save 3%</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="starter" onclick="preSelectPkg('starter')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">2</span> left at this price</div>
                 </div>
 
                 <div class="pricing-card popular">
                     <div class="popular-badge">POPULAR</div>
                     <div class="pricing-header">
-                        <h3>Growth <span class="discount-badge">🔥 SAVE 11%</span></h3>
+                        <h3>Growth <span class="discount-badge">🔥 SAVE $50</span></h3>
                     </div>
                     <div class="pricing-price">
-                        $425
+                        $430
                         <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$480</span>
                     </div>
                     <div class="pricing-reviews" style="margin-bottom:8px;">96 Posted Reviews</div>
@@ -2926,19 +3371,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
                         <li>Custom Human-Written Comments</li>
                         <li>Replacement 7 Days Per Review</li>
-                        <li>Lowest Price &mdash; $4.43/Review</li>
+                        <li>Lowest Price &mdash; $4.48/Review</li>
                         <li>Detailed Delivery Report</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="growth" onclick="preSelectPkg('growth')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save 11%</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="growth" onclick="preSelectPkg('growth')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $50</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">5</span> left at this price</div>
                 </div>
 
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Performance <span class="discount-badge">🔥 SAVE 20%</span></h3>
+                        <h3>Performance <span class="discount-badge">🔥 SAVE $130</span></h3>
                     </div>
                     <div class="pricing-price">
-                        $525
+                        $530
                         <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$660</span>
                     </div>
                     <div class="pricing-reviews" style="margin-bottom:8px;">132 Posted Reviews</div>
@@ -2948,10 +3393,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
                         <li>Custom Human-Written Comments</li>
                         <li>Replacement 7 Days Per Review</li>
-                        <li>Lowest Price &mdash; $3.98/Review</li>
+                        <li>Lowest Price &mdash; $4.01/Review</li>
                         <li>Detailed Delivery Report</li>
                     </ul>
-                    <a href="#order-form" class="btn btn-primary" data-package="performance" onclick="preSelectPkg('performance')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save 20%</a>
+                    <a href="#order-form" class="btn btn-primary" data-package="performance" onclick="preSelectPkg('performance')" style="width: 100%; display: block; max-width: 280px; margin: 0 auto;">ORDER NOW - Save $130</a>
                     <div class="card-scarcity">🔥 Only <span class="spots-left">8</span> left at this price</div>
                 </div>
             </div>
@@ -3038,31 +3483,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <input type="radio" name="package" value="starter" class="of-pkg-radio">
                         <div class="of-pkg-info">
                             <span class="of-pkg-name">Starter — 72 Reviews</span>
-                            <span class="of-pkg-detail"><s>$360</s> — Save 3%</span>
                         </div>
-                        <span class="of-pkg-price">$350</span>
+                        <span class="of-pkg-price">$360</span>
                     </label>
                     <label class="of-pkg selected" data-pkg="growth" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="growth" class="of-pkg-radio" checked>
                         <div class="of-pkg-info">
                             <span class="of-pkg-name">Growth — 96 Reviews<span class="of-pkg-popular">POPULAR</span></span>
-                            <span class="of-pkg-detail"><s>$480</s> — Save 11%</span>
+                            <span class="of-pkg-detail"><s>$480</s> — Save $50</span>
                         </div>
-                        <span class="of-pkg-price">$425</span>
+                        <span class="of-pkg-price">$430</span>
                     </label>
                     <label class="of-pkg" data-pkg="performance" onclick="selectPkg(this)">
                         <input type="radio" name="package" value="performance" class="of-pkg-radio">
                         <div class="of-pkg-info">
                             <span class="of-pkg-name">Performance — 132 Reviews</span>
-                            <span class="of-pkg-detail"><s>$660</s> — Save 20%</span>
+                            <span class="of-pkg-detail"><s>$660</s> — Save $130</span>
                         </div>
-                        <span class="of-pkg-price">$525</span>
+                        <span class="of-pkg-price">$530</span>
                     </label>
                 </div>
 
-                <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 12.5px; color: #78350F; line-height: 1.55;">
-                    <i class="fa-solid fa-circle-info" style="color: var(--orange-highlight);"></i>
-                    <strong>What you&rsquo;re buying:</strong> reviews that <strong>show up</strong> on your Google listing, each with a 7-day free replacement. Long-term stay depends on Google&rsquo;s algorithm and isn&rsquo;t guaranteed. Secure card checkout &middot; all sales final (refund as store voucher only).
+                <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #78350F; line-height: 1.6;">
+                    <i class="fa-solid fa-bolt" style="color: var(--orange-highlight);"></i>
+                    <strong>Pay today and we start today.</strong> As soon as your payment lands we begin writing your campaign and send the content over for approval &mdash; your first reviews go live within 24 hours of your OK.
                 </div>
 
                 <button class="of-submit" onclick="submitOrder()">COMPLETE ORDER →</button>
@@ -3174,7 +3618,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <div class="check-icon">&#10003;</div>
                             <div>
                                 <strong>Lowest Price &mdash; From $4/Review</strong>
-                                <span>Market charges $8&ndash;9 per review. We start at $4.86 &mdash; down to $3.98.</span>
+                                <span>Market charges $8&ndash;9 per review. We start at $5 &mdash; down to $4.</span>
                             </div>
                         </li>
                         <li>
@@ -3645,9 +4089,9 @@ window.addEventListener('scroll', function() {
 
 // === GLOBAL PACKAGE METADATA ===
 var sbPkgMeta = {
-    'starter':     {id: 'pkg_p2_starter_72',   name: 'Buy Google Reviews - 72 Show-Up',  item_category: 'Google Reviews', price: 350.00, reviews: 72},
-    'growth':      {id: 'pkg_p2_growth_96',    name: 'Buy Google Reviews - 96 Show-Up',  item_category: 'Google Reviews', price: 425.00, reviews: 96},
-    'performance': {id: 'pkg_p2_performance_132', name: 'Buy Google Reviews - 132 Show-Up', item_category: 'Google Reviews', price: 525.00, reviews: 132}
+    'starter':     {id: 'pkg_starter_72',      name: 'Buy Google Reviews - 72 Show-Up',  item_category: 'Google Reviews', price: 360.00, reviews: 72},
+    'growth':      {id: 'pkg_growth_96',       name: 'Buy Google Reviews - 96 Show-Up',  item_category: 'Google Reviews', price: 430.00, reviews: 96},
+    'performance': {id: 'pkg_performance_132', name: 'Buy Google Reviews - 132 Show-Up', item_category: 'Google Reviews', price: 530.00, reviews: 132}
 };
 
 // Track last selected package for WhatsApp / floating CTA tracking
@@ -4248,14 +4692,10 @@ function submitOrder() {
     // Commas (ex-Fanbasis) payment links per package — redirect directly to gateway
     // Commas redirects back to https://smart-buzzer.com/thankyou.php after payment,
     // which fires the GA4 purchase event. Keep prices in sync with sbPkgMeta above.
-    // promo-2 has its OWN Commas checkout link per package — do NOT reuse the /promo/
-    // links, their prices differ ($360/$430/$530 there vs $350/$425/$525 here).
-    // Each link's ref must be set in the Commas dashboard to LP-PROMO2-72 /
-    // LP-PROMO2-96 / LP-PROMO2-132 so root thankyou.php resolves the p2_ rows.
     var commasLinks = {
-        'starter':     'https://commas.com/checkout/YVjnMjrTMjcQMS',   // 72 reviews  — $350 (ref LP-PROMO2-72)
-        'growth':      'https://commas.com/checkout/WqNNXik6x17k0Pp',  // 96 reviews  — $425 (ref LP-PROMO2-96)
-        'performance': 'https://commas.com/checkout/4zgonDfBCjnP31B'   // 132 reviews — $525 (ref LP-PROMO2-132)
+        'starter':     'https://commas.com/checkout/p7jpyGkNIk6xfpo',  // 72 reviews — $360
+        'growth':      'https://commas.com/checkout/ZvwDEINbU6l8JO',   // 96 reviews — $430
+        'performance': 'https://commas.com/checkout/p7jWybkR5uYrIkEj'  // 132 reviews — $530
     };
 
     var paymentUrl = commasLinks[pkgValue] || commasLinks['growth'];
