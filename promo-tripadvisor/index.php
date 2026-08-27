@@ -756,7 +756,7 @@
         /* Process */
         .process-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 32px;
         }
 
@@ -1648,6 +1648,154 @@
             max-height: 400px;
             padding: 0 24px 22px;
         }
+
+        /* ===== RANKING PROOF (tprk-) — prefix unik biar gak nabrak class lain di LP ini ===== */
+        .tprk-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Bingkainya rapat ke gambar: tp.jpg latarnya putih, jadi background
+           abu di sini gak pernah keliatan dan cuma nambah kesan kotak kosong. */
+        .tprk-shot {
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 8px 24px -12px rgba(0,0,0,0.12);
+        }
+
+        .tprk-shot img {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: zoom-in;
+        }
+
+        .tprk-note {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--gray-500);
+            margin: 20px auto 0;
+            text-align: center;
+            max-width: 720px;
+        }
+
+        .tprk-note b { color: var(--dark); font-weight: 800; }
+
+        @media (max-width: 640px) {
+            .tprk-note { font-size: 14px; text-align: left; }
+        }
+
+
+        /* ===== TRIPADVISOR -> GOOGLE CROSSOVER (tgx-) — prefix unik, jangan dipakai section lain ===== */
+        .tgx-flex {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            align-items: center;
+        }
+
+        /* tq.jpg latarnya terang, jadi bingkainya dibikin rapat ke gambar
+           persis seperti .tprk-shot — biar dua section ini keliatan sekeluarga. */
+        .tgx-shot {
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 8px 24px -12px rgba(0,0,0,0.12);
+        }
+
+        .tgx-shot img {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: zoom-in;
+        }
+
+        .tgx-kicker {
+            display: inline-block;
+            background: rgba(52, 224, 161, 0.14);
+            color: var(--ta-green-dark);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 7px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+
+        .tgx-copy h2 {
+            font-size: 40px;
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+            margin-bottom: 18px;
+        }
+
+        .tgx-lead {
+            font-size: 17px;
+            line-height: 1.7;
+            color: var(--gray-500);
+            margin-bottom: 26px;
+        }
+
+        .tgx-points {
+            list-style: none;
+            margin: 0 0 30px;
+            padding: 0;
+        }
+
+        .tgx-points li {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 14px 0;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .tgx-points li:last-child { border-bottom: 1px solid var(--gray-200); }
+
+        .tgx-check {
+            width: 24px; height: 24px;
+            flex-shrink: 0;
+            border-radius: 999px;
+            background: var(--ta-green);
+            color: var(--dark);
+            font-size: 13px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        .tgx-points b {
+            display: block;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 3px;
+        }
+
+        .tgx-points span {
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--gray-500);
+        }
+
+        /* Aturan wajib semua LP: di mobile gambar SELALU di atas teks. */
+        @media (max-width: 880px) {
+            .tgx-flex {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .tgx-visual { order: 1; }
+            .tgx-copy   { order: 2; }
+            .tgx-copy h2 { font-size: 30px; }
+            .tgx-lead { font-size: 16px; }
+        }
+
     </style>
 </head>
 <body>
@@ -1698,10 +1846,10 @@
                         <span style="color: var(--ta-green)">★★★★★</span>
                         <span>1,200+ Happy Hospitality Clients</span>
                     </div>
-                    <h1>Boost Your <span class="text-green">Tripadvisor Rating</span> With Real Traveler Reviews</h1>
-                    <p>Climb the Tripadvisor rankings and win more bookings with genuine reviews from real travelers. Human-written, posted naturally, and backed by our 7-day replacement guarantee — trusted by 1,200+ hotels, restaurants & attractions across the USA.</p>
+                    <h1>Get More <span class="text-green">Tripadvisor Reviews</span>. Rank Higher. Get More Bookings.</h1>
+                    <p>Real, human-written reviews from real travelers &mdash; posted gradually so they look natural. First ones appear within 24 hours of approval, each backed by a 7-day replacement.</p>
                     <div class="hero-buttons">
-                        <a href="#pricing" class="btn btn-primary btn-lg">LEARN MORE</a>
+                        <a href="#pricing" class="btn btn-primary btn-lg">SEE THE PRICE</a>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -1713,34 +1861,86 @@
 
     <div class="section-divider"></div>
 
-    <!-- Why TripAdvisor Reviews -->
+    <!-- Tripadvisor -> Google crossover (tgx-). Argumennya: Google menarik skor
+         Tripadvisor ke panel bisnis lewat blok "Reviews from the web", jadi review
+         Tripadvisor kebaca di dua tempat sekaligus. Angka/klaim di teks ini HARUS
+         cocok sama tq.jpg — kalau gambarnya diganti, cek lagi teksnya. -->
+    <section class="section">
+        <div class="container">
+            <div class="tgx-flex">
+                <div class="tgx-visual">
+                    <div class="tgx-shot">
+                        <img src="https://smart-buzzer.com/promo-tripadvisor/tq.jpg"
+                             alt="Google business panel showing Tripadvisor rating and review count under Reviews from the web"
+                             class="clickable-image" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="tgx-copy">
+                    <div class="tgx-kicker">Google + Tripadvisor</div>
+                    <h2>Google Already Shows Your <span class="text-green">Tripadvisor</span> Reviews</h2>
+                    <p class="tgx-lead">
+                        Google shows your Tripadvisor score right on your business panel. Leave
+                        Tripadvisor empty, and that gap shows up on Google too.
+                    </p>
+
+                    <ul class="tgx-points">
+                        <li>
+                            <div class="tgx-check">&#10003;</div>
+                            <div>
+                                <b>Two platforms, one campaign</b>
+                                <span>Google&rsquo;s &ldquo;Reviews from the web&rdquo; pulls in your Tripadvisor rating. Build it there, it shows up here.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tgx-check">&#10003;</div>
+                            <div>
+                                <b>Two strong ratings beat one</b>
+                                <span>Rated well in both places reads as consistent. One good score standing alone doesn&rsquo;t.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tgx-check">&#10003;</div>
+                            <div>
+                                <b>Tripadvisor is where they book</b>
+                                <span>People on Google are still browsing. People on Tripadvisor are picking where to eat tonight.</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <a href="#pricing" class="btn btn-primary btn-lg">SEE THE PRICE</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Ranking Proof — judul + gambar + satu paragraf penjelasan di bawahnya.
+         Angka di paragraf (#340, #9, 366, 1 -> 56, 4.8) HARUS sama persis dengan
+         yang kebaca di tp.jpg. Kalau gambarnya diganti, ganti angkanya juga -
+         teks yang gak cocok sama screenshotnya bikin halaman keliatan karangan. -->
     <section class="section">
         <div class="container">
             <div class="section-header">
-                <div class="section-badge">Why TripAdvisor</div>
-                <h2>Why Your Business Needs TripAdvisor Reviews</h2>
+                <div class="section-badge">Real Result</div>
+                <h2>From #340 To <span class="text-green">#9</span> &mdash; Top 10 In Their Category</h2>
+                <p class="section-desc">Same listing, same photos, same business &mdash; one client&rsquo;s Tripadvisor category ranking before and after.</p>
             </div>
-            <div class="wta-grid">
-                <div class="wta-card">
-                    <div class="wta-icon">🔍</div>
-                    <div class="wta-title">Improved Online Visibility</div>
-                    <div class="wta-desc">More reviews push your listing higher in TripAdvisor search results, giving you more exposure to travelers.</div>
+
+            <div class="tprk-wrap">
+                <div class="tprk-shot">
+                    <img src="https://smart-buzzer.com/promo-tripadvisor/tp.jpg"
+                         alt="Tripadvisor listing before and after: ranking moved from #340 of 366 with 1 review to #9 of 366 with 56 reviews"
+                         class="clickable-image" loading="lazy">
                 </div>
-                <div class="wta-card">
-                    <div class="wta-icon">🏆</div>
-                    <div class="wta-title">Competitive Advantage</div>
-                    <div class="wta-desc">Travelers compare options — businesses with high-quality TripAdvisor reviews always stand out from the crowd.</div>
-                </div>
-                <div class="wta-card">
-                    <div class="wta-icon">⚡</div>
-                    <div class="wta-title">Faster Decisions</div>
-                    <div class="wta-desc">Authentic feedback helps potential customers book and choose you without hesitation.</div>
-                </div>
-                <div class="wta-card">
-                    <div class="wta-icon">💰</div>
-                    <div class="wta-title">Increased Revenue</div>
-                    <div class="wta-desc">Positive words drive a steady stream of new business — people trust personal recommendations more than any paid ad.</div>
-                </div>
+
+                <p class="tprk-note">
+                    This client&rsquo;s Tripadvisor listing went from <b>#340 of 366</b> to <b>#9 of 366</b> in its category.
+                    The rating never moved &mdash; 4.8 before, 4.8 after. What changed was the review count: <b>1 review
+                    became 56</b>. That is the whole mechanism: volume is what lifts you up the category, while your
+                    score stays honest. How far any listing climbs depends on your category and how crowded your city is.
+                </p>
             </div>
         </div>
     </section>
@@ -1924,78 +2124,23 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-badge">How It Works</div>
-                <h2>4 Simple Steps</h2>
+                <h2>3 Simple Steps</h2>
             </div>
             <div class="process-grid">
                 <div class="process-item">
                     <div class="process-number">1</div>
-                    <div class="process-title">Order & Pay</div>
-                    <div class="process-desc">Choose package and complete payment via crypto, card, Zelle, or wire.</div>
+                    <div class="process-title">Order &amp; Pay</div>
+                    <div class="process-desc">Pick your package and pay by card, crypto, Zelle, or wire. Takes about 2 minutes.</div>
                 </div>
                 <div class="process-item">
                     <div class="process-number">2</div>
                     <div class="process-title">Approve Content</div>
-                    <div class="process-desc">Review content within 24 hours or provide your own.</div>
+                    <div class="process-desc">We write reviews tailored to your business. You approve them within 24 hours &mdash; or send your own.</div>
                 </div>
                 <div class="process-item">
                     <div class="process-number">3</div>
-                    <div class="process-title">We Post</div>
-                    <div class="process-desc">Reviews posted 1-3 per week using aged accounts and unique IPs.</div>
-                </div>
-                <div class="process-item">
-                    <div class="process-number">4</div>
-                    <div class="process-title">Track Live</div>
-                    <div class="process-desc">Monitor progress via real-time dashboard.</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Replacement Guarantee Section -->
-    <section class="section guarantee-section" id="guarantee" style="background: var(--gray-50);">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">Guarantee</div>
-                <h2>Our Replacement Guarantee</h2>
-                <p style="color: var(--gray-500);">Simple and fair. Here is exactly how it works.</p>
-            </div>
-
-            <div style="max-width: 880px; margin: 0 auto;">
-                <!-- 3 simple steps -->
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px;" class="guarantee-steps">
-                    <div style="background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 24px 18px; text-align: center;">
-                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--gray-100); color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">1</div>
-                        <strong style="display: block; margin-bottom: 6px; color: var(--dark);">A review shows up</strong>
-                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">The moment a review appears on your Tripadvisor listing, it counts as delivered. 1 review = 1 delivered.</span>
-                    </div>
-                    <div style="background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 24px 18px; text-align: center;">
-                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--gray-100); color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">2</div>
-                        <strong style="display: block; margin-bottom: 6px; color: var(--dark);">You get 7 days per review</strong>
-                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">Each review has its own 7-day window that starts the day it shows up &mdash; not after the whole order is done.</span>
-                    </div>
-                    <div style="background: #fff; border: 1px solid var(--ta-green); border-radius: 14px; padding: 24px 18px; text-align: center;">
-                        <div style="width: 46px; height: 46px; border-radius: 50%; background: #e6fbf2; color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">&#10003;</div>
-                        <strong style="display: block; margin-bottom: 6px; color: var(--ta-green-dark);">Drops in 7 days? We replace it</strong>
-                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">If a review drops inside its 7 days, we add a new one for free &mdash; one replacement per review.</span>
-                    </div>
-                </div>
-
-                <!-- Plain summary card -->
-                <div class="guarantee-summary">
-                    <p class="gs-intro"><strong>Why do reviews sometimes drop?</strong> Drops are a normal part of how Tripadvisor's algorithm works &mdash; it happens to all reviews, for every business on Tripadvisor. We can't control their algorithm, but we <strong style="color: var(--ta-green-dark);">do</strong> stand behind every review we deliver:</p>
-
-                    <div class="gs-row gs-yes">
-                        <span class="gs-tag"><span class="gs-mark">&#10003;</span> Drops in first 7 days</span>
-                        <span class="gs-text">We add <strong>1 free replacement</strong> for that review &mdash; no extra charge. Each review gets a <strong>maximum of 1 free replacement</strong>.</span>
-                    </div>
-                    <div class="gs-row gs-no">
-                        <span class="gs-tag"><span class="gs-mark">&times;</span> Drops after 7 days</span>
-                        <span class="gs-text">As noted above, the review was already counted as delivered when it first appeared &mdash; so once it passes 7 days, it&rsquo;s final and not replaced.</span>
-                    </div>
-
-                    <p class="gs-agree">By completing your order you agree to this fair-use guarantee.</p>
+                    <div class="process-title">We Post, You Track</div>
+                    <div class="process-desc">Reviews go up gradually from aged accounts with unique IPs, and you follow every one live on your dashboard.</div>
                 </div>
             </div>
         </div>
@@ -2081,6 +2226,56 @@
             <p style="max-width:760px; margin:0 auto; text-align:center; font-size:13px; line-height:1.6; color:var(--gray-500);">
                 <span style="color:var(--ta-green-dark); font-weight:800;">*</span> Reviews are posted gradually (1–3 per week) to stay natural and compliant. Each review is <strong style="color:var(--gray-700);">delivered the moment it shows up</strong> and carries a <strong style="color:var(--gray-700);">free 7-day replacement window</strong>. See our full <a href="#guarantee" style="color:var(--ta-green-dark); font-weight:700;">Replacement Guarantee</a> below.
             </p>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Replacement Guarantee Section -->
+    <section class="section guarantee-section" id="guarantee">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Guarantee</div>
+                <h2>Our Replacement Guarantee</h2>
+                <p style="color: var(--gray-500);">Simple and fair. Here is exactly how it works.</p>
+            </div>
+
+            <div style="max-width: 880px; margin: 0 auto;">
+                <!-- 3 simple steps -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px;" class="guarantee-steps">
+                    <div style="background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 24px 18px; text-align: center;">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--gray-100); color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">1</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--dark);">A review shows up</strong>
+                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">The moment a review appears on your Tripadvisor listing, it counts as delivered. 1 review = 1 delivered.</span>
+                    </div>
+                    <div style="background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 24px 18px; text-align: center;">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: var(--gray-100); color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">2</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--dark);">You get 7 days per review</strong>
+                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">Each review has its own 7-day window that starts the day it shows up &mdash; not after the whole order is done.</span>
+                    </div>
+                    <div style="background: #fff; border: 1px solid var(--ta-green); border-radius: 14px; padding: 24px 18px; text-align: center;">
+                        <div style="width: 46px; height: 46px; border-radius: 50%; background: #e6fbf2; color: var(--ta-green-dark); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">&#10003;</div>
+                        <strong style="display: block; margin-bottom: 6px; color: var(--ta-green-dark);">Drops in 7 days? We replace it</strong>
+                        <span style="font-size: 14px; color: var(--gray-500); line-height: 1.6;">If a review drops inside its 7 days, we add a new one for free &mdash; one replacement per review.</span>
+                    </div>
+                </div>
+
+                <!-- Plain summary card -->
+                <div class="guarantee-summary">
+                    <p class="gs-intro"><strong>Why do reviews sometimes drop?</strong> Drops are a normal part of how Tripadvisor's algorithm works &mdash; it happens to all reviews, for every business on Tripadvisor. We can't control their algorithm, but we <strong style="color: var(--ta-green-dark);">do</strong> stand behind every review we deliver:</p>
+
+                    <div class="gs-row gs-yes">
+                        <span class="gs-tag"><span class="gs-mark">&#10003;</span> Drops in first 7 days</span>
+                        <span class="gs-text">We add <strong>1 free replacement</strong> for that review &mdash; no extra charge. Each review gets a <strong>maximum of 1 free replacement</strong>.</span>
+                    </div>
+                    <div class="gs-row gs-no">
+                        <span class="gs-tag"><span class="gs-mark">&times;</span> Drops after 7 days</span>
+                        <span class="gs-text">As noted above, the review was already counted as delivered when it first appeared &mdash; so once it passes 7 days, it&rsquo;s final and not replaced.</span>
+                    </div>
+
+                    <p class="gs-agree">By completing your order you agree to this fair-use guarantee.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -2340,7 +2535,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-a">
-                        Yes. Our gradual posting cadence (1–3 reviews per week, mixed 4-star and 5-star) is designed to look natural to Tripadvisor's algorithm. We use aged accounts with unique IPs and devices — the same patterns real travelers leave behind. Over 1,200 hospitality businesses have used this approach without issue.
+                        Yes. Our gradual posting cadence (spread out over time, mixed 4-star and 5-star) is designed to look natural to Tripadvisor's algorithm. We use aged accounts with unique IPs and devices — the same patterns real travelers leave behind. Over 1,200 hospitality businesses have used this approach without issue.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -2363,29 +2558,11 @@
                 </div>
                 <div class="faq-item">
                     <button class="faq-q" type="button">
-                        <span>Can my reviews drop or go down over time?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-a">
-                        Yes — it can happen, and it's completely normal. Tripadvisor runs an automated algorithm that constantly re-evaluates reviews, so a small number may drop over time. That's exactly why we post <strong>gradually (1–3 per week)</strong> and mix <strong>4-star and 5-star</strong> ratings — it keeps your profile looking natural and reduces drops. And you're covered: any review that drops <strong>within 7 days</strong> of posting is <strong>replaced free (one replacement per review)</strong>. See our <a href="#guarantee" style="color:var(--ta-green-dark); font-weight:700;">Replacement Guarantee</a> for the full details.
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-q" type="button">
                         <span>How long until my reviews start appearing?</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-a">
                         Reviews start appearing within the first week of order confirmation. For a 40-review Starter package, expect full delivery in ~4–5 weeks. Larger packages take longer — gradual pacing is what keeps your account safe. You'll track every step live on your dashboard.
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-q" type="button">
-                        <span>Can I provide my own review content?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-a">
-                        Yes. You can give us specific talking points, services to highlight, or full review text. Or let our team write custom content tailored to your business — every review is unique with zero repetition. You approve all content before posting.
                     </div>
                 </div>
             </div>
@@ -2863,7 +3040,7 @@
     </div>
 
     <!-- Floating CTWA Sales Button -->
-    <a href="https://wa.me/628979133204?text=Hi%20Smart%20Buzzer!%20I%20saw%20your%20Tripadvisor%20packages%20and%20I'd%20like%20to%20get%20a%20quote%20%26%20check%20my%20listing."
+    <a href="https://wa.me/6285121563813?text=Hi%20Smart%20Buzzer!%20I%20saw%20your%20Tripadvisor%20packages%20and%20I'd%20like%20to%20get%20a%20quote%20%26%20check%20my%20listing."
        id="ctwaSalesBtn" class="ctwa-fab" target="_blank" rel="noopener" aria-label="Chat with Sales on WhatsApp">
         <span class="ctwa-icon">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff" aria-hidden="true">
