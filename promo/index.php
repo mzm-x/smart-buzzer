@@ -2897,8 +2897,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <h3>Starter</h3>
                     </div>
                     <div class="pricing-price">$360</div>
-                    <div class="pricing-reviews" style="margin-bottom:8px;">72 Posted Reviews</div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">We submit ~300 gradually</div>
+                    <div class="pricing-reviews">72 Posted Reviews</div>
                     <ul class="pricing-features">
                         <li>We Submit 4x More <span class="uvp-info-icon" onclick="openUvpModal('buffer')">i</span></li>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
@@ -2920,8 +2919,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         $430
                         <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$480</span>
                     </div>
-                    <div class="pricing-reviews" style="margin-bottom:8px;">96 Posted Reviews</div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">We submit ~400 gradually</div>
+                    <div class="pricing-reviews">96 Posted Reviews</div>
                     <ul class="pricing-features">
                         <li>We Submit 4x More <span class="uvp-info-icon" onclick="openUvpModal('buffer')">i</span></li>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
@@ -2942,8 +2940,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         $530
                         <span style="text-decoration: line-through; color: var(--text-muted); font-size: 26px; font-weight: 600; margin-left: 8px;">$660</span>
                     </div>
-                    <div class="pricing-reviews" style="margin-bottom:8px;">132 Posted Reviews</div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">We submit ~550 gradually</div>
+                    <div class="pricing-reviews">132 Posted Reviews</div>
                     <ul class="pricing-features">
                         <li>We Submit 4x More <span class="uvp-info-icon" onclick="openUvpModal('buffer')">i</span></li>
                         <li>Reviews Show Up Every Day &mdash; Business Looks Active</li>
